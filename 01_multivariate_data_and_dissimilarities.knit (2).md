@@ -1,10 +1,7 @@
 ---
 title: "Знакомство с многомерными данными"
+subtitle: "Анализ и визуализация многомерных данных с использованием R"
 author: Вадим Хайтов, Марина Варфоломеева
-presenters: [{
-  name: 'Вадим Хайтов',
-  company: 'Каф. Зоологии беспозвоночных, СПбГУ',
-  }]
 output:
  ioslides_presentation:
   widescreen: true
@@ -21,13 +18,7 @@ output:
 - Описать _взаиморасположение_ объектов в многомерном пространстве признаков с помощью матриц
 - Визуализировать взаиморасположение объектов с помощью простейших методов
 
-```{r setup, include = FALSE, cache = FALSE, purl = FALSE}
-# output options
-options(width = 70, scipen = 6, digits = 3)
-library(knitr)
-# chunk default options
-opts_chunk$set(fig.align='center', tidy = FALSE, fig.width = 7, fig.height = 3, warning = FALSE, message = FALSE, echo = FALSE)
-```
+
 
 
 # Общая характеристика многомерных методов 
@@ -38,13 +29,7 @@ opts_chunk$set(fig.align='center', tidy = FALSE, fig.width = 7, fig.height = 3, 
 
 Вспомним логику тестирования гипотез.
 
-```{r, echo = FALSE, fig.align = 'center'}
-dat <- data.frame(trait = c(rnorm(100, 10,1), rnorm(100, 15, 1)), object = rep(c("a","b"), each = 100))
-library(ggplot2)
-theme_set(theme_bw(base_size = 14))
-
-ggplot(dat[1:100,], aes(x = trait)) + geom_histogram(binwidth = 0.5, color = "black", fill = "blue") + xlab("Character") + theme_bw() + geom_histogram(data = dat[101:200,], aes(x = trait), binwidth = 0.5, color = "black", fill = "red") + ggtitle("Character distribution ")
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
 
 
 ## Почему нужны многомерные методы?
@@ -62,26 +47,7 @@ ggplot(dat[1:100,], aes(x = trait)) + geom_histogram(binwidth = 0.5, color = "bl
 
 Предположим, что объекты характеризуются только двумя признаками 
 
-```{r, echo = FALSE, fig.height=5}
-ax <- rnorm(100, 10, 1)
-ay <- 7*ax + rnorm(100, 0, 5)
-
-bx <- rnorm(100, 11, 1)
-by <- -0.5*bx + 70 + rnorm(100, 0, 3)
-
-dat <- data.frame(x = c(ax, bx), y = c(ay, by), object = rep(c("a","b"), each = 100))
-
-pl1 <- ggplot(dat, aes(x = x, y = y)) + geom_point(aes(color = object), size = 3) + xlab("Character 1") + ylab("Character 2") + theme_bw() + guides(color = F) + scale_color_manual(values = c("blue", "red"))
-
-pl2 <- ggplot(dat, aes(x = x)) + geom_histogram(binwidth = 0.5, color = "black", fill = "gray") + xlab("Character 1") + theme_bw()
-
-pl3 <- ggplot(dat, aes(x = y)) + geom_histogram(binwidth = 3, color = "black", fill = "gray") + xlab("Character 2") + theme_bw()
-
-library(gridExtra)
-
-grid.arrange(pl1, pl2, pl3, ncol = 2)
-
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
 
 
 ## Какие задачи решаются методами могомерной статистики?
@@ -111,13 +77,7 @@ grid.arrange(pl1, pl2, pl3, ncol = 2)
 - Признаки - оси
 - Объекты - точки  
 
-```{r, echo = FALSE, fig.height=5}
-library (scatterplot3d) 
-
-dat$z = c(rnorm(100, 11, 1), rnorm(100, 14, 1))
-
-scatterplot3d(x = dat$x, y = dat$z, z = dat$y, xlab = "Descriptor 1", ylab = "Descriptor 2", zlab = "Descriptor 3", color = rep(c("red","blue"), each = 100), pch = 21)
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
 
 
 
@@ -136,17 +96,7 @@ scatterplot3d(x = dat$x, y = dat$z, z = dat$y, xlab = "Descriptor 1", ylab = "De
 
 ## Способ 1. Геометрическое описание (линейная алгебра) {.smaller .columns-2}
 
-```{r echo = FALSE, fig.width = 5, fig.height=5, warning=FALSE}
-dat2 <- data.frame(object = c("Object 1", "Object 2", "Object 3", "Object 4" ), x = c(2, 2, 4, 2.5), y = c(5, 10, 8, 4))
-
-library(ggrepel)
-
-pl4 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 5, color = "red") + xlim(0,5) + ylim(0, 11) + annotate(geom = "segment", x = 0, y = 0, xend = 2, yend = 5, arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + annotate(geom = "segment", x = 0, y = 0, xend = 2, yend = 10, arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + geom_text_repel(aes(label = object)) + annotate(geom = "text", x = 1, y = 2, label = "LV 1", angle = 0) + annotate(geom = "text", x = 1, y = 6, label = "LV 2", angle = 0) + annotate(geom = "text", x = 1, y = 3.3, parse = TRUE, label = "alpha", size = 10, angle = 0)
-
-pl5 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 5, color = "red") + xlim(0,5) + ylim(0, 11) + geom_segment(aes(x = 0, y = 0, xend = x, yend = y), arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + geom_segment(aes(x = 0, y = 0, xend = 2, yend = 10), arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object)
-
-grid.arrange(pl4, pl5, nrow = 2)
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
 
 Для описания взаиморасположения точек необходимо иметь два набора данных  
  
@@ -168,15 +118,7 @@ $$\begin{vmatrix} LV1 \\ LV2 \\ ... \\ LVn \end{vmatrix}$$
 ## Способ 2. Через вычисление матрицы попарных расстояний (Similarity/Dissimilarity matrix) {.smaller .columns-2}
 
 
-```{r echo = FALSE, fig.width = 5}
-
-pl6 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 5, color = "red") + theme_bw() + xlim(0, 5) + ylim(0, 11) 
-
-for ( i in 1:nrow(dat2)) for (j in i:nrow(dat2)) pl6 <- pl6 + geom_segment(x = dat2$x[i], y = dat2$y[i], xend = dat2$x[j], yend = dat2$y[j], arrow = NULL, size = 1) 
-
-pl6 + geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object,  box.padding = 0.6, min.segment.length = 0.5) 
-
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" />
 
 В анализ вовлекается матрица попарных расстояний (сходств) между объектами. Эта матрица однозначно описывает взаиморасположение между объектами.  
 
@@ -189,30 +131,21 @@ pl6 + geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object,  box.padding =
 
 Два объекта и два признака
 
-```{r echo=FALSE}
-points <- data.frame(X =c(1, 2), Y = c(1, 2))
-row.names(points) <-  c("Объект 1", "Объект 2")
 
-kable(points, col.names = c("Признак А", "Признак B"), row.names = T, align = "cc")  
-
-```
+|         | Признак А | Признак B |
+|:--------|:---------:|:---------:|
+|Объект 1 |     1     |     1     |
+|Объект 2 |     2     |     2     |
 
 ## Геометрическая интерпретация простейшей матрицы
 
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-
-Pl_point <- ggplot(points, aes(X, Y))  + geom_segment(aes(x = X, y = Y, xend = c(0, 2), yend = c(1, 0)), linetype = 2) + geom_segment(aes(x = X, y = Y, xend = c(1, 0), yend = c(0, 2)), linetype = 2) + xlim(0, 3) + ylim(0,3) + geom_point(size = 4, color = "red") +  geom_text_repel(aes(label = aes("Object 1", "Object 2"))) + labs(x = "Признак A", y = "Признак В")
-
-Pl_point
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
 
 ## Евклидово расстояние {.smaller}
 Это простейший способ описания расстояния между объектами в пространстве признаков.
 
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE }
-Pl_point + geom_line()
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" />
 
 По теореме Пифагора
 
@@ -222,36 +155,38 @@ D = \sqrt{(A_2 - A_1)^2 + (B_2 - B_1)^2}
 $$
 
 
->- Расстояние между объектами выражается просто числом D = `r as.numeric(dist(points))`
+>- Расстояние между объектами выражается просто числом D = 1.414
 
 >- **At!** Эта мера различия между объектами не единственная, и далеко не всегда правильная (об этом далее).
 
 
 ## Усложняем задачу: объектов становится больше двух
 
-```{r echo=FALSE}
-kable(dat2, col.names = c("Объект", "Признак А", "Признак B"), align = "lcc")
-```
+
+|Объект   | Признак А | Признак B |
+|:--------|:---------:|:---------:|
+|Object 1 |    2.0    |     5     |
+|Object 2 |    2.0    |    10     |
+|Object 3 |    4.0    |     8     |
+|Object 4 |    2.5    |     4     |
 
 
 ## Геометрическая интерпретация
 
 
-```{r echo=FALSE}
-pl7 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 4, color = "red") + theme_bw() + xlim(0, 5) + ylim(0, 11)
-
-# for ( i in 1:nrow(dat2)) for (j in i:nrow(dat2)) pl7 <- pl7 + geom_segment(x = dat2$x[i], y = dat2$y[i], xend = dat2$x[j], yend = dat2$y[j], arrow = NULL, size = 1)
-
-pl7 + geom_text_repel(data = dat2, aes(x = x, y = y, label = dat2$object)) + labs(x = "Признак A", y = "Признак В")
-
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" />
 
 ## Матрица расстояний (Similarity/Dissimilarity matrix)
 
 Когда объектов больше двух, то расстояния между объектами можно выразить **матрицей расстояний**.
 
-```{r, echo = FALSE}
-round(dist(dat2[,-1], diag = TRUE, upper = TRUE), 1)
+
+```
+##     1   2   3   4
+## 1 0.0 5.0 3.6 1.1
+## 2 5.0 0.0 2.8 6.0
+## 3 3.6 2.8 0.0 4.3
+## 4 1.1 6.0 4.3 0.0
 ```
 
 Охарактеризуйте эту матрицу
@@ -262,11 +197,13 @@ round(dist(dat2[,-1], diag = TRUE, upper = TRUE), 1)
 
 ## Усложняем задачу: признаков становится больше двух 
 
-```{r, echo=FALSE}
-dat_mult <- data.frame(dat2, z = c(100, 258, 122, 10000), k = c(0.1, 0.01, 0.09, 0.15))
 
-kable(dat_mult,  col.names = c("Объект", "Признак А", "Признак B", "Признак С", "Признак D"), align = "lcccc")
-```
+|Объект   | Признак А | Признак B | Признак С | Признак D |
+|:--------|:---------:|:---------:|:---------:|:---------:|
+|Object 1 |    2.0    |     5     |    100    |   0.10    |
+|Object 2 |    2.0    |    10     |    258    |   0.01    |
+|Object 3 |    4.0    |     8     |    122    |   0.09    |
+|Object 4 |    2.5    |     4     |   10000   |   0.15    |
 
 
 ## Геометрическая интрепретация 
@@ -292,13 +229,28 @@ $$D = \sqrt{\sum(x_{i,j} - x_{i,k})^2}$$
 
 ## Три способа изображения матрицы расстояний
 
-```{r, echo = FALSE}
-round(dist(dat_mult[,-1], diag = TRUE, upper = TRUE), 1)
 
-round(dist(dat_mult[,-1], diag = TRUE, upper = F), 1)
+```
+##        1      2      3      4
+## 1    0.0  158.1   22.3 9900.0
+## 2  158.1    0.0  136.0 9742.0
+## 3   22.3  136.0    0.0 9878.0
+## 4 9900.0 9742.0 9878.0    0.0
+```
 
-round(dist(dat_mult[,-1], diag = F, upper = F), 1)
+```
+##        1      2      3      4
+## 1    0.0                     
+## 2  158.1    0.0              
+## 3   22.3  136.0    0.0       
+## 4 9900.0 9742.0 9878.0    0.0
+```
 
+```
+##        1      2      3
+## 2  158.1              
+## 3   22.3  136.0       
+## 4 9900.0 9742.0 9878.0
 ```
 
 Количество значимых чисел в треугольной матрице:
@@ -307,26 +259,39 @@ $$N = \frac{n^2 - n}{2}$$
 
 ## Матрица расстояний в развернутом виде (Unfolded dissimilarity matrix)  
 
-```{r,echo = FALSE}
-round(dist(dat_mult[,-1], diag = F, upper = F), 1)
-as.vector(round(dist(dat_mult[,-1], diag = F, upper = F), 1))
+
+```
+##        1      2      3
+## 2  158.1              
+## 3   22.3  136.0       
+## 4 9900.0 9742.0 9878.0
+```
+
+```
+## [1]  158.1   22.3 9900.0  136.0 9742.0 9878.0
 ```
 
 ## Результаты простейшего могомерного анализа {.columns-2 .smaller}
 
 **Исходная матрица признаков**
 
-```{r, echo=FALSE}
-kable(dat_mult,  col.names = c("Объект", "Признак А", "Признак B", "Признак С", "Признак D"), align = "lcccc")
-```
+
+|Объект   | Признак А | Признак B | Признак С | Признак D |
+|:--------|:---------:|:---------:|:---------:|:---------:|
+|Object 1 |    2.0    |     5     |    100    |   0.10    |
+|Object 2 |    2.0    |    10     |    258    |   0.01    |
+|Object 3 |    4.0    |     8     |    122    |   0.09    |
+|Object 4 |    2.5    |     4     |   10000   |   0.15    |
 
 <br>
 **Матрица расстояний**
 
-```{r echo=FALSE}
 
-round(dist(dat_mult[,-1], diag = F, upper = F), 1)
-
+```
+##        1      2      3
+## 2  158.1              
+## 3   22.3  136.0       
+## 4 9900.0 9742.0 9878.0
 ```
 
 
@@ -345,28 +310,12 @@ round(dist(dat_mult[,-1], diag = F, upper = F), 1)
 - `dolg_hydrology.txt` --- данные о 4 гидрологических характеристиках: глубина, Температура придонной воды, Соленость, Степень гидратации грунта
 </div>
 
-```{r, echo=FALSE, fig.height=4, fig.width=4.5, purl=FALSE, message=FALSE, warning=FALSE}
-library(ggmap, verbose = FALSE, quietly = TRUE)
-# if (!file.exists("data/map-solovky-stamen.Rda")) {
-#   map1 <- get_stamenmap(bbox = c(left = 35.47, bottom = 64.89, right = 36.3, top = 65.25), zoom = 10, maptype = "toner-lite", crop = TRUE)
-#   save(map1, file = "data/map-solovky-stamen.Rda")
-# } else {
-#   load("data/map-solovky-stamen.Rda")
-# }
-# ggmap(map1) + ggtitle("Solovetsky island")
-
-if (!file.exists("data/map-solovky-google.Rda")) {
- map2 <- get_googlemap(center = c(lon = 35.86, lat = 65.070), zoom = 10, crop = TRUE, maptype = "satellite")
- save(map2, file = "data/map-solovky-google.Rda")
-} else {
- load("data/map-solovky-google.Rda")
-}
-ggmap(map2) + ggtitle("Соловецкие острова")
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-17-1.png" width="432" style="display: block; margin: auto;" />
 
 ## Читаем данные
 
-```{r, echo=TRUE}
+
+```r
 abund <- read.table("data/dolg_abundance.txt", skip = 1, header = TRUE, sep = ";")
 hydrol <- read.table("data/dolg_hydrology.txt", skip = 1, header = TRUE, sep = ";")
 ```
@@ -411,9 +360,7 @@ $$x_{rel} = \frac{x_i}{max(x_i)} \times 100 \%$$
 
 Часто возникает ситуация, когда один признак (или несколько признаков) имеет существенно более высокие абсолютные значения, чем все остальные, или варьирует в более широких пределах, чем остальные признаки.
 
-```{r, echo = FALSE, fig.width = 7, fig.height=3.5}
-scatterplot3d(x = abund$Aricidea_nolani, y = abund$Pontoporeia_femorata, z = abund$Terebellides_stroemi, scale.y = 3, pch = 21, xlab = "Вид 1", ylab = "Вид 2", zlab = "Вид 3",color = "blue")
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" />
 
 В такой ситуации необходима _трансформация_ , которая "уравнивает" силу влияния признаков.
 
@@ -430,17 +377,29 @@ Hint: Воспользуйтесь функцией `apply()`
 
 ## Решение
 
-```{r, echo=TRUE}
+
+```r
 total <- apply(abund[, -1], MARGIN = 1,FUN = sum)
 abund_rel <- abund[, -1] / total
 
 head(abund_rel[,1:3])
 ```
 
+```
+##   Eteone_longa Nemertini Harmothoe_imbricata
+## 1       0.0000   0.00772              0.0232
+## 2       0.0000   0.00000              0.0000
+## 3       0.0000   0.00000              0.0000
+## 4       0.0000   0.00000              0.0000
+## 5       0.0000   0.02857              0.0000
+## 6       0.0143   0.01429              0.0000
+```
+
 
 ## Знакомимся с пакетом `vegan` (Oksanen et al., 2015)
 
-```{r, echo=TRUE, message=FALSE}
+
+```r
 library (vegan)
 ```
 
@@ -453,9 +412,20 @@ library (vegan)
 ## Подготовка данных в пакете `vegan` 
 
 Относительные величины
-```{r, echo=TRUE}
+
+```r
 abund_rel <- decostand(abund[,-1], method = "total", MARGIN = 1)
 head(abund_rel[, 1:3])
+```
+
+```
+##   Eteone_longa Nemertini Harmothoe_imbricata
+## 1       0.0000   0.00772              0.0232
+## 2       0.0000   0.00000              0.0000
+## 3       0.0000   0.00000              0.0000
+## 4       0.0000   0.00000              0.0000
+## 5       0.0000   0.02857              0.0000
+## 6       0.0143   0.01429              0.0000
 ```
 
 ## Задание
@@ -468,22 +438,45 @@ head(abund_rel[, 1:3])
 ## Решение: стандартизация в `vegan` 
 
 
-```{r, echo=TRUE}
+
+```r
 abund_stand <- decostand(abund[,-1], method = "standardize", MARGIN = 2)
 head(abund_stand[, 1:3])
 ```
 
+```
+##   Eteone_longa Nemertini Harmothoe_imbricata
+## 1       -0.329    0.6878               2.783
+## 2       -0.329   -0.5594              -0.508
+## 3       -0.329   -0.5594              -0.508
+## 4       -0.329   -0.5594              -0.508
+## 5       -0.329    0.6878              -0.508
+## 6        0.118    0.0642              -0.508
+```
+
 ## Решение: log-трансформация  в `vegan` 
 
-```{r, echo=TRUE}
+
+```r
 abund_log <-  decostand(abund[,-1], method = "log", MARGIN = 2)
 head(abund_log[, 1:3])
+```
+
+```
+##   Eteone_longa Nemertini Harmothoe_imbricata
+## 1         0.00      6.32                7.91
+## 2         0.00      0.00                0.00
+## 3         0.00      0.00                0.00
+## 4         0.00      0.00                0.00
+## 5         0.00      6.32                0.00
+## 6         5.32      5.32                0.00
 ```
 
 
 ## Матрицы расстояний в пакете `vegan`
 
-```{r, echo=TRUE}
+
+```r
 dist_init <- vegdist(abund[,-1], method = "euclidean")
 dist_stand <- vegdist(abund_stand, method = "euclidean")
 dist_log <- vegdist(abund_log, method = "euclidean")
@@ -500,7 +493,8 @@ dist_rel <- vegdist(abund_rel, method = "euclidean")
 
 ## Решение
 
-```{r, echo=TRUE}
+
+```r
 disatances <- data.frame(Init = as.numeric(dist_init), 
                         Stand = as.numeric(dist_stand),
                         Log = as.numeric(dist_log),
@@ -512,24 +506,18 @@ Pl_init <- Pl_hist + aes(x = Init) + ggtitle("Исходные данные") + 
 Pl_stand <- Pl_hist + aes(x = Stand) + ggtitle("Стандартизация") + labs(x = "Евклидово расстояние")
 Pl_log <- Pl_hist + aes(x = Log)  + ggtitle("Логарифмирование")+ labs(x = "Евклидово расстояние")
 Pl_rel <- Pl_hist + aes(x = Rel) + ggtitle("Относительные величины")+ labs(x = "Евклидово расстояние")
-
 ```
 
 ## Существуют ли группировки? 
 
 
-```{r, echo=FALSE, fig.height=5}
-grid.arrange(Pl_init, Pl_stand, Pl_log, Pl_rel, ncol = 2 )
-
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" />
 
 ## Структура облака точек
 
 Если в n-мерном облаке точек присутствуют несколько "сгущений", то расстояния между объектами делятся на внутригрупповые (пик в области малых значений расстояний) и межгрупповые (пик в области высоких значений)
 
-```{r}
-Pl_rel + annotate(geom = "text", x = 0.55, y = 220, label = "Внутригрупповые") + annotate(geom = "text", x = 0.9, y = 120, label = "Межгрупповые") + labs(x = "Мера расстояния", y = "Частота", title = "")
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" />
 
 
 
@@ -554,7 +542,8 @@ Pl_rel + annotate(geom = "text", x = 0.55, y = 220, label = "Внутригру�
 
 ## Решение
 
-```{r, echo=TRUE}
+
+```r
 dist_eucl <- vegdist(abund_log, method = "euclidean")
 dist_bray <- vegdist(abund_log, method = "bray")
 
@@ -564,14 +553,16 @@ dists <- data.frame(Euclidean = as.numeric(dist_eucl),
 Pl_hist <- ggplot(dists) + geom_histogram()
 Pl_eucl <- Pl_hist + aes(x = Euclidean)
 Pl_bray <- Pl_hist + aes(x = Bray)
-
 ```
 
 ## Решение
 
-```{r, echo=TRUE}
+
+```r
 grid.arrange(Pl_eucl, Pl_bray, ncol = 2)
 ```
+
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" />
 
 
 
@@ -592,12 +583,11 @@ grid.arrange(Pl_eucl, Pl_bray, ncol = 2)
 
 ## Проблема двойных нулей (Double zeros probem)
 
-```{r, echo = FALSE}
-dat5 <- (data.frame(Descriptors = c("D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10"), Object1 = c(0, 0, 0, 0, 0, 0, 0, 2, 2, 1), Object2 = c(0, 0, 0, 0, 0, 4, 5, 0, 0, 1)))
 
-dat6 <- data.frame(t(dat5[,-1]))
-names(dat6) <- dat5$Descriptors
-dat6
+```
+##         D1 D2 D3 D4 D5 D6 D7 D8 D9 D10
+## Object1  0  0  0  0  0  0  0  2  2   1
+## Object2  0  0  0  0  0  4  5  0  0   1
 ```
 
 О чем говорит то, что признаки D1, D2, D3, D4, D5 не были отмечены у двух объектов?
@@ -636,9 +626,7 @@ dat6
 _Важно:_ метрики неадекватно оценивают степень различия при большом количестве нулей.Очень чувствительны к выбросам.
 
 
-
-
-## Наиболее популярные меры расстояния (метрики)
+## Наиболее популярные меры расстояния
 
 <div class = "columns-2">
 
@@ -669,30 +657,6 @@ $\chi^2 = \sqrt{ \sum {\frac{1}{c_i}} (x_{i,j} - x_{i,k})^2}$
 - Евклидово расстояние, вычисленное по относительным величинам.
 
 </div>
-
-
-## Полуметрики
-
-Некоторые меры расстояния не отвечают требованиям метрик
-
-**Расстояние Махаланобиса** 
-
-
-$$D = \sqrt{(x - y) Cov^{-1}(x - y)^T}$$
-
-$x$ и $y$ - Векторы координат точек $a$ и $b$ в пространстве признаков. 
-$Cov$ - Матрица ковариации 
-
-Свойства полуметрик:
-
-- Если $a = b$, то $D(a, b) = 0$
-- Симметричность $D(a, b) = D(b, a)$
-- НО! Не справедливо неравенство треугольника $D(a,b) + D(b,c) \geq D(a,c)$ (из-за наличия ковариации между векторами)
-
-
-
-
-
 
 ## Неметрические коэффициенты различия
 
@@ -736,6 +700,8 @@ $$S = \frac{a}{a+b+c}$$
 
 $$S = \frac{2a}{2a + b + c}$$
 
+_NB!_ Коэффициент Сёренсена - это коэффициент Брея-Куртиса, вычисленный для значений, оцененных как 1 или 0.
+
 
 ## Коэффициенты для бинарных данных
 
@@ -770,9 +736,7 @@ $W_i=1$ Если присутствует информация как о $x_{i,j
 
 ## Многие показатели взаимосвязаны и, часто, взаимозаменяемы
 
-```{r}
-ggplot(dists, aes(x = Euclidean, y = Bray)) + geom_point() + theme_bw()
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" />
 
 
 
@@ -802,9 +766,7 @@ __Ординация__ (лат. _ordinatio_ --- расположение в по
 
 Если у объектов всего два свойства, то ординация имеет вид облака точек в двух осях.
 
-```{r}
-ggplot(abund_log, aes(x = Scoloplos_armiger, y = Terebellides_stroemi)) + geom_point(color = "red", size = 4) + labs(x = "Вид 1", y = "Вид 2")
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" />
 
 Аналогия ординации с одномерными методами -- просто числовой ряд. 
 
@@ -832,7 +794,8 @@ ggplot(abund_log, aes(x = Scoloplos_armiger, y = Terebellides_stroemi)) + geom_p
 
 Логарифмирование мы провели ранее
 
-```{r, echo=TRUE}
+
+```r
 row.names(abund_rel) <- abund$Station
 ```
 
@@ -842,7 +805,8 @@ row.names(abund_rel) <- abund$Station
 Шаг 2. Вычисление матрицы сходства/различия между объектами.   
 Из дидактических соображений возьмем матрицу Евклидовых расстояний. 
 
-```{r, message=FALSE, echo=TRUE}
+
+```r
 library(vegan)
 E_dist <- vegdist(abund_log, method = "euclidean")
 ```
@@ -852,49 +816,12 @@ E_dist <- vegdist(abund_log, method = "euclidean")
 
 Шаг 3. Найдем наиболее различающиеся объекты (максимальное Евклидово расстояние между ними). 
 
-```{r, echo=FALSE}
-unfolding <- function(x, method = "euclidean") {
-  n <- nrow(x)
-  N <- (n^2 - n)/2
-  unfold <- data.frame(i = 1:N, Object_j = NA, Object_k = NA, Distance = NA)
-  pos <- 0
-  for(i in 1:(n-1)) for(j in (i+1):n) {
-    pos <- pos + 1
-    unfold$Object_j[pos] <- i
-    unfold$Object_k[pos] <- j
-  }
-  unfold$Distance <- as.vector(vegdist(x, method = method))
-  unfold
-}
-
-polarord <- function(x,...) {
-  dist <- unfolding(x)
-  polar_distance <- max(dist$Distance)
-  Object_polus1 <- dist$Object_j[dist$Distance == max(dist$Distance)]
-  Object_polus2 <- dist$Object_k[dist$Distance == max(dist$Distance)]
-  Polar_coord <- data.frame(Object = 1:nrow(x), Coord = NA)
-  for(i in 1:nrow(x)) {
-    
-    AC <- dist$Distance[dist$Object_j == Object_polus1 & dist$Object_k == Object_polus2]
-    if (i != Object_polus1 & i != Object_polus2) BC <- dist$Distance[(dist$Object_j == i & dist$Object_k == Object_polus1)|(dist$Object_j == Object_polus1 & dist$Object_k == i)]
-    if (i != Object_polus1 & i != Object_polus2) AB <- dist$Distance[(dist$Object_j == i & dist$Object_k == Object_polus2)|(dist$Object_j == Object_polus2 & dist$Object_k == i)]
-    if (i != Object_polus1 & i != Object_polus2) Polar_coord$Coord[i] <- (BC^2 + AC^2 - AB^2)/(2 * AC)
-    
-  }
-  Polar_coord$Coord[Object_polus1] <- 0
-  Polar_coord$Coord[Object_polus2] <- polar_distance
-  Polar_coord
-}
 
 
-New_coord <- polarord(abund_log)
 
 ```
-
-```{r}
-dist <- unfolding(abund_log) # Пользовательская функция
-
-dist[dist$Distance == max(dist$Distance), ]
+##         i Object_j Object_k Distance
+## 1991 1991       44       57     36.6
 ```
 
 Эти два объекта и задают ось, вдоль которой будет производиться ординация.
@@ -905,65 +832,13 @@ dist[dist$Distance == max(dist$Distance), ]
 
 Возьмем любую другую точку, например "S2"
 
-```{r, echo=FALSE}
-a <- dist$Distance[dist$Object_j == 44 & dist$Object_k == 57]
-
-b <- New_coord$Coord[New_coord$Object == 2]
-
-c <- sqrt(a^2 - b^2) 
-
-d <- dist$Distance[dist$Distance == max(dist$Distance)]
-
-point <- data.frame(X = c(0, d, b),Y = c(0, 0, c))
-
-ggplot(point, aes(x = X, y = Y))  + 
-  geom_text(aes(0, -4), label = "S44") + 
-  geom_text(aes(d, -4), label = "S57") + 
-  geom_segment(x = 0, xend = d, y = 0, yend = 0, size = 2, color = "red") + 
-  geom_text(x = 15, y = 3, label ="Полярная ось №1") + 
-  geom_segment(x = 0, xend = b, y = 0, yend=c, size = 1, color = "black") + 
-  geom_segment(x = d, xend = b, y = 0, yend = c, size = 1, color = "black") + 
-  geom_point(size = 4, color = "blue") + 
-  geom_text(x = b, y = (c + 4), label = "S2") + 
-  geom_segment(x = b, xend = b, y = 0, yend=c, size = 1, color = "black", linetype = 2) +
-  geom_point(aes(x = b, y = 0), size = 4, shape = 22,  fill ="yellow") + 
-  geom_text(x = 5, y = 8, label = "D 44-2") + 
-  geom_text(x = 25, y = 8, label = "D 57-2") + 
-  geom_text(x = 15, y = -4, label = "D 44-57") + 
-  ggtitle("Координаты точек на полярной оси") + 
-  ylim(-5, 45)
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" />
 
 ## Висконсинская полярная ординация 
 
 Шаг 5. Вычисляем координаты на полярной оси для каждого объекта. 
 
-```{r, echo=FALSE}
-polarord <- function(x, ...) {
-  dist <- unfolding(x)
-  polar_distance <- max(dist$Distance)
-  Object_polus1 <- dist$Object_j[dist$Distance == max(dist$Distance)]
-  Object_polus2 <- dist$Object_k[dist$Distance == max(dist$Distance)]
-  Polar_coord <- data.frame(Object = 1:nrow(x), Coord = NA)
-  for(i in 1:nrow(x)) {
-    AC <- dist$Distance[dist$Object_j == Object_polus1 & dist$Object_k == Object_polus2]
-    if (i != Object_polus1 & i != Object_polus2) BC <- dist$Distance[(dist$Object_j == i & dist$Object_k == Object_polus1)|(dist$Object_j == Object_polus1 & dist$Object_k == i)]
-    if (i != Object_polus1 & i != Object_polus2) AB <- dist$Distance[(dist$Object_j == i & dist$Object_k == Object_polus2)|(dist$Object_j == Object_polus2 & dist$Object_k == i)]
-    if (i != Object_polus1 & i != Object_polus2) Polar_coord$Coord[i] <- (BC^2 + AC^2 - AB^2)/(2 * AC)
-  }
-  Polar_coord$Coord[Object_polus1] <- 0
-  Polar_coord$Coord[Object_polus2] <- polar_distance
-  Polar_coord
-}
-
-New_coord <- polarord(abund_log)
-# 
-# ggplot(New_coord, aes(x=Coord, y =0)) + geom_segment(x = 0, xend = d, y = 0, yend=0, size = 2, color = "red") + geom_point(aes(fill = hydrol$Depth), position = position_jitter(width = 0, height=0.1), size = 4, shape = 21) + ylim(-1, 1) + scale_fill_gradient(low = "cyan", high = "darkblue") + xlab("New coordinate") + ylab("")  + labs(fill = "Depth") 
-# 
-
-
-ggplot(New_coord, aes(x=Coord, y =0)) + geom_segment(x = 0, xend = d, y = 0, yend=0, size = 2, color = "red") + geom_point(fill = "yellow", position = position_jitter(width = 0, height=0), size = 4, shape = 21) + ylim(-1, 1) 
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" />
 
 
 ## Висконсинская полярная ординация 
@@ -986,10 +861,7 @@ _At!_ Одновременное изображение информации о�
 
 Этот градиент связан с внешним фактором - температурой.
 
-```{r}
-ggplot(New_coord, aes(x=Coord, y =0)) + geom_segment(x = 0, xend = d, y = 0, yend=0, size = 1, color = "black") + geom_point(aes(fill = hydrol$Temp), position = position_jitter(width = 0, height=0.1), size = 4, shape = 21) + ylim(-1, 1) + scale_fill_gradient(low = "yellow", high = "red") + xlab("Координаты на полярной оси №1") + ylab("")  + labs(fill = "Температура придонной воды") + theme(legend.position = "bottom") 
- 
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" />
 
 
 
@@ -1026,14 +898,7 @@ ggplot(New_coord, aes(x=Coord, y =0)) + geom_segment(x = 0, xend = d, y = 0, yen
 **Простейший способ:** Построить точечные диаграммы, отражающие связь координат осей ординации с той или иной внешней переменной.
 
 
-```{r, fig.width=5}
-Pl_temp <- qplot(hydrol$Temp, New_coord$Coord) + labs(x = "Температура  воды", y = "Координаты на \n полярной оси №1")
-
-Pl_depth <- qplot(hydrol$Depth, New_coord$Coord) + labs(x = "Глубина", y = " ")
-
-grid.arrange(Pl_temp, Pl_depth, ncol = 2)
-
-```
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-41-1.png" width="480" style="display: block; margin: auto;" />
 
 
 
@@ -1043,21 +908,24 @@ grid.arrange(Pl_temp, Pl_depth, ncol = 2)
 
 ## Решение {.smaller}
 
-```{r, echo=TRUE}
+
+```r
 New_coord2 <- polarord(abund_rel)
 
 Pl_1 <- qplot(hydrol$Temp, New_coord2$Coord) + labs(x = "Температура", y = "Координаты ординации")
 Pl_2 <- qplot(hydrol$Depth, New_coord2$Coord) + labs(x = "Глубина", y = "Координаты ординации")
 Pl_3 <- qplot(hydrol$Sal, New_coord2$Coord) + labs(x = "Соленость", y = "Координаты ординации")
 Pl_4 <- qplot(hydrol$Water_content, New_coord2$Coord) + labs(x = "Обводненность", y = "Координаты ординации")
-
 ```
 
 ## Решение {.smaller}
 
-```{r, fig.height=5 , echo=TRUE}
+
+```r
 grid.arrange(Pl_1, Pl_2, Pl_3, Pl_4, ncol = 2)
 ```
+
+<img src="01_multivariate_data_and_dissimilarities_files/figure-html/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" />
 
 
 
