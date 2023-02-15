@@ -257,7 +257,7 @@ par(op)
 ```{r ord-spb, echo=FALSE, purl=-c(1, 3), fig.height=3.5, fig.width=5, results='hide'}
 op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0), cex = 1.2)
 spb_ord <- metaMDS(D)
-ordiplot(spb_ord, type = "t")
+plot(spb_ord, type = "t")
 par(op)
 ```
 ]
@@ -386,7 +386,7 @@ __Монотонная регрессия__ минимизирует сумму 
 
 Алгоритм подбора монотонной регрессии называется   Pool-Adjacent-Violator-Algorithm (PAVA)
 
-```{r isoreg-ani, echo=FALSE, fig.width=7, fig.height=6, fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop'}
+```{r isoreg-ani, echo=FALSE, fig.width=7, fig.height=6, fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', cache=TRUE}
 op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0))
 plot_isoreg <- function(x, y, n){
   if (length(x) != length(y)) {
@@ -407,11 +407,19 @@ plot_isoreg <- function(x, y, n){
   plot(x, y, pch = 1, cex = 1, col = "blue", xlab = "Observed dissimilarity", ylab = "Ordination distance")
   # 
   lines(xr, yr, col = "red", lwd = 2)
+  points(x[1:n], y[1:n], col = "blue", pch = 19, cex = 1, lwd = 2)
   points(xx[dhat$iKnots], dhat$yf[dhat$iKnots], col = "red", pch = 4, cex = 2, lwd = 2)
+
 }
 
-for (i in 0:11) {
-  plot_isoreg(x = 1:11, y = c(1, 2, 3, 6, 4, 5.5, 8, 7, 6, 5, 7), i)
+for (i in 1:11) {
+  X = 1:11+0.1
+  Y = c(1, 2, 3, 6, 4, 5.5, 8, 7, 6, 5, 7)+0.2
+  plot_isoreg(x = X, Y, i)
+  plot_isoreg(x = X, y = Y, i)
+  points(X[(i+1)], Y[(i+1)], col = "blue", pch = 1, cex = 1, lwd = 0)
+  plot_isoreg(x = X, y = Y, i)
+  points(X[(i+1)], Y[(i+1)], col = "blue", pch = 1, cex = 1.2, lwd = 2)
 }
 par(op)
 ```
@@ -450,6 +458,13 @@ $$Stress(1) = \sqrt{\frac{\sum_{h < i}{(d_{h,i} - \hat d_{h,i})^2}}{\sum_{h < i}
 
 ## Алгоритм nMDS
 
+<img src="images/ezhik.jpg" alt="Ежик в тумане" width=280px>
+.small[
+Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg)
+]
+
+--
+
 1. Выбираем _a priori_ число измерений _k_ для финального решения (число осей).
 
 --
@@ -474,18 +489,12 @@ $$Stress(1) = \sqrt{\frac{\sum_{h < i}{(d_{h,i} - \hat d_{h,i})^2}}{\sum_{h < i}
 
 --
 
-7. Повторяем шаги 3-6 многократно, чтобы избежать локальных минимумов стресса.
+7. Повторяем шаги 3-6 многократно, чтобы избежать локальных минимумов.
 
 --
 
 8. Обычно финальную ординацию поворачивают при помощи PCA, чтобы вдоль оси X было максимальное варьирование.
 
-
-<img src="images/ezhik.jpg" alt="Ежик в тумане" width=280px>
-
-.small[
-Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg)
-]
 
 
 ---
@@ -607,6 +616,7 @@ class: middle, center, inverse
 Нарисуйте простейший график ординации.
 
 ```
+set.seed(31987)
 ord_mus <- 
 ```
 
@@ -617,6 +627,7 @@ ord_mus <-
 .scroll-box-20[
 
 ```{r eval=TRUE, purl=FALSE}
+set.seed(31987)
 ord_mus <- metaMDS(spec, dist = "bray")
 ```
 
@@ -629,6 +640,7 @@ ord_mus <- metaMDS(spec, dist = "bray")
 ## Решение
 
 ```{r eval=FALSE, purl=FALSE}
+set.seed(31987)
 ord_mus <- metaMDS(spec, dist = "bray")
 ```
 
@@ -674,18 +686,19 @@ __Внимание!__
 
 ## Решение
 
-После отключения автоматического подбора трансформации данных удается найти решение.
+После отключения автоматического подбора трансформации данных и увеличения количества попыток удается найти решение.
 
 .scroll-box-20[
 
 ```{r purl=FALSE}
+set.seed(31987)
 ord_mus <- metaMDS(spec, dist = "bray", autotransform = FALSE)
 ```
 
 ]
 
 ---
-
+maxit
 ## Решение
 
 ```{r, fig-mus-bw, purl=FALSE, fig.height=4, fig.width=6, echo=-1}

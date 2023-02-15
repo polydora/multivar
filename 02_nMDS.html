@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
-    <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+    <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
@@ -24,10 +24,18 @@
     <textarea id="source">
 class: top, center, inverse, title-slide
 
+.title[
 # Неметрическое многомерное шкалирование, envfit, ordisurf
+]
+.subtitle[
 ## Анализ и визуализация многомерных данных с использованием R
+]
+.author[
 ### Марина Варфоломеева
+]
+.author[
 ### Вадим Хайтов
+]
 
 ---
 
@@ -1109,6 +1117,13 @@ __Стресс (Stress)__ показывает, насколько соотве�
 
 ## Алгоритм nMDS
 
+&lt;img src="images/ezhik.jpg" alt="Ежик в тумане" width=280px&gt;
+.small[
+Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg)
+]
+
+--
+
 1. Выбираем _a priori_ число измерений _k_ для финального решения (число осей).
 
 --
@@ -1133,18 +1148,12 @@ __Стресс (Stress)__ показывает, насколько соотве�
 
 --
 
-7. Повторяем шаги 3-6 многократно, чтобы избежать локальных минимумов стресса.
+7. Повторяем шаги 3-6 многократно, чтобы избежать локальных минимумов.
 
 --
 
 8. Обычно финальную ординацию поворачивают при помощи PCA, чтобы вдоль оси X было максимальное варьирование.
 
-
-&lt;img src="images/ezhik.jpg" alt="Ежик в тумане" width=280px&gt;
-
-.small[
-Марка СССР Ёжик в тумане (1988, ЦФА №5919). [Википедия](https://ru.wikipedia.org/wiki/%D0%A4%D0%B0%D0%B9%D0%BB:1988_CPA_5919.jpg)
-]
 
 
 ---
@@ -1318,6 +1327,7 @@ class: middle, center, inverse
 Нарисуйте простейший график ординации.
 
 ```
+set.seed(31987)
 ord_mus &lt;- 
 ```
 
@@ -1329,6 +1339,7 @@ ord_mus &lt;-
 
 
 ```r
+set.seed(31987)
 ord_mus &lt;- metaMDS(spec, dist = "bray")
 ```
 
@@ -1336,42 +1347,37 @@ ord_mus &lt;- metaMDS(spec, dist = "bray")
 ## Square root transformation
 ## Wisconsin double standardization
 ## Run 0 stress 0.132 
-## Run 1 stress 0.132 
+## Run 1 stress 0.14 
+## Run 2 stress 0.131 
 ## ... New best solution
-## ... Procrustes: rmse 0.00977  max resid 0.09 
-## Run 2 stress 0.139 
-## Run 3 stress 0.139 
-## Run 4 stress 0.131 
+## ... Procrustes: rmse 0.00913  max resid 0.0904 
+## Run 3 stress 0.131 
 ## ... New best solution
-## ... Procrustes: rmse 0.0128  max resid 0.0892 
-## Run 5 stress 0.143 
+## ... Procrustes: rmse 0.013  max resid 0.0893 
+## Run 4 stress 0.134 
+## Run 5 stress 0.133 
 ## Run 6 stress 0.142 
-## Run 7 stress 0.134 
-## Run 8 stress 0.131 
+## Run 7 stress 0.131 
 ## ... New best solution
-## ... Procrustes: rmse 0.0135  max resid 0.0895 
-## Run 9 stress 0.134 
-## Run 10 stress 0.131 
-## ... New best solution
-## ... Procrustes: rmse 0.00869  max resid 0.0824 
+## ... Procrustes: rmse 0.0104  max resid 0.0921 
+## Run 8 stress 0.143 
+## Run 9 stress 0.133 
+## Run 10 stress 0.135 
 ## Run 11 stress 0.131 
-## ... New best solution
-## ... Procrustes: rmse 0.00772  max resid 0.0753 
-## Run 12 stress 0.137 
+## Run 12 stress 0.14 
 ## Run 13 stress 0.13 
 ## ... New best solution
-## ... Procrustes: rmse 0.0114  max resid 0.0884 
-## Run 14 stress 0.141 
-## Run 15 stress 0.131 
+## ... Procrustes: rmse 0.00904  max resid 0.0728 
+## Run 14 stress 0.131 
+## Run 15 stress 0.133 
 ## Run 16 stress 0.132 
-## Run 17 stress 0.134 
-## Run 18 stress 0.142 
-## Run 19 stress 0.131 
-## Run 20 stress 0.132 
-## *** No convergence -- monoMDS stopping criteria:
-##      1: no. of iterations &gt;= maxit
+## Run 17 stress 0.142 
+## Run 18 stress 0.134 
+## Run 19 stress 0.132 
+## Run 20 stress 0.131 
+## *** Best solution was not repeated -- monoMDS stopping criteria:
 ##     10: stress ratio &gt; sratmax
-##      9: scale factor of the gradient &lt; sfgrmin
+##     10: scale factor of the gradient &lt; sfgrmin
 ```
 
 ]
@@ -1384,6 +1390,7 @@ ord_mus &lt;- metaMDS(spec, dist = "bray")
 
 
 ```r
+set.seed(31987)
 ord_mus &lt;- metaMDS(spec, dist = "bray")
 ```
 
@@ -1429,60 +1436,53 @@ __Внимание!__
 
 ## Решение
 
-После отключения автоматического подбора трансформации данных удается найти решение.
+После отключения автоматического подбора трансформации данных и увеличения количества попыток удается найти решение.
 
 .scroll-box-20[
 
 
 ```r
+set.seed(31987)
 ord_mus &lt;- metaMDS(spec, dist = "bray", autotransform = FALSE)
 ```
 
 ```
 ## Run 0 stress 0.141 
-## Run 1 stress 0.141 
-## ... Procrustes: rmse 0.00177  max resid 0.0334 
-## Run 2 stress 0.141 
-## ... Procrustes: rmse 0.00254  max resid 0.0252 
-## Run 3 stress 0.141 
-## ... Procrustes: rmse 0.0029  max resid 0.0337 
-## Run 4 stress 0.146 
-## Run 5 stress 0.141 
+## Run 1 stress 0.154 
+## Run 2 stress 0.151 
+## Run 3 stress 0.147 
+## Run 4 stress 0.141 
 ## ... New best solution
-## ... Procrustes: rmse 0.00136  max resid 0.0132 
-## Run 6 stress 0.144 
-## Run 7 stress 0.142 
-## ... Procrustes: rmse 0.00489  max resid 0.0719 
-## Run 8 stress 0.154 
-## Run 9 stress 0.146 
-## Run 10 stress 0.157 
-## Run 11 stress 0.141 
-## ... Procrustes: rmse 0.0016  max resid 0.0157 
-## Run 12 stress 0.141 
-## ... Procrustes: rmse 0.000587  max resid 0.00906 
+## ... Procrustes: rmse 0.00149  max resid 0.0125 
+## Run 5 stress 0.141 
+## ... Procrustes: rmse 0.00267  max resid 0.0248 
+## Run 6 stress 0.153 
+## Run 7 stress 0.144 
+## Run 8 stress 0.143 
+## Run 9 stress 0.141 
+## ... Procrustes: rmse 0.000246  max resid 0.00481 
 ## ... Similar to previous best
-## Run 13 stress 0.143 
-## Run 14 stress 0.141 
-## ... Procrustes: rmse 0.00178  max resid 0.0334 
-## Run 15 stress 0.141 
-## ... Procrustes: rmse 0.00334  max resid 0.0334 
-## Run 16 stress 0.141 
-## ... Procrustes: rmse 0.00227  max resid 0.0247 
-## Run 17 stress 0.141 
-## ... Procrustes: rmse 0.00133  max resid 0.0128 
-## Run 18 stress 0.141 
-## ... Procrustes: rmse 0.00128  max resid 0.0128 
+## Run 10 stress 0.146 
+## Run 11 stress 0.141 
+## ... Procrustes: rmse 0.00147  max resid 0.0211 
+## Run 12 stress 0.148 
+## Run 13 stress 0.144 
+## Run 14 stress 0.145 
+## Run 15 stress 0.146 
+## Run 16 stress 0.143 
+## Run 17 stress 0.144 
+## Run 18 stress 0.145 
 ## Run 19 stress 0.141 
-## ... Procrustes: rmse 0.00361  max resid 0.0331 
+## ... Procrustes: rmse 0.00139  max resid 0.0121 
 ## Run 20 stress 0.141 
-## ... Procrustes: rmse 0.00187  max resid 0.0333 
-## *** Solution reached
+## ... Procrustes: rmse 0.00372  max resid 0.0341 
+## *** Best solution repeated 1 times
 ```
 
 ]
 
 ---
-
+maxit
 ## Решение
 
 
@@ -1618,8 +1618,8 @@ head(ord_mus_sp, 2)
 
 ```
 ##              NMDS1  NMDS2     Species
-## Urastomaspp -0.926 -0.306 Urastomaspp
-## Renicolaspp  0.863  0.971 Renicolaspp
+## Urastomaspp -0.927 -0.306 Urastomaspp
+## Renicolaspp  0.864  0.973 Renicolaspp
 ```
 
 ---
@@ -1688,8 +1688,8 @@ ef
 ## ***VECTORS
 ## 
 ##      NMDS1  NMDS2   r2 Pr(&gt;r)    
-## L   -1.000 -0.025 0.19  0.001 ***
-## Age  0.776 -0.631 0.04  0.001 ***
+## L   -1.000 -0.024 0.19  0.001 ***
+## Age  0.774 -0.633 0.04  0.003 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -1729,8 +1729,8 @@ ef$vectors
 
 ```
 ##      NMDS1  NMDS2   r2 Pr(&gt;r)    
-## L   -1.000 -0.025 0.19  0.001 ***
-## Age  0.776 -0.631 0.04  0.001 ***
+## L   -1.000 -0.024 0.19  0.001 ***
+## Age  0.774 -0.633 0.04  0.003 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -1811,14 +1811,14 @@ ord_mus_ef
 
 ```
 ##        Label     Type  NMDS1   NMDS2
-## 1          L   Vector -0.433 -0.0107
-## 2        Age   Vector  0.152 -0.1238
-## 3   Zonedown Centroid -0.648 -0.0866
-## 4 Zonemiddle Centroid -0.144 -0.0531
-## 5     Zoneup Centroid  0.829  0.1409
-## 6      SiteG Centroid  0.189  0.1702
-## 7      SiteL Centroid  0.228 -0.4074
-## 8      SiteS Centroid -0.420  0.2258
+## 1          L   Vector -0.432 -0.0102
+## 2        Age   Vector  0.152 -0.1248
+## 3   Zonedown Centroid -0.648 -0.0864
+## 4 Zonemiddle Centroid -0.144 -0.0524
+## 5     Zoneup Centroid  0.830  0.1400
+## 6      SiteG Centroid  0.189  0.1695
+## 7      SiteL Centroid  0.228 -0.4062
+## 8      SiteS Centroid -0.420  0.2253
 ```
 
 ---
@@ -1913,13 +1913,13 @@ summary(os_L)
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Approximate significance of smooth terms:
-##           edf Ref.df    F p-value    
-## s(x1,x2) 1.96      9 9.81  &lt;2e-16 ***
+##           edf Ref.df   F p-value    
+## s(x1,x2) 1.96      9 9.8  &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## R-sq.(adj) =  0.183   Deviance explained = 18.7%
-## -REML = 1457.6  Scale est. = 92.464    n = 395
+## -REML = 1457.7  Scale est. = 92.494    n = 395
 ```
 
 
@@ -1944,18 +1944,18 @@ summary(os_Age)
 ## 
 ## Parametric coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   4.8861     0.0713    68.5   &lt;2e-16 ***
+## (Intercept)   4.8861     0.0714    68.5   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Approximate significance of smooth terms:
 ##           edf Ref.df    F    p-value    
-## s(x1,x2) 5.03      9 3.77 0.00000089 ***
+## s(x1,x2) 5.02      9 3.73 0.00000099 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## R-sq.(adj) =  0.0793   Deviance explained = 9.11%
-## -REML =  704.8  Scale est. = 2.0093    n = 395
+## R-sq.(adj) =  0.0786   Deviance explained = 9.03%
+## -REML = 704.93  Scale est. = 2.011     n = 395
 ```
 
 ---
@@ -1980,10 +1980,10 @@ head(ord_mus_os, 4)
 
 ```
 ##         x     y    z
-## 9  -0.429 -1.37 4.84
-## 10 -0.328 -1.37 4.85
-## 11 -0.226 -1.37 4.87
-## 12 -0.124 -1.37 4.88
+## 9  -0.413 -1.37 4.83
+## 10 -0.309 -1.37 4.84
+## 11 -0.205 -1.37 4.86
+## 12 -0.101 -1.37 4.88
 ```
 
 ---
@@ -2101,6 +2101,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
