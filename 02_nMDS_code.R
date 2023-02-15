@@ -316,7 +316,7 @@ head(ord_mus_os, 4)
 # ## ggplot2 версия графика с поверхностью, найденной `ordisurf()`
 
 ggplot(data = ord_mus_os, aes(x = x, y = y, z = z)) +
-  stat_contour(aes(colour = ..level..)) +
+  stat_contour(aes(colour = after_stat(level))) +
   labs(x = "NMDS1", y = "NMDS2", colour = "Age")
 
 
