@@ -13,12 +13,18 @@
  Headers
  ***********/
 h1, h2, h3 {
-  margin-bottom: 0.2em;
+  margin-bottom: 0.1em;
+  margin-bottom: 0.1em;
+  text-shadow: 0 0 1px #f6f6f6;
 }
 
 p {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+
+.inverse {
+  text-shadow: 0 0 20px #333;
 }
 
 /***********
@@ -32,9 +38,22 @@ p {
   font-size: 80%;
 }
 
-.red { color: red; }
-.green { color: darkgreen; }
+.tiny {
+  font-size: 50%;
+}
 
+.red { color: #bb1000; }
+.orange { color: #e59400; }
+.yellow { color: #FFD900; }
+.gray { color: grey; }
+.grey {	color: grey; }
+.green { color: #649015; }
+.blue { color: #38678F; }
+.navy { color: #000080; }
+.purple { color: purple; }
+.violet { color: #D675D6; }
+.lilac { color: #b4a7d6; }
+.army {	color: #737a36; }
 
 .blurred-background {
   backdrop-filter: blur(10px) saturate(70%);
@@ -53,7 +72,7 @@ pre {
   margin-top: 0.4em;
   margin-right: 0px;
   margin-bottom: 0em;
-  margin-left: 0px;
+  margin-left: 0.4em;
 }
 
 .remark-code, .remark-inline-code {
@@ -67,19 +86,12 @@ code.hljs {
   border-left: 3px solid #9F2D20;
 }
 
+.hljs-googlecode .hljs {
+  background: #ededed;
+}
 
 /******************
- * Slide scrolling
- * (non-functional)
- * not sure if it is a good idea anyway
-slides > slide {
-  overflow: scroll;
- padding: 5px 40px;
-}
-.scrollable-slide .remark-slide {
-  height: 400px;
-  overflow: scroll !important;
-}
+ * Scrolling *
  ******************/
 
 .scroll-box-8 {
@@ -187,6 +199,7 @@ slides > slide {
 /*************************
   Custom classes
 **************************/
+
 .pull-left-55 {
   float: left;
   width: 54%;
@@ -223,7 +236,6 @@ slides > slide {
   width: 60%;
 }
 
-
 .pull-left-66 {
   float: left;
   width: 65%;
@@ -242,9 +254,83 @@ slides > slide {
   width: 66%;
 }
 
-
 /* use to position text at the bottom */
 .pull-down {
   position: absolute;
   bottom: 50px;
+}
+
+/* Title slide */
+
+/* H1 fonts  */
+
+.title-slide h1 {
+  color: #ffffff;
+  font-weight: normal;
+  font-size: 60px;
+  padding: 20px;
+  text-align: left;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+
+/* H2 fonts */
+
+.title-slide h2 {
+  color: #C0C0C0 !important; <!--  first of type is master brand colour -->
+  font-size: 35px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  margin-top: 0px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+
+/* H3 fonts */
+
+.title-slide h3 {
+  font-size: 28px;
+  font-weight: normal;
+  color: #C0C0C0;
+  padding-left: 20px;
+  margin: 0px;
+  line-height: 1;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* segue */
+.segue {
+  text-align:center;
+  vertical-align: middle;
+  background-color: #255040;
+  color: #ffffff;
+  text-shadow: 0 0 20px #333;
+}
+.segue .remark-slide-number {
+  display: none;
+}
+
+.segue-red {
+  text-align:center;
+  vertical-align: middle;
+  background-color: #e64626;
+  color: #ffffff;
+  text-shadow: 0 0 20px #333;
+}
+.segue-red .remark-slide-number {
+  display: none;
+}
+
+.segue-yellow {
+  text-align:center;
+  vertical-align: middle;
+  background-color: #FFB800;
+  color: #424242;
+  text-shadow: 0 0 2px #333;
+}
+.segue-yellow .remark-slide-number {
+  display: none;
 }
