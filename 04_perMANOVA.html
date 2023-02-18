@@ -5,16 +5,31 @@
     <meta charset="utf-8" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
-    <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+    <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="site_libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="site_libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="site_libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="site_libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="site_libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="site_libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <script src="site_libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="site_libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
     <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
     <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
     <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
     <script src="site_libs/viz-1.8.2/viz.js"></script>
     <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-    <script src="site_libs/grViz-binding-1.0.6.1/grViz.js"></script>
+    <script src="site_libs/grViz-binding-1.0.9/grViz.js"></script>
     <!-- https://github.com/fnaufel/xaringan-smartify-->
     <script
     			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -22,22 +37,30 @@
     			  crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
-class: top, center, inverse, title-slide
+class: middle, left, inverse, title-slide
 
+.title[
 # Тестирование гипотез <br/>при помощи perMANOVA
+]
+.subtitle[
 ## Анализ и визуализация многомерных данных с использованием R
+]
+.author[
 ### Марина Варфоломеева
+]
+.author[
 ### Вадим Хайтов
+]
 
 ---
 
 
-- Еще раз про множественные сравнения
-- Пример: Поведение песчанок в тесте открытое поле
+- Множественные сравнения
 - perMANOVA
 - Условия применимости perMANOVA
 - Более подробная интерпретация результатов perMANOVA
@@ -74,7 +97,7 @@ class: middle, center, inverse
 
 `\(\alpha _{familywise} = \alpha _{per\,comparison}\)`
 
-Но если сравнений много, то растет вероятность совершить хотя бы одну ошибку I рода (найти различия там, где их нет).
+Но если сравнений много, то станет выше вероятность совершить хотя бы одну ошибку I рода (найти различия там, где их нет).
 
 ---
 
@@ -90,9 +113,11 @@ class: middle, center, inverse
 
 --
 
+.content-box-red[
 Если сделать `\(N\)` тестов, то вероятность совершить хотя бы одну ошибку I рода в группе тестов (family-wise error rate, FWER) значительно возрастает.
 
 `$$\alpha_{familywise} = 1 - (1 - \alpha_{per\,comparison})^N$$`
+]
 
 ---
 
@@ -102,13 +127,37 @@ class: middle, center, inverse
 
 В таблице даны значения `\(\alpha _{familywise}\)` для разного числа сравнений, если `\(\alpha _{per\,comparison} = 0.05\)`:
 
-
-| Число средних| Число сравнений| &amp;alpha;&lt;sub&gt;familywise&lt;/sub&gt;|
-|-------------:|---------------:|----------------------------:|
-|             2|               1|                        0.050|
-|             3|               3|                        0.143|
-|             4|               6|                        0.265|
-|             5|              10|                        0.401|
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Число средних &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Число сравнений &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; &amp;alpha;&lt;sub&gt;familywise&lt;/sub&gt; &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0500 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1426 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2649 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4013 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 
@@ -126,18 +175,48 @@ class: middle, center, inverse
 
 `\(\alpha^*_{per\,comparison} = \alpha_{familywise} /{N}\)`
 
+.content-box-red[
 Это жесткий способ, т.к с возрастанием числа сравнений резко снижается уровень значимости и мощность теста. В результате растет риск не найти различий, где они есть. 
+]
 
 Ниже `\(\alpha _{per\,comparison}\)` после поправки Бонферрони, сохраняющие `\(\alpha _{familywise} = 0.05\)`:
 
-
-| Число средних| Число сравнений| &amp;alpha;&lt;sub&gt;per comparison&lt;/sub&gt;|
-|-------------:|---------------:|--------------------------------:|
-|             2|               1|                            0.050|
-|             3|               3|                            0.017|
-|             4|               6|                            0.008|
-|             5|              10|                            0.005|
-|             6|              15|                            0.003|
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Число средних &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Число сравнений &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; &amp;alpha;&lt;sub&gt;per comparison&lt;/sub&gt; &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0500 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0167 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0083 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0050 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0033 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 
@@ -157,7 +236,7 @@ class: middle, center, inverse
 
 ## Пример поправки Хольма-Бонферрони
 
-В таблице ниже даны результаты нескольких сравнений ($N = 5$). С помощью поправки Хольма-Бонферрони для каждого `\(p_j\)` мы получим свое скорректированное значение `\(p^*_{j}\)`. 
+В таблице ниже даны результаты нескольких сравнений (при `\(N = 5\)`). С помощью поправки Хольма-Бонферрони для каждого `\(p_j\)` мы получим свое скорректированное значение `\(p^*_{j}\)`. 
 
 
 | Ранг(_j_)| `\(\mathbf{p_{j}}\)`| `\(N - j + 1\)`| `\(\mathbf{p^*_{j}} = min{\{(N - j + 1) \cdot p_{j},\;1\}}\)`|Отвергаем `\(H_0\)`?                    |
@@ -179,14 +258,14 @@ class: middle, center, inverse
 ## Классический дисперсионный анализ
 
 .pull-left-33[
-&lt;img src="images/fisher.jpg" height="200" alt="Ronald Fisher"&gt;
+![:scale 75%](images/fisher.jpg)
 
-&lt;small&gt;Рональд Элмер Фишер&lt;/small&gt;
+.small[Рональд Элмер Фишер]
 ]
 
 .pull-right-66[
 
-Пусть имеется несколько градаций фактора _A_  
+Пусть имеется несколько градаций фактора __A__  
 (например, `\(A _{1...3}\)`)
 
 - Почему  появляется __межгрупповая__ изменчивость, то есть разные средние значения для групп по фактору _А_?
@@ -207,7 +286,7 @@ class: middle, center, inverse
 
 `\(SS_{total} = SS_{between} + SS_{within}\)`
 
-&lt;img src="04_perMANOVA_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/fig-anova-ss-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -220,10 +299,10 @@ class: middle, center, inverse
 
 ### F-распределение
 
-Если межгрупповая изменчивость равна внутригрупповой ( `\(H_0\)`), то `\(F\)` принадлежит `\(F\)`-распределению с двумя параметрами `\(df_{between} = a - 1\)` и `\(df_{within} = N - a\)`, где `\(a\)` --- число классов, `\(N\)` --- общее количество объектов в анализе.
+Если межгрупповая изменчивость равна внутригрупповой ( `\(H_0\)`), то `\(F\)` принадлежит `\(F\)`-распределению с двумя параметрами `\(df_{between} = a - 1\)` и `\(df_{within} = N - a\)`, где `\(a\)` --- число классов, `\(N\)` --- общее количество объектов.
 
 
-&lt;img src="04_perMANOVA_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/fig-fdistr-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -284,23 +363,26 @@ class: split-20
 .column[
 &lt;img src="images/Peschanka-karl.jpg" height="180" alt="Карликовая песчанка"&gt;
 
-Карликовая песчанка (_Gerbillus gerbillus_)
+.small[Карликовая песчанка  
+_Gerbillus gerbillus_]
 
-.small[XV8-Crisis]
+.tiny[XV8-Crisis]
 ]
 .column[
 &lt;img src="images/Peschanka-mongol.jpg" height="180" alt="Монгольская песчанка"&gt;
 
-Монгольская песчанка (_Meriones unguiculatus_)
+.small[Монгольская песчанка  
+_Meriones unguiculatus_]
 
-.small[Alastair Rae]
+.tiny[Alastair Rae]
 ]
 .column[
 &lt;img src="images/Peschanka-zhirn.jpg" height="180" alt="Жирнохвостая песчанка"&gt;
 
-Жирнохвостая песчанка (_Pachyuromys duprasi_)
+.small[Жирнохвостая песчанка  
+_Pachyuromys duprasi_]
 
-.small[P.H.J. (Peter) Maas / www.petermaas.nl]
+.tiny[P.H.J. (Peter) Maas / www.petermaas.nl]
 ]
 ]]
 
@@ -333,23 +415,26 @@ class: split-20
 .column[
 &lt;img src="images/Peschanka-karl.jpg" height="180" alt="Карликовая песчанка"&gt;
 
-Карликовая песчанка (_Gerbillus gerbillus_)
+.small[Карликовая песчанка  
+_Gerbillus gerbillus_]
 
-.small[XV8-Crisis]
+.tiny[XV8-Crisis]
 ]
 .column[
 &lt;img src="images/Peschanka-mongol.jpg" height="180" alt="Монгольская песчанка"&gt;
 
-Монгольская песчанка (_Meriones unguiculatus_)
+.small[Монгольская песчанка  
+_Meriones unguiculatus_]
 
-.small[Alastair Rae]
+.tiny[Alastair Rae]
 ]
 .column[
 &lt;img src="images/Peschanka-zhirn.jpg" height="180" alt="Жирнохвостая песчанка"&gt;
 
-Жирнохвостая песчанка (_Pachyuromys duprasi_)
+.small[Жирнохвостая песчанка  
+_Pachyuromys duprasi_]
 
-.small[P.H.J. (Peter) Maas / www.petermaas.nl]
+.tiny[P.H.J. (Peter) Maas / www.petermaas.nl]
 ]
 ]
 
@@ -403,20 +488,20 @@ head(log_pesch)
 ```
 
 ```
-##   Gender Species Time_to_entrance Urination Defecation Quadr_Number
-## 1      f    karl            0.000    0.6931      0.000        3.871
-## 2      f    karl            3.045    0.0000      1.386        5.762
-## 3      m    karl            5.204    0.0000      0.000        5.182
-## 4      f    karl            0.000    0.0000      0.000        3.497
-## 5      f    karl            4.942    0.0000      0.000        5.328
-## 6      m    karl            0.000    0.0000      1.099        3.664
-##   Vert_Number Displ_Act Time_in_Centre
-## 1       2.485     1.609          0.000
-## 2       4.078     1.386          1.946
-## 3       4.025     1.946          1.099
-## 4       1.792     1.386          0.000
-## 5       3.401     2.398          1.386
-## 6       2.303     2.197          0.000
+  Gender Species Time_to_entrance Urination Defecation Quadr_Number Vert_Number
+1      f    karl            0.000    0.6931      0.000        3.871       2.485
+2      f    karl            3.045    0.0000      1.386        5.762       4.078
+3      m    karl            5.204    0.0000      0.000        5.182       4.025
+4      f    karl            0.000    0.0000      0.000        3.497       1.792
+5      f    karl            4.942    0.0000      0.000        5.328       3.401
+6      m    karl            0.000    0.0000      1.099        3.664       2.303
+  Displ_Act Time_in_Centre
+1     1.609          0.000
+2     1.386          1.946
+3     1.946          1.099
+4     1.386          0.000
+5     2.398          1.386
+6     2.197          0.000
 ```
 
 ---
@@ -434,10 +519,11 @@ mds_pesch &lt;- as.data.frame(mds_pesch$points)
 mds_pesch$Species &lt;- pesch$Species
 
 ggplot(mds_pesch, aes(x = MDS1, y = MDS2, colour = Species)) + 
-  geom_point(size = 5)
+  geom_point(size = 5) +
+  coord_fixed()
 ```
 
-&lt;img src="04_perMANOVA_files/figure-html/ord-pesch-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/ord-pesch-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -445,7 +531,7 @@ ggplot(mds_pesch, aes(x = MDS1, y = MDS2, colour = Species)) +
 
 Каким способом можно ответить на этот вопрос?
 
-&lt;img src="04_perMANOVA_files/figure-html/ord-pesch-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/ord-pesch-1.png)&lt;!-- --&gt;
 
 --
 
@@ -485,9 +571,11 @@ class: middle, center, inverse
 
 ---
 
-## Многомерный дисперсионный анализ (MANOVA)
+## Многомерный дисперсионный анализ &lt;br/&gt;(MANOVA, Multivariate Analysis Of Variance)
 
-Давно разработан параметрический метод MANOVA (Multivariate Analysis Of Variance). Он дает возможность проводить анализ аналогичный ANOVA. В основе MANOVA лежат представление о многомерном нормальном распределении и расстояниях между центроидами.
+- Разработан давно
+- Аналог ANOVA для многомерных данных 
+- Многомерное нормальное распределение данных
 
 В MANOVA сравниваются:
 
@@ -519,40 +607,48 @@ class: middle, center, inverse
 ## Permutational Multivariate Analysis of Variance (perMANOVA)
 
 .pull-left-33[
-&lt;img src="images/Anderson.jpg" width="450" alt="Marti Anderson"&gt;
 
-&lt;small&gt;Марти Джейн Андерсон&lt;/small&gt;
+![Marti Anderson](images/Anderson.jpg)
 
+.small[Марти Джейн Андерсон]
 
 ]
 .pull-right-66[
-&lt;img src="images/Anderson 2001.jpg" width="500" alt="Anderson 2001"&gt;
+
+![](images/Anderson 2001.jpg)
 ]
 
 ---
 
 ## Теорема
 
-Сумма квадратов &lt;span class="red"&gt;отклонений от центроидов&lt;/span&gt; равна сумме квадратов &lt;span class="orange"&gt;взаимных расстояний&lt;/span&gt;, деленной на число объектов
+.content-box-grey[
 
+Сумма квадратов __.red[отклонений от центроидов]__ равна сумме квадратов __.orange[взаимных расстояний]__, деленной на число объектов
+
+]
 
 Для Евклидовых расстояний эта закономерность была известна давно (например, Kendall, Stuart 1963).
 
 .pull-left[
 
-&lt;img src="images/Centroid and distance-mod.png" width="450" alt="Centroid and distance"&gt;
+![](images/Centroid and distance-mod.png)
 
-&lt;small&gt;Anderson, 2001&lt;/small&gt;
+.tiny[Anderson, 2001]
 
 ]
+
+--
 
 .pull-right[
 
-В случае Евклидова расстояния (именно его имплицитно использует MANOVA) центроиды найти очень просто --- это средние значения соответствующих координат. Поэтому обычно сначала непосредственно вычисляли центроиды, и затем --- сумму квадратов отклонений от них.
+В случае Евклидова расстояния (именно его имплицитно использует MANOVA) центроиды найти просто --- это средние соответствующих координат. Поэтому обычно сначала вычисляли центроиды, а потом --- сумму квадратов отклонений от них.
 
 ]
 
-Для других мер различия центроиды найти гораздо сложнее. Например, для коэффициента Брея-Куртиса (не метрика), среднее значение не будет соответствовать центроиду.
+--
+
+Для других мер различия центроиды найти гораздо сложнее. Например, для коэффициента Брея-Куртиса (не метрика), среднее значение координат не будет соответствовать центроиду.
 
 ---
 
@@ -610,14 +706,22 @@ perMANOVA (любой коэффициент)
 
 `$$F = \frac{SS_{between} / (a - 1)}{SS_{within}/(N - a)}$$`
 
-### Для оценки значимости псевдо-F используется пермутационная процедура:
+Для оценки значимости псевдо-F используется __пермутационная процедура__:
 
-* Случайным образом перетасовываются строки исходной матрицы 
-* После каждого акта пермутации вычисляется `\(F_{perm}\)`
-* Уровень значимости
-* Внимание! Для иерархического дизайна процедура пермутации имеет свои особенности (обсудим позднее).
+- Случайным образом перетасовываются строки исходной матрицы 
+- После каждого акта пермутации вычисляется `\(F_{perm}\)`
+- Уровень значимости
 
 `$$p = \frac {N_{F_{perm} \ge F}} {N_{permutations}}$$`
+
+--
+
+.content-box-red[
+
+Внимание! Для иерархического дизайна процедура пермутации имеет свои особенности (обсудим позднее).
+
+]
+
 ---
 
 class: middle, center, inverse
@@ -631,27 +735,24 @@ class: middle, center, inverse
 
 ```r
 library(vegan)
-permanova_pesch &lt;- adonis(log_pesch[3:9] ~ Species, data = log_pesch,
+permanova_pesch &lt;- adonis2(log_pesch[3:9] ~ Species, data = log_pesch,
                           method = "euclidean")
 permanova_pesch
 ```
 
 ```
-## 
-## Call:
-## adonis(formula = log_pesch[3:9] ~ Species, data = log_pesch,      method = "euclidean") 
-## 
-## Permutation: free
-## Number of permutations: 999
-## 
-## Terms added sequentially (first to last)
-## 
-##           Df SumsOfSqs MeanSqs F.Model    R2 Pr(&gt;F)  
-## Species    2        60   30.02    3.58 0.237  0.012 *
-## Residuals 23       193    8.39         0.763         
-## Total     25       253                 1.000         
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation test for adonis under reduced model
+Terms added sequentially (first to last)
+Permutation: free
+Number of permutations: 999
+
+adonis2(formula = log_pesch[3:9] ~ Species, data = log_pesch, method = "euclidean")
+         Df SumOfSqs    R2    F Pr(&gt;F)  
+Species   2       60 0.237 3.58  0.012 *
+Residual 23      193 0.763              
+Total    25      253 1.000              
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 Мы видим традиционную для ANOVA таблицу результатов. Что здесь что?
@@ -662,21 +763,18 @@ permanova_pesch
 
 
 ```
-## 
-## Call:
-## adonis(formula = log_pesch[3:9] ~ Species, data = log_pesch,      method = "euclidean") 
-## 
-## Permutation: free
-## Number of permutations: 999
-## 
-## Terms added sequentially (first to last)
-## 
-##           Df SumsOfSqs MeanSqs F.Model    R2 Pr(&gt;F)  
-## Species    2        60   30.02    3.58 0.237  0.012 *
-## Residuals 23       193    8.39         0.763         
-## Total     25       253                 1.000         
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation test for adonis under reduced model
+Terms added sequentially (first to last)
+Permutation: free
+Number of permutations: 999
+
+adonis2(formula = log_pesch[3:9] ~ Species, data = log_pesch, method = "euclidean")
+         Df SumOfSqs    R2    F Pr(&gt;F)  
+Species   2       60 0.237 3.58  0.012 *
+Residual 23      193 0.763              
+Total    25      253 1.000              
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 --
@@ -693,9 +791,13 @@ class: middle, center, inverse
 
 ## Условия применимости perMANOVA
 
+.content-box-purple[
+
 1. Требуется равенство внутригрупповых дисперсий (гомоскедастичность).
 
 2. Желательно использование сбалансированных данных (с равным объемом групп), т.к. этом случае perMANOVA устойчив к гетерогенности дисперсии (Anderson, Walsh, 2013).
+
+]
 
 ---
 
@@ -709,7 +811,7 @@ class: middle, center, inverse
 
 Затем, значимость различий отклонений от центроидов в разных группах проверяется с помощью процедуры `PERMDISP2`.
 
-<div id="htmlwidget-5d15f6ffc3281a939cbc" style="width:850px;height:144px;" class="grViz html-widget"></div>
+<div id="htmlwidget-5d15f6ffc3281a939cbc" style="width:850px;height:180px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-5d15f6ffc3281a939cbc">{"x":{"diagram":"digraph {\n  graph [layout = dot, rankdir = LR, ratio = compress]\n  node [shape = rectangle, fontsize = 16, fontname=\"Helvetica\", fixedsize = true, height = 1.5, style = filled, color=\"#E8E8E8\"];\n edge [ fontname=Courier, fontsize = 18];\n  rec1 [label = \"Исходные  \\nданные\", width = 1.5]\n  rec2 [label = \"Матрица \\nкоэффициентов различия, \\nв т.ч. неевклидовых\", width = 3]\n  rec3 [label =  \"PCoA: \\nцентроиды\\nи координаты точек, \\nЕвклидово пространство\", width = 3]\n#  rec4 [label = \"График \\nординации\\nPCoA\", width = 2]\n  rec5 [label = \"PERMDISP2\\n Тест различий \\nвнутригрупповых \\nдисперсий\", width = 2]\n  # edge definitions with the node IDs\n  rec1 -> rec2 [ label=\"vegdist()\" ];\n  rec2 -> rec3 [label = \"betadisper()\"];\n#  rec3 -> rec4 [label = \"plot()\"];\n  rec3 -> rec5 [label = \"anova()\"];\n\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 &lt;br/&gt;
@@ -733,7 +835,7 @@ PCO_pesch &lt;- betadisper(dist_pesch, log_pesch$Species)
 plot(PCO_pesch, main = "PCoA ordination")
 ```
 
-&lt;img src="04_perMANOVA_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/fig-pcoa-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -749,12 +851,12 @@ anova(PCO_pesch)
 ```
 
 ```
-## Analysis of Variance Table
-## 
-## Response: Distances
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Groups     2    9.7    4.86    2.05   0.15
-## Residuals 23   54.5    2.37
+Analysis of Variance Table
+
+Response: Distances
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+Groups     2    9.7    4.86    2.05   0.15
+Residuals 23   54.5    2.37               
 ```
 
 - Не выявлено значимых различий разброса внутригрупповых расстояний.
@@ -768,7 +870,7 @@ anova(PCO_pesch)
 boxplot(PCO_pesch)
 ```
 
-&lt;img src="04_perMANOVA_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/fig-pcoa-box-1.png)&lt;!-- --&gt;
 ---
 
 class: middle, center, inverse
@@ -779,7 +881,7 @@ class: middle, center, inverse
 
 ## Post hoc тесты в perMANOVA
 
-&lt;img src="04_perMANOVA_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+![](04_perMANOVA_files/figure-html/gg-pesch-1.png)&lt;!-- --&gt;
 
 На приведенной ординации видно, что точки, соответствующие Монгольским песчанкам расположены отдельно от остальных.
 
@@ -803,23 +905,26 @@ class: split-20
 .column[
 &lt;img src="images/Peschanka-karl.jpg" height="180" alt="Карликовая песчанка"&gt;
 
-Карликовая песчанка (_Gerbillus gerbillus_)
+.small[Карликовая песчанка  
+_Gerbillus gerbillus_]
 
-.small[XV8-Crisis]
+.tiny[XV8-Crisis]
 ]
 .column[
 &lt;img src="images/Peschanka-mongol.jpg" height="180" alt="Монгольская песчанка"&gt;
 
-Монгольская песчанка (_Meriones unguiculatus_)
+.small[Монгольская песчанка  
+_Meriones unguiculatus_]
 
-.small[Alastair Rae]
+.tiny[Alastair Rae]
 ]
 .column[
 &lt;img src="images/Peschanka-zhirn.jpg" height="180" alt="Жирнохвостая песчанка"&gt;
 
-Жирнохвостая песчанка (_Pachyuromys duprasi_)
+.small[Жирнохвостая песчанка  
+_Pachyuromys duprasi_]
 
-.small[P.H.J. (Peter) Maas / www.petermaas.nl]
+.tiny[P.H.J. (Peter) Maas / www.petermaas.nl]
 ]
 ]
 
@@ -842,19 +947,16 @@ class: split-20
 
 ```r
 pairwise_permanova &lt;- function(dat, group, strata = NULL, ...){
-  pair &lt;- combn(unique(as.character(group)), 2)
-  ncomb &lt;- ncol(pair)
+  groups &lt;- unique(as.character(group))
+  all_pairs &lt;- combn(groups, 2, simplify = FALSE)
+  ncomb &lt;- length(all_pairs)
   res &lt;- rep(NA, ncomb)
   for (i in 1:ncomb) {
-    filter &lt;- group %in% pair[, i]
-    if(is.null(strata)){
-      posthoc &lt;- adonis(dat[filter, ] ~ group[filter], ...)$aov.tab$Pr[1]
-    } else {
-      posthoc &lt;- adonis(dat[filter, ] ~ group[filter], 
-                        strata = strata[filter], ...)$aov.tab$Pr[1]
-    }
-    res[i] &lt;- posthoc
-    names(res)[i] &lt;- paste(pair[, i], collapse = " vs. ")
+    flt &lt;- group %in% all_pairs[[i]]
+    strata_flt &lt;- if(is.null(strata)) strata[flt]
+    posthoc &lt;- adonis2(dat[flt, ] ~ group[flt], strata = strata_flt, ...)
+    res[i] &lt;- posthoc$`Pr(&gt;F)`[1]
+    names(res)[i] &lt;- paste0(all_pairs[[i]][1], "_", all_pairs[[i]][2])
   }
   return(res)
 }
@@ -864,11 +966,11 @@ pairwise_permanova &lt;- function(dat, group, strata = NULL, ...){
 
 ## Результаты попарных сравнений
 
-&lt;center&gt;
-&lt;img src="images/Peschanka-karl.jpg" height="180" alt="Карликовая песчанка"&gt;
-&lt;img src="images/Peschanka-mongol.jpg" height="180" alt="Монгольская песчанка"&gt;
-&lt;img src="images/Peschanka-zhirn.jpg" height="180" alt="Жирнохвостая песчанка"&gt;
-&lt;/center&gt;
+.center[
+![:scale 33%](images/Peschanka-karl.jpg)
+![:scale 33%](images/Peschanka-mongol.jpg)
+![:scale 29%](images/Peschanka-zhirn.jpg)
+]
 
 
 ```r
@@ -879,14 +981,15 @@ p_vals
 ```
 
 ```
-##         karl vs. mongol   karl vs. zhirnokhvost mongol vs. zhirnokhvost 
-##                  0.0011                  0.4029                  0.0031
+        karl_mongol   karl_zhirnokhvost mongol_zhirnokhvost 
+             0.0011              0.4029              0.0031 
 ```
 
 Это все? Пишем статью?
 
 &lt;br/&gt;&lt;br/&gt;
-&lt;small&gt;Фото: (1) XV8-Crisis; (2) Alastair Rae; (3) P.H.J. (Peter) Maas / www.petermaas.nl &lt;/small&gt;
+
+.small[Фото: (1) XV8-Crisis; (2) Alastair Rae; (3) P.H.J. (Peter) Maas / www.petermaas.nl ]
 
 ---
 
@@ -898,12 +1001,21 @@ p_vals
 
 
 ```r
-p.adjust(p_vals, method = "holm")
+p_vals # было без поправки
 ```
 
 ```
-##         karl vs. mongol   karl vs. zhirnokhvost mongol vs. zhirnokhvost 
-##                  0.0033                  0.4029                  0.0062
+        karl_mongol   karl_zhirnokhvost mongol_zhirnokhvost 
+             0.0011              0.4029              0.0031 
+```
+
+```r
+p.adjust(p_vals, method = "holm") # стало с поправкой
+```
+
+```
+        karl_mongol   karl_zhirnokhvost mongol_zhirnokhvost 
+             0.0033              0.4029              0.0062 
 ```
 
 ---
@@ -933,29 +1045,26 @@ log_pesch2 &lt;- log_pesch[log_pesch$Species != "zhirnokhvost", ]
 
 
 ```r
-twofact_pesch &lt;- adonis(log_pesch2[,3:ncol(pesch)] ~ Gender * Species,
+twofact_pesch &lt;- adonis2(log_pesch2[,3:ncol(pesch)] ~ Gender * Species,
                         data = log_pesch2, method = "euclidean")
 twofact_pesch
 ```
 
 ```
-## 
-## Call:
-## adonis(formula = log_pesch2[, 3:ncol(pesch)] ~ Gender * Species,      data = log_pesch2, method = "euclidean") 
-## 
-## Permutation: free
-## Number of permutations: 999
-## 
-## Terms added sequentially (first to last)
-## 
-##                Df SumsOfSqs MeanSqs F.Model    R2 Pr(&gt;F)   
-## Gender          1       7.2     7.2    1.13 0.049  0.292   
-## Species         1      45.5    45.5    7.16 0.311  0.004 **
-## Gender:Species  1       4.5     4.5    0.72 0.031  0.529   
-## Residuals      14      88.9     6.4         0.608          
-## Total          17     146.1                 1.000          
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation test for adonis under reduced model
+Terms added sequentially (first to last)
+Permutation: free
+Number of permutations: 999
+
+adonis2(formula = log_pesch2[, 3:ncol(pesch)] ~ Gender * Species, data = log_pesch2, method = "euclidean")
+               Df SumOfSqs    R2    F Pr(&gt;F)   
+Gender          1      7.2 0.049 1.13  0.292   
+Species         1     45.5 0.311 7.16  0.004 **
+Gender:Species  1      4.5 0.031 0.72  0.529   
+Residual       14     88.9 0.608               
+Total          17    146.1 1.000               
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
@@ -966,27 +1075,24 @@ twofact_pesch
 
 
 ```r
-nested_pesch &lt;- adonis(log_pesch2[, 3:ncol(pesch)] ~ Gender, 
+nested_pesch &lt;- adonis2(log_pesch2[, 3:ncol(pesch)] ~ Gender, 
                        data = log_pesch2, strata = log_pesch2$Species, 
                        method = "euclidean")
 nested_pesch
 ```
 
 ```
-## 
-## Call:
-## adonis(formula = log_pesch2[, 3:ncol(pesch)] ~ Gender, data = log_pesch2,      method = "euclidean", strata = log_pesch2$Species) 
-## 
-## Blocks:  strata 
-## Permutation: free
-## Number of permutations: 999
-## 
-## Terms added sequentially (first to last)
-## 
-##           Df SumsOfSqs MeanSqs F.Model    R2 Pr(&gt;F)
-## Gender     1       7.2    7.21    0.83 0.049    0.3
-## Residuals 16     138.9    8.68         0.951       
-## Total     17     146.1                 1.000
+Permutation test for adonis under reduced model
+Terms added sequentially (first to last)
+Blocks:  strata 
+Permutation: free
+Number of permutations: 999
+
+adonis2(formula = log_pesch2[, 3:ncol(pesch)] ~ Gender, data = log_pesch2, method = "euclidean", strata = log_pesch2$Species)
+         Df SumOfSqs    R2    F Pr(&gt;F)
+Gender    1      7.2 0.049 0.83    0.3
+Residual 16    138.9 0.951            
+Total    17    146.1 1.000            
 ```
 
 Внимание! Пермутации производятся только в пределах группирующего фактора (аргумент `strata`)
@@ -1007,12 +1113,42 @@ nested_pesch
 
 ```r
 com &lt;- read.csv("data/simulated_data.csv", sep = ',', header = T)
+adonis2(com[,1:2] ~ com$NO3) # Ошибочный дизайн
+```
 
-# Ошибочный дизай
-com_permanova &lt;- adonis(com[,1:2] ~ com$NO3)
+```
+Permutation test for adonis under reduced model
+Terms added sequentially (first to last)
+Permutation: free
+Number of permutations: 999
 
-# Правильный дизайн
-com_permanova2 &lt;- adonis(com[,1:2] ~ com$NO3, strata = com$field)
+adonis2(formula = com[, 1:2] ~ com$NO3)
+         Df SumOfSqs    R2    F Pr(&gt;F)  
+com$NO3   1    0.048 0.084 3.13  0.053 .
+Residual 34    0.521 0.916              
+Total    35    0.569 1.000              
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+adonis2(com[,1:2] ~ com$NO3, strata = com$field) # Правильный дизайн
+```
+
+```
+Permutation test for adonis under reduced model
+Terms added sequentially (first to last)
+Blocks:  strata 
+Permutation: free
+Number of permutations: 999
+
+adonis2(formula = com[, 1:2] ~ com$NO3, strata = com$field)
+         Df SumOfSqs    R2    F Pr(&gt;F)    
+com$NO3   1    0.048 0.084 3.13  0.001 ***
+Residual 34    0.521 0.916                
+Total    35    0.569 1.000                
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
@@ -1045,6 +1181,7 @@ com_permanova2 &lt;- adonis(com[,1:2] ~ com$NO3, strata = com$field)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "vs",
 "highlightLines": true,
@@ -1089,6 +1226,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

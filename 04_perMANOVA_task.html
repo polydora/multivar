@@ -13,7 +13,7 @@
 
 <title>Задания для самостоятельной работе по теме perMANOVA</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -48,6 +48,7 @@
 
 
 
+
 <link rel="stylesheet" href="my_styles.css" type="text/css" />
 
 
@@ -72,6 +73,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -129,11 +133,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -162,8 +170,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -171,16 +179,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -335,37 +336,83 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Задания для самостоятельной работе по теме perMANOVA</h1>
+<h1 class="title toc-ignore">Задания для самостоятельной работе по теме
+perMANOVA</h1>
 
 </div>
 
 
-<div id="датасет-1.-влияние-выпаса-скота-на-зообентос-рек-о.тасмания" class="section level2">
+<div id="датасет-1.-влияние-выпаса-скота-на-зообентос-рек-о.тасмания"
+class="section level2">
 <h2>Датасет 1. Влияние выпаса скота на зообентос рек о.Тасмания</h2>
-<p>Из-за сельскохозяйственной деятельности поступление грунта и питательных веществ в реки увеличивается. Влияние, которое оказывают эти факторы сложно оценить по-отдельности без специальных экспериментов. Полевые наблюдения за сообществами макробентоса рек можно рассматривать как результат “естественного многолетнего эксперимента”, который оценивает влияние сельского хозяйства вцелом.</p>
+<p>Из-за сельскохозяйственной деятельности поступление грунта и
+питательных веществ в реки увеличивается. Влияние, которое оказывают эти
+факторы сложно оценить по-отдельности без специальных экспериментов.
+Полевые наблюдения за сообществами макробентоса рек можно рассматривать
+как результат “естественного многолетнего эксперимента”, который
+оценивает влияние сельского хозяйства вцелом.</p>
 <a data-flickr-embed="true"  href="https://www.flickr.com/photos/27071105@N04/32354260361/in/photolist-Ri33pc-5uNfPj-6A8k6J-98bmkJ-dDvMNj-9a4qPT-dM5V1Z-ccNRTf-5FitNE-6A8mCs-7pJWJ7-fSc6SR-L8mAp-j4nNJ2-7W7e4d-8i7HdF-ajQziw-ihNL3k-7pLroX-NTWrrn-bFi48H-bsoas7-gQjAhM-ajMM46-ajMMEi-ihPhNN-RjSkjn-dp5SQN-b9pDnM-reAnaJ-nWbDDp-tLk7N-tLkmD-tLkfd-86pFRn-u8gnJG-tLkdH-9gkeyN-i3miUc-4qN1Gv-4qN426-8zVD3e-tLkiZ-6aAec5-8gVYSN-tEsAP-3UN759-2KKfrg-i3jRND-qYhQc2" title="Tasmania"><img src="https://c1.staticflickr.com/1/584/32354260361_bbb927147e_n.jpg" width="320" height="180" alt="Tasmania" style="display:block;margin:auto;"></a>
 <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
-<p>Чтобы проверить, как выпас скота в масштабах территории водосбора влияет на население дна рек, летом 2008–9 и 2009-10 были взяты пробы бентоса и измерены различные характеристики среды в 27 речных сайтах в северной Тасмании. Данные в файле <code>Grazing_Magierowski_et_al_2015.xls</code>: лист “env” — характеристики среды; лист “fauna” — фауна.</p>
+<p>Чтобы проверить, как выпас скота в масштабах территории водосбора
+влияет на население дна рек, летом 2008–9 и 2009-10 были взяты пробы
+бентоса и измерены различные характеристики среды в 27 речных сайтах в
+северной Тасмании. Данные в файле
+<code>Grazing_Magierowski_et_al_2015.xls</code>: лист “env” —
+характеристики среды; лист “fauna” — фауна.</p>
 <p><img src="04_perMANOVA_task_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="задание-1" class="section level3">
 <h3>Задание 1</h3>
-<p>При помощи perMANOVA проверьте, меняется ли фауна в реках Тасмании в зависимости от уровня выпаса скота в зоне водосбора (переменная <code>GrazingRank</code>).</p>
-<p><code>GrazingRank</code> — доля территории водосбора, занятой выпасом скота (Low — 0-10%; Medium – 10-50%; Severe &gt;50%)</p>
-<p><strong>Источник</strong>: Magierowski, RH, Davies, PE, Read, SM (2015). Biological and physical data collected from river sites selected across a gradient of catchment area under grazing in northern Tasmania., Version 1. <a href="http://doi.org/10.4227/05/54BEEE248D22B" class="uri">http://doi.org/10.4227/05/54BEEE248D22B</a>. ÆKOS Data Portal, rights owned by University of Tasmania. Accessed 02 Mar 2017.</p>
+<p>При помощи perMANOVA проверьте, меняется ли фауна в реках Тасмании в
+зависимости от уровня выпаса скота в зоне водосбора (переменная
+<code>GrazingRank</code>).</p>
+<p><code>GrazingRank</code> — доля территории водосбора, занятой выпасом
+скота (Low — 0-10%; Medium – 10-50%; Severe &gt;50%)</p>
+<p><strong>Источник</strong>: Magierowski, RH, Davies, PE, Read, SM
+(2015). Biological and physical data collected from river sites selected
+across a gradient of catchment area under grazing in northern Tasmania.,
+Version 1. <a href="http://doi.org/10.4227/05/54BEEE248D22B"
+class="uri">http://doi.org/10.4227/05/54BEEE248D22B</a>. ÆKOS Data
+Portal, rights owned by University of Tasmania. Accessed 02 Mar
+2017.</p>
 </div>
 </div>
-<div id="датасет-2.-гематология-сонных-ящериц-tiliqua-rugosa" class="section level2">
+<div id="датасет-2.-гематология-сонных-ящериц-tiliqua-rugosa"
+class="section level2">
 <h2>Датасет 2. Гематология сонных ящериц <em>Tiliqua rugosa</em></h2>
-<p>Физиологическое состояние живых существ часто используют для оценки качества среды. Делать такого рода измерения дешевле и проще на модельных объектах. Сонная ящерица <em>Tiliqua rugosa</em> — широко распространенный вид в южной Австралии. В частности, в районе Мюррей Мали, который является территорией интенсивного земледелия и скотоводства. Гематологические характеристики <em>Tiliqua rugosa</em> можно использовать для оценки качества среды.</p>
+<p>Физиологическое состояние живых существ часто используют для оценки
+качества среды. Делать такого рода измерения дешевле и проще на
+модельных объектах. Сонная ящерица <em>Tiliqua rugosa</em> — широко
+распространенный вид в южной Австралии. В частности, в районе Мюррей
+Мали, который является территорией интенсивного земледелия и
+скотоводства. Гематологические характеристики <em>Tiliqua rugosa</em>
+можно использовать для оценки качества среды.</p>
 <div style="text-align: center;">
 <p>
-<a href="https://commons.wikimedia.org/wiki/File:Shingleback-sa.jpg#/media/File:Shingleback-sa.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Shingleback-sa.jpg" alt="Shingleback-sa.jpg" height="116" width="220" style="display: block;margin: auto;width: 40%;"></a><br>By <a href="//commons.wikimedia.org/wiki/User:Benjamint444" title="User:Benjamint444">Benjamint444</a> - <span class="int-own-work" lang="en" xml:lang="en">Own work</span>, <a href="http://www.gnu.org/licenses/old-licenses/fdl-1.2.html" title="GNU Free Documentation License 1.2">GFDL 1.2</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=26543118">Link</a>
+<a href="https://commons.wikimedia.org/wiki/File:Shingleback-sa.jpg#/media/File:Shingleback-sa.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Shingleback-sa.jpg" alt="Shingleback-sa.jpg" height="116" width="220" style="display: block;margin: auto;width: 40%;"></a><br>By
+<a href="//commons.wikimedia.org/wiki/User:Benjamint444" title="User:Benjamint444">Benjamint444</a>
+- <span class="int-own-work" lang="en" xml:lang="en">Own work</span>,
+<a href="http://www.gnu.org/licenses/old-licenses/fdl-1.2.html" title="GNU Free Documentation License 1.2">GFDL
+1.2</a>,
+<a href="https://commons.wikimedia.org/w/index.php?curid=26543118">Link</a>
 </p>
 </div>
-<p>Данные о гематологии ящериц собирали с сентября по ноябрь 2010 года в нескольких сайтах с разной степенью антропогенной модификации ландшафта (данные в файле <code>Sleepy lizard.xlsx</code>, лист “data”).</p>
-<p>В немодифицированном ландшафте (<code>Treatment</code> 1) пробы собраны в одном районе исследования BS0 (<code>Landscape.ID</code> 1). В сильно модифицированном ландшафте (<code>Treatment</code> 2) пробы собраны в трех разных районах (<code>Landscape.ID</code> 1 — LS1, 3 — LS2, 5 — LS3).</p>
-<p>Только в сильно модифицированном ландшафте в каждом из районов сайты были разделены на группы в зависимости от типа местообитания (<code>Habitat</code>: остатки естественной растительности, посадки лебеды, поля с зерновыми культурами или под паром) и от степени связи с участками естественной растительности (<code>Connectivity</code>: низкая — &lt; 63%, средняя — 63-88%, высокая — 88%; полностью связанные участки).</p>
-<p>У ящериц измеряли различные характеристики крови, из которых вам понадобятся:</p>
+<p>Данные о гематологии ящериц собирали с сентября по ноябрь 2010 года в
+нескольких сайтах с разной степенью антропогенной модификации ландшафта
+(данные в файле <code>Sleepy lizard.xlsx</code>, лист “data”).</p>
+<p>В немодифицированном ландшафте (<code>Treatment</code> 1) пробы
+собраны в одном районе исследования BS0 (<code>Landscape.ID</code> 1). В
+сильно модифицированном ландшафте (<code>Treatment</code> 2) пробы
+собраны в трех разных районах (<code>Landscape.ID</code> 1 — LS1, 3 —
+LS2, 5 — LS3).</p>
+<p>Только в сильно модифицированном ландшафте в каждом из районов сайты
+были разделены на группы в зависимости от типа местообитания
+(<code>Habitat</code>: остатки естественной растительности, посадки
+лебеды, поля с зерновыми культурами или под паром) и от степени связи с
+участками естественной растительности (<code>Connectivity</code>: низкая
+— &lt; 63%, средняя — 63-88%, высокая — 88%; полностью связанные
+участки).</p>
+<p>У ящериц измеряли различные характеристики крови, из которых вам
+понадобятся:</p>
 <ul>
 <li><code>Tot_WBC</code> — общее число белых кровяных клеток</li>
 <li><code>Het_ABS</code> — общее число гетерофилов</li>
@@ -374,17 +421,32 @@ div.tocify {
 <li><code>Mon_ABS</code> — число моноцитов</li>
 <li><code>OthG_ABS</code> — число прочих гранулоцитов</li>
 </ul>
-<p>Известно, что гематологическая картина у ящериц зависит в том числе от общего физиологического состояния, которое косвенно можно оценить при помощи индекса, описывающего размеры тела, вернее, отклонение от обычных размеров (переменная <code>LBSI</code> — Linear Body Size Index, остаток от RMA-регрессии логарифма массы от логарифма длины тела).</p>
+<p>Известно, что гематологическая картина у ящериц зависит в том числе
+от общего физиологического состояния, которое косвенно можно оценить при
+помощи индекса, описывающего размеры тела, вернее, отклонение от обычных
+размеров (переменная <code>LBSI</code> — Linear Body Size Index, остаток
+от RMA-регрессии логарифма массы от логарифма длины тела).</p>
 <p><img src="images/Sleepy%20lizards.png" /></p>
 <div id="задание-2" class="section level3">
 <h3>Задание 2</h3>
 <p>Упрощенные варианты анализа:</p>
-<p><strong>a</strong>: Различается ли состав крови ящериц из немодифицированного и сильно модифицированного ландшафтов?</p>
-<p><strong>b</strong>: Проверьте, различается ли состав крови ящериц в разных местообитаниях в сильно модифицированном ландшафте</p>
-<p><strong>c</strong>: Проверьте, влияет ли степень связности на состав крови ящериц из сильно модифицированного ландшафта.</p>
+<p><strong>a</strong>: Различается ли состав крови ящериц из
+немодифицированного и сильно модифицированного ландшафтов?</p>
+<p><strong>b</strong>: Проверьте, различается ли состав крови ящериц в
+разных местообитаниях в сильно модифицированном ландшафте</p>
+<p><strong>c</strong>: Проверьте, влияет ли степень связности на состав
+крови ящериц из сильно модифицированного ландшафта.</p>
 <p>“Правильный”, наиболее полный вариант:</p>
-<p><strong>d</strong>: Влияют ли на состав крови ящериц из сильно модифицированного ландшафта тип местообитания и степень связности.</p>
-<p><strong>Источник</strong>: Smyth, A. K., Smee, E., Godfrey, S. S., Crowther, M., Phalen, D. (2014). Haematology of the Sleepy Lizard (Tiliqua rugosa) in Australia’s cereal croplands, 2010, Version 1.0. <a href="http://doi.org/10.4227/05/537C5C5553F9E" class="uri">http://doi.org/10.4227/05/537C5C5553F9E</a>. ÆKOS Data Portal, rights owned by University of Adelaide, University of Sydney, Commonwealth Scientific and Industrial Research Organisation. Accessed 03 Mar 2017.</p>
+<p><strong>d</strong>: Влияют ли на состав крови ящериц из сильно
+модифицированного ландшафта тип местообитания и степень связности.</p>
+<p><strong>Источник</strong>: Smyth, A. K., Smee, E., Godfrey, S. S.,
+Crowther, M., Phalen, D. (2014). Haematology of the Sleepy Lizard
+(Tiliqua rugosa) in Australia’s cereal croplands, 2010, Version 1.0. <a
+href="http://doi.org/10.4227/05/537C5C5553F9E"
+class="uri">http://doi.org/10.4227/05/537C5C5553F9E</a>. ÆKOS Data
+Portal, rights owned by University of Adelaide, University of Sydney,
+Commonwealth Scientific and Industrial Research Organisation. Accessed
+03 Mar 2017.</p>
 </div>
 </div>
 
