@@ -9,6 +9,21 @@
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="site_libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="site_libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="site_libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="site_libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="site_libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="site_libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <script src="site_libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="site_libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
     <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
     <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <!-- https://github.com/fnaufel/xaringan-smartify-->
@@ -18,11 +33,12 @@
     			  crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
-class: top, center, inverse, title-slide
+class: middle, left, inverse, title-slide
 
 .title[
 # Неметрическое многомерное шкалирование, envfit, ordisurf
@@ -474,547 +490,547 @@ class: middle, center, inverse
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 7.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.090 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.175 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 13.67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.668 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.974 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.966 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 21.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.466 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 14.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.146 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.208 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 27.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27.296 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.554 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 23.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23.498 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25.23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25.232 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26.41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.409 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25.045 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24.245 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.272 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 21.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.161 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 28.38 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28.383 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 26.91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.909 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 33.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.184 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 35.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35.053 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 32.23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32.226 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.325 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.448 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 29.42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29.422 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 34.38 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.384 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 38.72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.723 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 38.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.704 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 30.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30.554 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.269 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 36.71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36.712 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 44.95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.955 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.194 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 43.78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.776 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 41.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.266 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 45 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 43.82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.818 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 47 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 40.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.291 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 47 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 51.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.697 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 49 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 53.68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.681 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 51 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 48.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.395 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 46.93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.932 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 44.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.403 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 44.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.754 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Санкт-Петербург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 53 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 59.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.501 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 53 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 52.82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.822 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 54 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 51.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51.840 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 55 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 55.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.352 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 56 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 53.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.181 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 56 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 54.96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.956 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 50.17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.175 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 58 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 54.28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.282 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 59 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 49.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.355 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 61 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 57.61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57.610 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 62 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 59.81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.808 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 63 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 55.36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.360 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 56.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.854 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 61.41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.406 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 52.49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.487 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 63.78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.779 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 57.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57.401 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 65 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 61.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.348 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 63.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.852 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 62.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62.551 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 55.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.089 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 68 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 58.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.397 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 70.99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.989 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Парголово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 72.39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.391 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 68.27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 68.271 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 63.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.028 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 70.74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.737 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 70.92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.925 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 65.64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65.643 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 62.26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62.256 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 77.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77.747 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Всеволожск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 73 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 72.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.142 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 70.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70.753 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 69.97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69.970 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 75.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75.287 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 77 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 78.28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 78.277 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сертолово &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 79 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 80.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80.049 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 71.81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71.814 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Стрельна &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 78.58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 78.585 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Красное Село &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 84.63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 84.628 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Петергоф &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 91.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91.044 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 82.78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 82.784 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Пушкин &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 86.02 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 86.022 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Павловск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 87 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 92.81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92.807 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Сестрорецк &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 88.41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88.408 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Гатчина &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 97 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 106.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 106.000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Кронштадт &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 105 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 102.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102.031 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Зеленогорск &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Шлиссельбург &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 106 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 102.34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102.344 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;&lt;/div&gt;
@@ -1067,7 +1083,7 @@ __Диаграмма Шепарда__ --- график зависимости р
 
 .pull-left[
 
-![](02_nMDS_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/fig-stress-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1098,7 +1114,7 @@ __Стресс (Stress)__ показывает, насколько соотве�
 
 .pull-left[
 
-![](02_nMDS_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/fig-stress-plot-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1221,30 +1237,30 @@ str(dat)
 ```
 
 ```
-## 'data.frame':	548 obs. of  23 variables:
-##  $ Event                 : Factor w/ 3 levels "Gorelyi_Isl",..: 3 3 3 3 3 3 3 3 3 3 ...
-##  $ Date.Time             : Factor w/ 1 level "2013-07": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Ord.No                : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Area                  : Factor w/ 3 levels "B Solovkecki Isl",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Site                  : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ Zone                  : Factor w/ 3 levels "down","middle",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Comment               : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ M..edulis.L.shell..mm.: num  31.2 41.1 46.4 40 34.5 47.6 34.3 49.6 49.8 30 ...
-##  $ M..edulis.age..a.     : num  1 2 2 3 4 3 2 4 3 1 ...
-##  $ Urastoma.spp.....     : int  26 16 19 11 14 16 10 4 11 0 ...
-##  $ Renicola.spp.....     : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Himasthla.spp.....    : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Metacercaria....      : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Gymnophallus.spp..... : int  0 0 0 0 0 0 0 0 4 0 ...
-##  $ Bucephalidae....      : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Alg....               : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Nematoda....          : int  1 1 0 0 0 0 0 0 0 0 ...
-##  $ Microsetella....      : int  0 0 0 0 0 2 0 0 0 0 ...
-##  $ Copepoda....          : int  0 0 0 0 0 1 0 0 0 0 ...
-##  $ Chironomidae....      : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Halacaridae....       : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Jaera.spp.....        : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ Ostrac....            : int  0 0 0 0 0 0 0 0 0 0 ...
+'data.frame':	548 obs. of  23 variables:
+ $ Event                 : Factor w/ 3 levels "Gorelyi_Isl",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ Date.Time             : Factor w/ 1 level "2013-07": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Ord.No                : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Area                  : Factor w/ 3 levels "B Solovkecki Isl",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ Site                  : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ Zone                  : Factor w/ 3 levels "down","middle",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ Comment               : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ M..edulis.L.shell..mm.: num  31.2 41.1 46.4 40 34.5 47.6 34.3 49.6 49.8 30 ...
+ $ M..edulis.age..a.     : num  1 2 2 3 4 3 2 4 3 1 ...
+ $ Urastoma.spp.....     : int  26 16 19 11 14 16 10 4 11 0 ...
+ $ Renicola.spp.....     : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Himasthla.spp.....    : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Metacercaria....      : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Gymnophallus.spp..... : int  0 0 0 0 0 0 0 0 4 0 ...
+ $ Bucephalidae....      : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Alg....               : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Nematoda....          : int  1 1 0 0 0 0 0 0 0 0 ...
+ $ Microsetella....      : int  0 0 0 0 0 2 0 0 0 0 ...
+ $ Copepoda....          : int  0 0 0 0 0 1 0 0 0 0 ...
+ $ Chironomidae....      : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Halacaridae....       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Jaera.spp.....        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Ostrac....            : int  0 0 0 0 0 0 0 0 0 0 ...
 ```
 
 ---
@@ -1257,14 +1273,14 @@ colnames(dat) # Было
 ```
 
 ```
-##  [1] "Event"                  "Date.Time"              "Ord.No"                
-##  [4] "Area"                   "Site"                   "Zone"                  
-##  [7] "Comment"                "M..edulis.L.shell..mm." "M..edulis.age..a."     
-## [10] "Urastoma.spp....."      "Renicola.spp....."      "Himasthla.spp....."    
-## [13] "Metacercaria...."       "Gymnophallus.spp....."  "Bucephalidae...."      
-## [16] "Alg...."                "Nematoda...."           "Microsetella...."      
-## [19] "Copepoda...."           "Chironomidae...."       "Halacaridae...."       
-## [22] "Jaera.spp....."         "Ostrac...."
+ [1] "Event"                  "Date.Time"              "Ord.No"                
+ [4] "Area"                   "Site"                   "Zone"                  
+ [7] "Comment"                "M..edulis.L.shell..mm." "M..edulis.age..a."     
+[10] "Urastoma.spp....."      "Renicola.spp....."      "Himasthla.spp....."    
+[13] "Metacercaria...."       "Gymnophallus.spp....."  "Bucephalidae...."      
+[16] "Alg...."                "Nematoda...."           "Microsetella...."      
+[19] "Copepoda...."           "Chironomidae...."       "Halacaridae...."       
+[22] "Jaera.spp....."         "Ostrac...."            
 ```
 
 ```r
@@ -1275,12 +1291,12 @@ colnames(dat) # Стало
 ```
 
 ```
-##  [1] "Event"           "DateTime"        "OrdNo"           "Area"           
-##  [5] "Site"            "Zone"            "Comment"         "L"              
-##  [9] "Age"             "Urastomaspp"     "Renicolaspp"     "Himasthlaspp"   
-## [13] "Metacercaria"    "Gymnophallusspp" "Bucephalidae"    "Alg"            
-## [17] "Nematoda"        "Microsetella"    "Copepoda"        "Chironomidae"   
-## [21] "Halacaridae"     "Jaeraspp"        "Ostrac"
+ [1] "Event"           "DateTime"        "OrdNo"           "Area"           
+ [5] "Site"            "Zone"            "Comment"         "L"              
+ [9] "Age"             "Urastomaspp"     "Renicolaspp"     "Himasthlaspp"   
+[13] "Metacercaria"    "Gymnophallusspp" "Bucephalidae"    "Alg"            
+[17] "Nematoda"        "Microsetella"    "Copepoda"        "Chironomidae"   
+[21] "Halacaridae"     "Jaeraspp"        "Ostrac"         
 ```
 
 ---
@@ -1344,40 +1360,40 @@ ord_mus &lt;- metaMDS(spec, dist = "bray")
 ```
 
 ```
-## Square root transformation
-## Wisconsin double standardization
-## Run 0 stress 0.132 
-## Run 1 stress 0.14 
-## Run 2 stress 0.131 
-## ... New best solution
-## ... Procrustes: rmse 0.00913  max resid 0.0904 
-## Run 3 stress 0.131 
-## ... New best solution
-## ... Procrustes: rmse 0.013  max resid 0.0893 
-## Run 4 stress 0.134 
-## Run 5 stress 0.133 
-## Run 6 stress 0.142 
-## Run 7 stress 0.131 
-## ... New best solution
-## ... Procrustes: rmse 0.0104  max resid 0.0921 
-## Run 8 stress 0.143 
-## Run 9 stress 0.133 
-## Run 10 stress 0.135 
-## Run 11 stress 0.131 
-## Run 12 stress 0.14 
-## Run 13 stress 0.13 
-## ... New best solution
-## ... Procrustes: rmse 0.00904  max resid 0.0728 
-## Run 14 stress 0.131 
-## Run 15 stress 0.133 
-## Run 16 stress 0.132 
-## Run 17 stress 0.142 
-## Run 18 stress 0.134 
-## Run 19 stress 0.132 
-## Run 20 stress 0.131 
-## *** Best solution was not repeated -- monoMDS stopping criteria:
-##     10: stress ratio &gt; sratmax
-##     10: scale factor of the gradient &lt; sfgrmin
+Square root transformation
+Wisconsin double standardization
+Run 0 stress 0.1319 
+Run 1 stress 0.14 
+Run 2 stress 0.1312 
+... New best solution
+... Procrustes: rmse 0.009127  max resid 0.09045 
+Run 3 stress 0.1309 
+... New best solution
+... Procrustes: rmse 0.01298  max resid 0.08933 
+Run 4 stress 0.1339 
+Run 5 stress 0.1332 
+Run 6 stress 0.1419 
+Run 7 stress 0.1305 
+... New best solution
+... Procrustes: rmse 0.01042  max resid 0.09214 
+Run 8 stress 0.1425 
+Run 9 stress 0.1331 
+Run 10 stress 0.1355 
+Run 11 stress 0.1313 
+Run 12 stress 0.1405 
+Run 13 stress 0.1299 
+... New best solution
+... Procrustes: rmse 0.009042  max resid 0.07283 
+Run 14 stress 0.1313 
+Run 15 stress 0.1333 
+Run 16 stress 0.132 
+Run 17 stress 0.1418 
+Run 18 stress 0.1345 
+Run 19 stress 0.1322 
+Run 20 stress 0.1308 
+*** Best solution was not repeated -- monoMDS stopping criteria:
+    10: stress ratio &gt; sratmax
+    10: scale factor of the gradient &lt; sfgrmin
 ```
 
 ]
@@ -1447,42 +1463,42 @@ ord_mus &lt;- metaMDS(spec, dist = "bray", autotransform = FALSE)
 ```
 
 ```
-## Run 0 stress 0.141 
-## Run 1 stress 0.154 
-## Run 2 stress 0.151 
-## Run 3 stress 0.147 
-## Run 4 stress 0.141 
-## ... New best solution
-## ... Procrustes: rmse 0.00149  max resid 0.0125 
-## Run 5 stress 0.141 
-## ... Procrustes: rmse 0.00267  max resid 0.0248 
-## Run 6 stress 0.153 
-## Run 7 stress 0.144 
-## Run 8 stress 0.143 
-## Run 9 stress 0.141 
-## ... Procrustes: rmse 0.000246  max resid 0.00481 
-## ... Similar to previous best
-## Run 10 stress 0.146 
-## Run 11 stress 0.141 
-## ... Procrustes: rmse 0.00147  max resid 0.0211 
-## Run 12 stress 0.148 
-## Run 13 stress 0.144 
-## Run 14 stress 0.145 
-## Run 15 stress 0.146 
-## Run 16 stress 0.143 
-## Run 17 stress 0.144 
-## Run 18 stress 0.145 
-## Run 19 stress 0.141 
-## ... Procrustes: rmse 0.00139  max resid 0.0121 
-## Run 20 stress 0.141 
-## ... Procrustes: rmse 0.00372  max resid 0.0341 
-## *** Best solution repeated 1 times
+Run 0 stress 0.1412 
+Run 1 stress 0.1537 
+Run 2 stress 0.1505 
+Run 3 stress 0.1465 
+Run 4 stress 0.1412 
+... New best solution
+... Procrustes: rmse 0.001495  max resid 0.0125 
+Run 5 stress 0.1413 
+... Procrustes: rmse 0.002671  max resid 0.02478 
+Run 6 stress 0.1533 
+Run 7 stress 0.1436 
+Run 8 stress 0.1435 
+Run 9 stress 0.1412 
+... Procrustes: rmse 0.0002458  max resid 0.00481 
+... Similar to previous best
+Run 10 stress 0.1455 
+Run 11 stress 0.1413 
+... Procrustes: rmse 0.001474  max resid 0.02106 
+Run 12 stress 0.1479 
+Run 13 stress 0.1437 
+Run 14 stress 0.1447 
+Run 15 stress 0.1463 
+Run 16 stress 0.1434 
+Run 17 stress 0.1445 
+Run 18 stress 0.1447 
+Run 19 stress 0.1412 
+... Procrustes: rmse 0.001388  max resid 0.01208 
+Run 20 stress 0.1413 
+... Procrustes: rmse 0.003722  max resid 0.03408 
+*** Best solution repeated 1 times
 ```
 
 ]
 
 ---
-maxit
+
 ## Решение
 
 
@@ -1491,14 +1507,14 @@ ord_mus$stress
 ```
 
 ```
-## [1] 0.141
+[1] 0.1412
 ```
 
 ```r
 ordiplot(ord_mus)
 ```
 
-![](02_nMDS_files/figure-html/fig-mus-bw-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/fig-mus-raw, fig-mus-bw-1.png)&lt;!-- --&gt;
 
 --
 
@@ -1604,9 +1620,9 @@ head(ord_mus_pt, 2)
 ```
 
 ```
-##   Zone Site    L Age NMDS1  NMDS2
-## 4 down    S 40.0   3 -1.09 -0.240
-## 5 down    S 34.5   4 -1.10 -0.357
+  Zone Site    L Age  NMDS1   NMDS2
+4 down    S 40.0   3 -1.090 -0.2404
+5 down    S 34.5   4 -1.104 -0.3570
 ```
 
 ```r
@@ -1617,9 +1633,9 @@ head(ord_mus_sp, 2)
 ```
 
 ```
-##              NMDS1  NMDS2     Species
-## Urastomaspp -0.927 -0.306 Urastomaspp
-## Renicolaspp  0.864  0.973 Renicolaspp
+              NMDS1   NMDS2     Species
+Urastomaspp -0.9273 -0.3062 Urastomaspp
+Renicolaspp  0.8644  0.9727 Renicolaspp
 ```
 
 ---
@@ -1684,36 +1700,36 @@ ef
 ```
 
 ```
-## 
-## ***VECTORS
-## 
-##      NMDS1  NMDS2   r2 Pr(&gt;r)    
-## L   -1.000 -0.024 0.19  0.001 ***
-## Age  0.774 -0.633 0.04  0.003 ** 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## Permutation: free
-## Number of permutations: 999
-## 
-## ***FACTORS:
-## 
-## Centroids:
-##            NMDS1 NMDS2
-## Zonedown   -0.65 -0.09
-## Zonemiddle -0.14 -0.05
-## Zoneup      0.83  0.14
-## SiteG       0.19  0.17
-## SiteL       0.23 -0.41
-## SiteS      -0.42  0.23
-## 
-## Goodness of fit:
-##        r2 Pr(&gt;r)    
-## Zone 0.37  0.001 ***
-## Site 0.16  0.001 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## Permutation: free
-## Number of permutations: 999
+
+***VECTORS
+
+     NMDS1  NMDS2   r2 Pr(&gt;r)    
+L   -1.000 -0.024 0.19  0.001 ***
+Age  0.774 -0.633 0.04  0.003 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation: free
+Number of permutations: 999
+
+***FACTORS:
+
+Centroids:
+           NMDS1 NMDS2
+Zonedown   -0.65 -0.09
+Zonemiddle -0.14 -0.05
+Zoneup      0.83  0.14
+SiteG       0.19  0.17
+SiteL       0.23 -0.41
+SiteS      -0.42  0.23
+
+Goodness of fit:
+       r2 Pr(&gt;r)    
+Zone 0.37  0.001 ***
+Site 0.16  0.001 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation: free
+Number of permutations: 999
 ```
 
 ]
@@ -1728,13 +1744,13 @@ ef$vectors
 ```
 
 ```
-##      NMDS1  NMDS2   r2 Pr(&gt;r)    
-## L   -1.000 -0.024 0.19  0.001 ***
-## Age  0.774 -0.633 0.04  0.003 ** 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## Permutation: free
-## Number of permutations: 999
+     NMDS1  NMDS2   r2 Pr(&gt;r)    
+L   -1.000 -0.024 0.19  0.001 ***
+Age  0.774 -0.633 0.04  0.003 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation: free
+Number of permutations: 999
 ```
 
 &lt;br/&gt;
@@ -1755,24 +1771,24 @@ ef$factors
 ```
 
 ```
-## Centroids:
-##            NMDS1 NMDS2
-## Zonedown   -0.65 -0.09
-## Zonemiddle -0.14 -0.05
-## Zoneup      0.83  0.14
-## SiteG       0.19  0.17
-## SiteL       0.23 -0.41
-## SiteS      -0.42  0.23
-## 
-## Goodness of fit:
-##        r2 Pr(&gt;r)    
-## Zone 0.37  0.001 ***
-## Site 0.16  0.001 ***
-## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## Permutation: free
-## Number of permutations: 999
+Centroids:
+           NMDS1 NMDS2
+Zonedown   -0.65 -0.09
+Zonemiddle -0.14 -0.05
+Zoneup      0.83  0.14
+SiteG       0.19  0.17
+SiteL       0.23 -0.41
+SiteS      -0.42  0.23
+
+Goodness of fit:
+       r2 Pr(&gt;r)    
+Zone 0.37  0.001 ***
+Site 0.16  0.001 ***
+---
+Signif. codes:  
+0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Permutation: free
+Number of permutations: 999
 ```
 
 ]
@@ -1794,7 +1810,7 @@ points(ord_mus, col = pal_col[env$Zone], pch = pal_sh[env$Site])
 plot(ef)
 ```
 
-![](02_nMDS_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/fig-ord-mus-envfit-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1810,15 +1826,15 @@ ord_mus_ef
 ```
 
 ```
-##        Label     Type  NMDS1   NMDS2
-## 1          L   Vector -0.432 -0.0102
-## 2        Age   Vector  0.152 -0.1248
-## 3   Zonedown Centroid -0.648 -0.0864
-## 4 Zonemiddle Centroid -0.144 -0.0524
-## 5     Zoneup Centroid  0.830  0.1400
-## 6      SiteG Centroid  0.189  0.1695
-## 7      SiteL Centroid  0.228 -0.4062
-## 8      SiteS Centroid -0.420  0.2253
+       Label     Type   NMDS1    NMDS2
+1          L   Vector -0.4323 -0.01024
+2        Age   Vector  0.1525 -0.12478
+3   Zonedown Centroid -0.6485 -0.08635
+4 Zonemiddle Centroid -0.1440 -0.05243
+5     Zoneup Centroid  0.8299  0.14001
+6      SiteG Centroid  0.1892  0.16946
+7      SiteL Centroid  0.2281 -0.40615
+8      SiteS Centroid -0.4196  0.22532
 ```
 
 ---
@@ -1837,7 +1853,7 @@ gg_ord_mus +
             aes(x = NMDS1, y = NMDS2, label = Label, hjust = 1.1, vjust = 1))
 ```
 
-![](02_nMDS_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/gg-envfit-sarter-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1885,7 +1901,7 @@ os_Age &lt;- ordisurf(ord_mus, env$Age, method = "REML")
 par(mfrow = c(1, 1))
 ```
 
-![](02_nMDS_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/fig-ordisurf-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1899,27 +1915,27 @@ summary(os_L)
 ```
 
 ```
-## 
-## Family: gaussian 
-## Link function: identity 
-## 
-## Formula:
-## y ~ s(x1, x2, k = 10, bs = "tp", fx = FALSE)
-## 
-## Parametric coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   43.410      0.484    89.7   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Approximate significance of smooth terms:
-##           edf Ref.df   F p-value    
-## s(x1,x2) 1.96      9 9.8  &lt;2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## R-sq.(adj) =  0.183   Deviance explained = 18.7%
-## -REML = 1457.7  Scale est. = 92.494    n = 395
+
+Family: gaussian 
+Link function: identity 
+
+Formula:
+y ~ s(x1, x2, k = 10, bs = "tp", fx = FALSE)
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   43.410      0.484    89.7   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Approximate significance of smooth terms:
+          edf Ref.df   F p-value    
+s(x1,x2) 1.96      9 9.8  &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+R-sq.(adj) =  0.183   Deviance explained = 18.7%
+-REML = 1457.7  Scale est. = 92.494    n = 395
 ```
 
 
@@ -1935,27 +1951,27 @@ summary(os_Age)
 ```
 
 ```
-## 
-## Family: gaussian 
-## Link function: identity 
-## 
-## Formula:
-## y ~ s(x1, x2, k = 10, bs = "tp", fx = FALSE)
-## 
-## Parametric coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   4.8861     0.0714    68.5   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Approximate significance of smooth terms:
-##           edf Ref.df    F    p-value    
-## s(x1,x2) 5.02      9 3.73 0.00000099 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## R-sq.(adj) =  0.0786   Deviance explained = 9.03%
-## -REML = 704.93  Scale est. = 2.011     n = 395
+
+Family: gaussian 
+Link function: identity 
+
+Formula:
+y ~ s(x1, x2, k = 10, bs = "tp", fx = FALSE)
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   4.8861     0.0714    68.5   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Approximate significance of smooth terms:
+          edf Ref.df    F    p-value    
+s(x1,x2) 5.02      9 3.73 0.00000099 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+R-sq.(adj) =  0.0786   Deviance explained = 9.03%
+-REML = 704.93  Scale est. = 2.011     n = 395
 ```
 
 ---
@@ -1979,11 +1995,11 @@ head(ord_mus_os, 4)
 ```
 
 ```
-##         x     y    z
-## 9  -0.413 -1.37 4.83
-## 10 -0.309 -1.37 4.84
-## 11 -0.205 -1.37 4.86
-## 12 -0.101 -1.37 4.88
+         x      y     z
+9  -0.4130 -1.371 4.826
+10 -0.3089 -1.371 4.840
+11 -0.2049 -1.371 4.858
+12 -0.1008 -1.371 4.879
 ```
 
 ---
@@ -1997,7 +2013,7 @@ ggplot(data = ord_mus_os, aes(x = x, y = y, z = z)) +
   labs(x = "NMDS1", y = "NMDS2", colour = "Age")
 ```
 
-![](02_nMDS_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/gg-envfit-contour-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -2011,7 +2027,7 @@ __Осторожно!__ Для использования `ordisurf()` важн�
 
 ## Финальный график
 
-![](02_nMDS_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](02_nMDS_files/figure-html/gg-envfit-fin-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -2057,6 +2073,7 @@ class: middle, center, inverse
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "vs",
 "highlightLines": true,

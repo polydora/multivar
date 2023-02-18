@@ -9,13 +9,14 @@ output:
   xaringan::moon_reader:
     self-contained: true
     lib_dir: libs
-    css: [default, tamu-fonts, ninjutsu, "assets/xaringan.css"]
+    css: [default, tamu-fonts, ninjutsu, "assets/xaringan-themer.css", "assets/xaringan.css"]
     df_print: default
     nature:
       highlightStyle: vs
       highlightLines: true
       countIncrementalSlides: false
-      titleSlideClass: [top, center, inverse]
+      titleSlideClass: [middle, left, inverse]
+      beforeInit: "assets/macros.js"
     includes:
       in_header: "assets/xaringan_in_header.html"
       after_body: "assets/xaringan_after_body.html"
@@ -32,13 +33,21 @@ output:
 - Охарактеризовать качество ординации с помощью величины стресса.
 - Сравнить результаты нескольких ординаций.
 
-```{r setup, include = FALSE, cache = FALSE, purl = FALSE}
-# output options
-options(width = 70, scipen = 6, digits = 3)
-library(knitr)
-# chunk default options
-opts_chunk$set(message = FALSE, tidy = FALSE, fig.width = 5, fig.height = 4, warning = FALSE)
-library("kableExtra")
+```{r setup, include = FALSE, cache = FALSE, purl = FALSE, fig.showtext = TRUE}
+source("assets/xaringan_setup.R")
+library(xaringanExtra)
+use_tile_view()
+use_scribble()
+use_search(show_icon = FALSE)
+use_progress_bar(color = "#6d2b5e", location = "bottom", height = "10px")
+use_freezeframe()
+# use_webcam()
+# use_panelset()
+# use_extra_styles(hover_code_line = TRUE)
+
+# http://tachyons.io/docs/
+# https://roperzh.github.io/tachyons-cheatsheet/
+use_tachyons()
 ```
 
 ---
@@ -322,7 +331,7 @@ __Диаграмма Шепарда__ --- график зависимости р
 
 .pull-left[
 
-```{r, fig-shep, echo=FALSE, fig.height=4, fig.width=5}
+```{r fig-shep, echo=FALSE, fig.height=4, fig.width=5}
 ggplot(distances, aes(x = observed, y = nmds)) + geom_point() + xlab("Observed dissimialrity") + ylab("Ordination distance")
 ```
 
@@ -364,7 +373,7 @@ ggplot(distances, aes(x = observed, y = nmds)) + geom_point() + xlab("Observed d
 
 .pull-left[
 
-```{r echo=FALSE, purl=-c(1, 3), fig.height=4, fig.width=5}
+```{r fig-stress, echo=FALSE, purl=-c(1, 3), fig.height=4, fig.width=5}
 op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0))
 stressplot(spb_ord)
 par(op)
@@ -386,7 +395,7 @@ __Монотонная регрессия__ минимизирует сумму 
 
 Алгоритм подбора монотонной регрессии называется   Pool-Adjacent-Violator-Algorithm (PAVA)
 
-```{r isoreg-ani, echo=FALSE, fig.width=7, fig.height=6, fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', cache=TRUE}
+```{r isoreg-ani, echo=FALSE, fig.show='animate', interval=1, animation.hook='gifski', aniopts='control,loop', fig.width=9, fig.height=4}
 op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0))
 plot_isoreg <- function(x, y, n){
   if (length(x) != length(y)) {
@@ -435,7 +444,7 @@ __Стресс (Stress)__ показывает, насколько соотве�
 
 .pull-left[
 
-```{r echo=FALSE, purl=-c(1, 3), fig.height=4, fig.width=5}
+```{r fig-stress-plot, echo=FALSE, purl=-c(1, 3), fig.height=4, fig.width=5}
 op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0))
 stressplot(spb_ord)
 par(op)
@@ -698,10 +707,10 @@ ord_mus <- metaMDS(spec, dist = "bray", autotransform = FALSE)
 ]
 
 ---
-maxit
+
 ## Решение
 
-```{r, fig-mus-bw, purl=FALSE, fig.height=4, fig.width=6, echo=-1}
+```{r fig-mus-raw, fig-mus-bw, purl=FALSE, fig.height=4, fig.width=6, echo=-1}
 op <- par(mar = c(3, 3, 0.1, 0.1), mgp = c(2, 1, 0))
 ord_mus$stress
 ordiplot(ord_mus)
@@ -899,7 +908,7 @@ ef$factors
 
 ## График с векторами и центроидами, найденными `envfit()`
 
-```{r, fig.width=6, fig.height=5}
+```{r fig-ord-mus-envfit, fig.width=6, fig.height=5}
 ordiplot(ord_mus, type = "n")
 points(ord_mus, col = pal_col[env$Zone], pch = pal_sh[env$Site])
 plot(ef)
@@ -921,7 +930,7 @@ ord_mus_ef
 
 ## ggplot2 версия графика `envfit()`
 
-```{r fig.width=7, fig.height=5}
+```{r gg-envfit-sarter, fig.width=7, fig.height=5}
 gg_ord_mus +
   geom_segment(data = ord_mus_ef[ord_mus_ef$Type == "Vector", ],
                aes(x = 0, xend = NMDS1, y = 0, yend = NMDS2),
@@ -970,7 +979,7 @@ GAM позволяют подобрать нелинейные зависимо�
 
 Изолинии на графике ординации показывают предсказанное значение зависимой переменной для разных участков ординации.
 
-```{r fig.show='hold', fig.width=7, fig.height=5}
+```{r fig-ordisurf, fig.show='hold', fig.width=7, fig.height=5}
 par(mfrow = c(1, 2))
 os_L <- ordisurf(ord_mus, env$L, method = "REML")
 os_Age <- ordisurf(ord_mus, env$Age, method = "REML")
@@ -1021,7 +1030,7 @@ head(ord_mus_os, 4)
 
 ## ggplot2 версия графика с поверхностью, найденной `ordisurf()`
 
-```{r}
+```{r gg-envfit-contour}
 ggplot(data = ord_mus_os, aes(x = x, y = y, z = z)) +
   stat_contour(aes(colour = after_stat(level))) +
   labs(x = "NMDS1", y = "NMDS2", colour = "Age")
@@ -1039,7 +1048,7 @@ __Осторожно!__ Для использования `ordisurf()` важн�
 
 ## Финальный график
 
-```{r echo=FALSE, fig.width=8, fig.height=6}
+```{r gg-envfit-fin, echo=FALSE, fig.width=8, fig.height=6}
 f_vect <- ord_mus_ef$Type == "Vector" & ord_mus_ef$Label == "L"
 
 ggplot(data = ord_mus_pt, aes(x = NMDS1, y = NMDS2)) +
