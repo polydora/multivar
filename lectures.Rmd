@@ -85,7 +85,7 @@ devtools::install_github("gavinsimpson/ggvegan")
 install.packages("coin")
 ```
 
-<!-- - Презентация [html](03_Mantel_correlation-based_methods_ANOSIM_SIMPER.html) -->
+- Презентация [html](03_Mantel_correlation-based_methods_ANOSIM_SIMPER.html)
 - [код R](03_Mantel_correlation-based_methods_ANOSIM_SIMPER.R)
 - Данные
      + [Coordinates.txt](data/Coordinates.txt) 
@@ -112,7 +112,6 @@ install.packages("coin")
 
 - __Сообщества макробентоса в экспериментах с искусственно созданными друзами мидий.__ Данные из работы *Хайтов В. М.Бровкина Ю.Б. Механизмы заселения друз Mytilus edulis Linnaeus, 1758 (Bivalvia: Mytilidae) обитателями беломорского песчаного пляжа // БИОЛОГИЯ МОРЯ, 2014. — Vol. 40, — № 4. — P. 302-308* 
      + [mussel_experiment.csv](data/mussel_experiment.csv) 
-
 
 
 
