@@ -222,48 +222,6 @@ mantel_partial <- mantel.partial(dist_com, dist_chem,
                                  permutations = 9999)
 mantel_partial
 
-
-
-# Модельные матрицы
-
-com <- read.csv("data/mussel_beds.csv",
-                sep=';', header = T)
-
-ascam <- read.csv("data/ASCAM.csv",
-                  sep=';', header = T)
-
-library(dplyr)
-
-log_com <- com %>%
-  filter(Bank == "Vor2") %>%
-  select(-c(1:3)) %>% decostand(., method = "log")
-
-
-log_ascam <- ascam %>%
-  filter(Bank == "Vor2") %>%
-  select(-c(1:2)) %>% decostand(.,method = "log")
-
-ord_log_com <- metaMDS(log_com, autotransform = FALSE)
-
-mds_com <- as.data.frame(scores(ord_log_com, display = "sites"))
-
-mds_com$Year <- com %>% filter(Bank == "Vor2") %>% select(Year)
-
-str(mds_com)
-
-ggplot(mds_com, aes(x = NMDS1, y = NMDS2)) +
-  geom_path() + geom_text(label = as.character(mds_com$Year))
-
-
-
-dist_com <- vegdist(log_com, method = "bray")
-
-dist_ascam <- vegdist(log_ascam, method = "euclidean")
-
-
-mantel(dist_com, dist_ascam)
-
-
 # Функция `bioenv()`из пакета `vegan`
 
 
@@ -280,7 +238,7 @@ BioEnv
 
 plot(veg_ord)
 
-plot(envfit(veg_ord ~ N + P + Al + Mn + Baresoil, data = varechem ))
+plot(envfit(veg_ord ~ N + P + Al + Mn + Baresoil, data = varechem))
 
 
 # Оценка достоверности результатов BIO-ENV
@@ -322,6 +280,47 @@ hist + geom_histogram (bin=0.1, fill="blue", colour="black") +
 
 # dev.off()
 #------------------------------------
+
+
+
+# Модельные матрицы
+
+com <- read.csv("data/mussel_beds.csv",
+                sep=';', header = T)
+
+ascam <- read.csv("data/ASCAM.csv",
+                  sep=';', header = T)
+
+library(dplyr)
+
+log_com <- com %>%
+  filter(Bank == "Vor2") %>%
+  select(-c(1:3)) %>% decostand(., method = "log")
+
+
+log_ascam <- ascam %>%
+  filter(Bank == "Vor2") %>%
+  select(-c(1:2)) %>% decostand(.,method = "log")
+
+ord_log_com <- metaMDS(log_com, autotransform = FALSE)
+
+mds_com <- as.data.frame(scores(ord_log_com, display = "sites"))
+
+mds_com$Year <- com %>% filter(Bank == "Vor2") %>% select(Year)
+
+str(mds_com)
+
+ggplot(mds_com, aes(x = NMDS1, y = NMDS2)) +
+  geom_path() + geom_text(label = as.character(mds_com$Year))
+
+
+
+dist_com <- vegdist(log_com, method = "bray")
+
+dist_ascam <- vegdist(log_ascam, method = "euclidean")
+
+
+mantel(dist_com, dist_ascam)
 
 
 
