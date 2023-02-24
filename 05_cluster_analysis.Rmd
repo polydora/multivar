@@ -9,13 +9,14 @@ output:
   xaringan::moon_reader:
     self-contained: true
     lib_dir: libs
-    css: [default, tamu-fonts, ninjutsu, "assets/xaringan.css"]
+    css: [default, tamu-fonts, ninjutsu, "assets/xaringan-themer.css", "assets/xaringan.css"]
     df_print: default
     nature:
       highlightStyle: vs
       highlightLines: true
       countIncrementalSlides: false
-      titleSlideClass: [top, center, inverse]
+      titleSlideClass: [middle, left, inverse]
+      beforeInit: "assets/macros.js"
     includes:
       in_header: "assets/xaringan_in_header.html"
       after_body: "assets/xaringan_after_body.html"
@@ -41,23 +42,21 @@ output:
 - Сопоставлять дендрограммы, полученные разными способами, при помощи танглграмм
 
 
-```{r setup, include = FALSE, cache = FALSE, purl = FALSE}
-# output options
-options(width = 70, scipen = 6, digits = 3)
-library(knitr)
-# chunk default options
-opts_chunk$set(fig.align='center', tidy = FALSE, fig.width = 9, fig.height = 6, warning = FALSE, message = FALSE, global.par = TRUE)
-par_spbu <- par(
-  cex = 1.7,
-    mar = c(3, 3, 2, 0.5), # Dist' from plot to side of page
-    mgp = c(2, 0.4, 0), # Dist' plot to label
-    las = 1, # Rotate y-axis text
-    tck = -.01, # Reduce tick length
-    xaxs = "i", yaxs = "i", 
-    mex = 0.8,
-    mgp = c(2, .5, 0),
-    tcl = -0.3) # Remove plot padding
-par(par_spbu)
+```{r setup, include = FALSE, cache = FALSE, purl = FALSE, fig.showtext = TRUE}
+source("assets/xaringan_setup.R")
+library(xaringanExtra)
+use_tile_view()
+use_scribble()
+use_search(show_icon = FALSE)
+use_progress_bar(color = "#6d2b5e", location = "bottom", height = "10px")
+use_freezeframe()
+# use_webcam()
+# use_panelset()
+# use_extra_styles(hover_code_line = TRUE)
+
+# http://tachyons.io/docs/
+# https://roperzh.github.io/tachyons-cheatsheet/
+use_tachyons()
 ```
 
 ---
@@ -133,7 +132,7 @@ table(Wolves$group)
 ## Решение
 
 .scroll-box-20[
-```{r results='hold', echo=-c(3, 4)}
+```{r results='hold', echo=-c(3, 4), purl=FALSE}
 library(vegan)
 library(ggplot2); theme_set(theme_bw(base_size = 16))
 update_geom_defaults("point", list(size = 4)); 
@@ -149,7 +148,7 @@ gg_w <- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + geom_point(aes(colour = Group))
 
 ## Решение
 
-```{r, echo=FALSE}
+```{r fig-wolves, echo=FALSE, purl=FALSE}
 gg_w
 ```
 
@@ -164,7 +163,7 @@ class: middle, center, inverse
 ## Этапы кластеризации 
 
 .pull-left[
-```{r echo=FALSE, cache=FALSE, fig.width=6, fig.height=7}
+```{r fig-cluster-steps, echo=FALSE, cache=FALSE, opts.label='MxXL'}
 library(DiagrammeR)
 DiagrammeR(
   "graph TD; 
@@ -189,7 +188,7 @@ DiagrammeR(
 
 ## Методы кластеризации
 
-```{r, echo=FALSE, fig.height=6}
+```{r fig-cluster-methods, echo=FALSE, opts.label='LxL'}
 library(gridExtra)
 theme_set(theme_bw(base_size = 16))
 update_geom_defaults("point", list(size = 4))
@@ -248,7 +247,7 @@ grid.arrange(gg_single + ggtitle("Метод ближайшего соседа")
 .pull-left-66[
 .content-box-purple[
 
-### = nearest neighbour = single linkage
+__= nearest neighbour = single linkage__
 
 - к кластеру присоединяется ближайший к нему кластер/объект
 - кластеры объединяются в один на расстоянии, которое равно расстоянию между ближайшими объектами этих кластеров
@@ -257,7 +256,7 @@ grid.arrange(gg_single + ggtitle("Метод ближайшего соседа")
 
 .pull-right-33[
 
-```{r, echo=FALSE, fig.width=4.5, fig.height=4}
+```{r fig-single, echo=FALSE, opts.label='SxS'}
 gg_single
 ```
 ]
@@ -273,7 +272,7 @@ gg_single
 
 ## Как работает метод ближайшего соседа
 
-```{r ani-dat, include=FALSE, cache=TRUE, purl=FALSE}
+```{r ani-dat, include=FALSE, purl=FALSE}
 # Данные
 dat <- data.frame(x = c(9, 19, 30, 32, 38, 50, 20, 50), y = c(42, 40, 10, 30, 60, 35, 42, 31))
 rownames(dat) <- LETTERS[1:8]
@@ -304,7 +303,7 @@ cluster_ani <- function(dat, gg_dat, dist_fun = "vegdist", dist_method = "euclid
       coord_fixed() +
       geom_point(size = 2) +
       geom_text(hjust = 1.2, vjust = 1.2) +
-      geom_encircle(aes(group = cutree(hc, k = k)), colour = "red", s_shape = 0, expand = 0.01) +
+      geom_encircle(aes(group = cutree(hc, k = k)), colour = "red", s_shape = 0, expand = 0.001) +
       scale_y_continuous(expand=c(0.1,0.1))
 
     # dendrogram plot
@@ -320,7 +319,7 @@ cluster_ani <- function(dat, gg_dat, dist_fun = "vegdist", dist_method = "euclid
     # together
     plot_grid(gg_ord, 
               gg_tree, 
-              nrow = 1, rel_widths = c(0.6, 0.4), 
+              nrow = 1, rel_widths = c(0.65, 0.35), 
               hjust = 0, vjust = 1, scale = c(0.8, 0.9))
 }
 
@@ -333,7 +332,7 @@ gg_list_a <- lapply(8:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "a
 gg_list_w <- lapply(8:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "ward.D2", k = x))
 ```
 
-```{r fig.width=8, fig.height=8, echo=FALSE, purl=FALSE}
+```{r fig-single-guess, opts.label='LxXXL', echo=FALSE, purl=FALSE}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
       geom_point(size = 2) +
       geom_text(hjust = 1.2, vjust = 1.2) +
@@ -344,7 +343,7 @@ ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
 
 ## Как работает метод ближайшего соседа
 
-```{r single-ani, echo=FALSE, purl=FALSE, fig.width=12, fig.height=8, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r single-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
 sapply(gg_list_s, plot)
 ```
 
@@ -357,7 +356,7 @@ sapply(gg_list_s, plot)
 .pull-left-66[
 .content-box-purple[
 
-### = furthest neighbour = complete linkage
+__= furthest neighbour = complete linkage__
 
 - к кластеру присоединяется отдаленный кластер/объект
 - кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие - чем более крупная группа, тем сложнее к ней присоединиться)
@@ -365,7 +364,7 @@ sapply(gg_list_s, plot)
 
 .pull-right-33[
 
-```{r, echo=FALSE, fig.width=4.5, fig.height=5}
+```{r fig-complete, echo=FALSE, opts.label='SxM'}
 gg_complete
 ```
 
@@ -380,7 +379,7 @@ gg_complete
 
 ## Как работает метод отдаленного соседа
 
-```{r fig.width=8, fig.height=8, echo=FALSE, purl=FALSE}
+```{r fig-complete-guess, opts.label='LxXXL', echo=FALSE, purl=FALSE}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
       geom_point(size = 2) +
       geom_text(hjust = 1.1, vjust = 1.1) +
@@ -391,7 +390,7 @@ ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
 
 ## Как работает метод отдаленного соседа
 
-```{r complete-ani, echo=FALSE, purl=FALSE, fig.width=12, fig.height=8, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r complete-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
 sapply(gg_list_c, plot)
 ```
 
@@ -402,13 +401,13 @@ sapply(gg_list_c, plot)
 .pull-left-66[
 .content-box-purple[
 
-### = UPGMA = Unweighted Pair Group Method with Arithmetic mean
+__= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 
 - кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.
 ]]
 .pull-right-33[
 
-```{r, echo=FALSE, fig.width=4.5, fig.height=4}
+```{r fig-average, echo=FALSE, opts.label='SxM'}
 gg_average
 ```
 
@@ -429,7 +428,7 @@ gg_average
 
 ## Как работает метод среднегруппового расстояния
 
-```{r average-ani, echo=FALSE, purl=FALSE, fig.width=10, fig.height=8, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r average-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
 sapply(gg_list_a, plot)
 ```
 
@@ -440,14 +439,14 @@ sapply(gg_list_a, plot)
 .pull-left-66[
 .content-box-purple[
 
-### = Ward's Minimum Variance Clustering
+__= Ward's Minimum Variance Clustering__
 
 - объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной
 ]]
 
 .pull-right-33[
 
-```{r, echo=FALSE, fig.width=4.5, fig.height=4}
+```{r fig-ward, echo=FALSE, opts.label='SxM'}
 gg_ward
 ```
 ]
@@ -460,7 +459,7 @@ gg_ward
 
 ## Как работает метод Варда
 
-```{r ward-ani, echo=FALSE, purl=FALSE, fig.width=12, fig.height=8, fig.show='animate', interval=3, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r ward-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
 sapply(gg_list_w, plot)
 ```
 
@@ -479,6 +478,11 @@ class: middle, center, inverse
 ```{r}
 # Матрица расстояний
 d <- dist(x = s_w, method = "euclidean")
+```
+
+
+
+```{r}
 # Пакеты для визуализации кластеризации
 library(ape)
 library(dendextend)
@@ -488,7 +492,7 @@ library(dendextend)
 
 ## (1.0) Метод ближайшего соседа + `base`
 
-```{r fig.height=5, fig.width=10}
+```{r fig-single-base, opts.label='XLxL'}
 hc_single <- hclust(d, method = "single")
 plot(hc_single)
 ```
@@ -497,7 +501,7 @@ plot(hc_single)
 
 ## (1.1) Метод ближайшего соседа + `ape`
 
-```{r}
+```{r fig-single-ape, opts.label='XLxL'}
 ph_single <- as.phylo(hc_single)
 plot(ph_single, type = "phylogram")
 axisPhylo()
@@ -507,7 +511,7 @@ axisPhylo()
 
 ## (1.2) Метод ближайшего соседа + `dendextend`
 
-```{r}
+```{r fig-single-dend, opts.label='XLxL'}
 den_single <- as.dendrogram(hc_single)
 plot(den_single)
 ```
@@ -516,7 +520,7 @@ plot(den_single)
 
 ## (2.1) Метод отдаленного соседа + `ape`
 
-```{r}
+```{r fig-complete-ape, opts.label='XLxL'}
 hc_compl <- hclust(d, method = "complete")
 ph_compl <- as.phylo(hc_compl)
 plot(ph_compl, type = "phylogram")
@@ -527,7 +531,7 @@ axisPhylo()
 
 ## (2.2)Метод отдаленного соседа + `dendextend`
 
-```{r}
+```{r fig-complete-dend, opts.label='XLxL'}
 den_compl <- as.dendrogram(hc_compl)
 plot(den_compl)
 ```
@@ -536,7 +540,7 @@ plot(den_compl)
 
 ## (3.1) Метод невзвешенного попарного среднего + `ape`
 
-```{r}
+```{r fig-average-ape, opts.label='XLxL'}
 hc_avg <- hclust(d, method = "average")
 ph_avg <- as.phylo(hc_avg)
 plot(ph_avg, type = "phylogram")
@@ -547,7 +551,7 @@ axisPhylo()
 
 ## (3.2) Метод невзвешенного попарного среднего + `dendextend`
 
-```{r}
+```{r fig-average-dend, opts.label='XLxL'}
 den_avg <- as.dendrogram(hc_avg)
 plot(den_avg)
 ```
@@ -556,7 +560,7 @@ plot(den_avg)
 
 ## (4.1) Метод Варда + `ape`
 
-```{r}
+```{r fig-ward-ape, opts.label='XLxL'}
 hc_w2 <-hclust(d, method = "ward.D2")
 ph_w2 <- as.phylo(hc_w2)
 plot(ph_w2, type = "phylogram")
@@ -567,7 +571,7 @@ axisPhylo()
 
 ## (4.2) Метод Варда + `dendextend`
 
-```{r}
+```{r fig-ward-dend, opts.label='XLxL'}
 den_w2 <- as.dendrogram(hc_w2)
 plot(den_w2)
 ```
@@ -672,7 +676,7 @@ $-1 \le s_i \le 1$ --- чем больше $s_i$, тем "лучше" объек
 
 Оценим ширину силуэта для 3 кластеров
 
-```{r}
+```{r fig-silhouette}
 library(cluster)
 complete3 <- cutree(tree = hc_avg, k = 3)
 plot(silhouette(x = complete3, dist = d), cex.names = 0.6)
@@ -702,7 +706,7 @@ cl_boot <- pvclust(t(s_w), method.hclust = "average", nboot = 100,
 AU --- approximately unbiased p-values (красный),
 BP --- bootstrap p-values (зеленый)
 
-```{r fig-cl-boot, fig.show='hold'}
+```{r fig-cl-boot, fig.show='hold', opts.label='XLxL'}
 plot(cl_boot)
 # pvrect(cl_boot) # достоверные ветвления
 ```
@@ -713,7 +717,7 @@ plot(cl_boot)
 
 График стандартных ошибок для AU p-value нужен, чтобы оценить точность оценки самих AU. Чем больше было бутстреп-итераций, тем точнее будет оценка AU.
 
-```{r fig-seplot, fig.show='hold'}
+```{r fig-seplot, fig.show='hold', opts.label='XLxL'}
 seplot(cl_boot)
 # print(cl_boot) # все значения
 ```
@@ -730,7 +734,7 @@ class: middle, center, inverse
 
 Два дерева (с непохожим ветвлением) выравнивают, вращая случайным образом ветви вокруг оснований. Итеративный алгоритм. Картина каждый раз разная.
 
-```{r tang, eval=FALSE}
+```{r fig-tang, eval=FALSE, opts.label='XLxL'}
 set.seed(395)
 untang_w <- untangle_step_rotate_2side(den_compl, den_w2, print_times = F)
 
@@ -752,7 +756,7 @@ tanglegram(untang_w[[1]], untang_w[[2]],
 
 ## Танглграмма
 
-```{r tang, eval=TRUE, echo=FALSE}
+```{r fig-tang, eval=TRUE, echo=FALSE, opts.label='XLxL'}
 ```
 
 ---
@@ -771,7 +775,7 @@ class: middle, center, inverse
 
 ## И небольшая демонстрация - дерево по генетическим данным
 
-```{r, cache=TRUE, fig.height=5}
+```{r fig-gen, cache=TRUE}
 webpage <-"http://evolution.genetics.washington.edu/book/primates.dna"
 primates.dna <- read.dna(webpage)
 d_pri <- dist.dna(primates.dna)

@@ -5,10 +5,25 @@
     <meta charset="utf-8" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
-    <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+    <script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="site_libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="site_libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="site_libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="site_libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="site_libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="site_libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <script src="site_libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="site_libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
     <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
     <script src="site_libs/d3-3.3.8/d3.min.js"></script>
     <script src="site_libs/dagre-0.4.0/dagre-d3.min.js"></script>
@@ -16,7 +31,7 @@
     <script src="site_libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
     <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
     <script src="site_libs/chromatography-0.1/chromatography.js"></script>
-    <script src="site_libs/DiagrammeR-binding-1.0.6.1/DiagrammeR.js"></script>
+    <script src="site_libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
     <!-- https://github.com/fnaufel/xaringan-smartify-->
     <script
     			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -24,16 +39,25 @@
     			  crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
-class: top, center, inverse, title-slide
+class: middle, left, inverse, title-slide
 
+.title[
 # Кластерный анализ
+]
+.subtitle[
 ## Анализ и визуализация многомерных данных с использованием R
+]
+.author[
 ### Марина Варфоломеева
+]
+.author[
 ### Вадим Хайтов
+]
 
 ---
 
@@ -118,7 +142,7 @@ dim(Wolves)
 ```
 
 ```
-## [1] 25 12
+[1] 25 12
 ```
 
 ```r
@@ -126,8 +150,8 @@ colnames(Wolves)
 ```
 
 ```
-##  [1] "group"    "location" "sex"      "x1"       "x2"       "x3"      
-##  [7] "x4"       "x5"       "x6"       "x7"       "x8"       "x9"
+ [1] "group"    "location" "sex"      "x1"       "x2"       "x3"       "x4"      
+ [8] "x5"       "x6"       "x7"       "x8"       "x9"      
 ```
 
 ```r
@@ -135,7 +159,7 @@ head(rownames(Wolves))
 ```
 
 ```
-## [1] "rmm1" "rmm2" "rmm3" "rmm4" "rmm5" "rmm6"
+[1] "rmm1" "rmm2" "rmm3" "rmm4" "rmm5" "rmm6"
 ```
 
 ```r
@@ -143,7 +167,7 @@ any(is.na(Wolves))
 ```
 
 ```
-## [1] FALSE
+[1] FALSE
 ```
 
 ```r
@@ -151,9 +175,9 @@ table(Wolves$group)
 ```
 
 ```
-## 
-## ar:f ar:m rm:f rm:m 
-##    6   10    3    6
+
+ar:f ar:m rm:f rm:m 
+   6   10    3    6 
 ```
 
 ---
@@ -181,42 +205,36 @@ gg_w &lt;- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + geom_point(aes(colour = Grou
 ```
 
 ```
-## Run 0 stress 0.101 
-## Run 1 stress 0.128 
-## Run 2 stress 0.128 
-## Run 3 stress 0.126 
-## Run 4 stress 0.136 
-## Run 5 stress 0.101 
-## ... New best solution
-## ... Procrustes: rmse 0.00000401  max resid 0.0000114 
-## ... Similar to previous best
-## Run 6 stress 0.127 
-## Run 7 stress 0.156 
-## Run 8 stress 0.101 
-## ... Procrustes: rmse 0.00000411  max resid 0.0000136 
-## ... Similar to previous best
-## Run 9 stress 0.137 
-## Run 10 stress 0.101 
-## ... Procrustes: rmse 0.00000633  max resid 0.0000208 
-## ... Similar to previous best
-## Run 11 stress 0.127 
-## Run 12 stress 0.127 
-## Run 13 stress 0.101 
-## ... Procrustes: rmse 0.00000696  max resid 0.000023 
-## ... Similar to previous best
-## Run 14 stress 0.137 
-## Run 15 stress 0.128 
-## Run 16 stress 0.101 
-## ... New best solution
-## ... Procrustes: rmse 0.00000302  max resid 0.00000761 
-## ... Similar to previous best
-## Run 17 stress 0.101 
-## ... Procrustes: rmse 0.00000467  max resid 0.0000131 
-## ... Similar to previous best
-## Run 18 stress 0.127 
-## Run 19 stress 0.136 
-## Run 20 stress 0.147 
-## *** Solution reached
+Run 0 stress 0.101 
+Run 1 stress 0.1268 
+Run 2 stress 0.1474 
+Run 3 stress 0.1368 
+Run 4 stress 0.1406 
+Run 5 stress 0.1434 
+Run 6 stress 0.101 
+... Procrustes: rmse 0.0000006815  max resid 0.000001345 
+... Similar to previous best
+Run 7 stress 0.1244 
+Run 8 stress 0.1278 
+Run 9 stress 0.101 
+... Procrustes: rmse 0.00001102  max resid 0.000037 
+... Similar to previous best
+Run 10 stress 0.128 
+Run 11 stress 0.101 
+... Procrustes: rmse 0.000007407  max resid 0.00002443 
+... Similar to previous best
+Run 12 stress 0.101 
+... Procrustes: rmse 0.000009156  max resid 0.00003057 
+... Similar to previous best
+Run 13 stress 0.1285 
+Run 14 stress 0.1275 
+Run 15 stress 0.1422 
+Run 16 stress 0.1368 
+Run 17 stress 0.1368 
+Run 18 stress 0.1368 
+Run 19 stress 0.1284 
+Run 20 stress 0.1474 
+*** Best solution repeated 4 times
 ```
 ]
 
@@ -224,7 +242,7 @@ gg_w &lt;- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + geom_point(aes(colour = Grou
 
 ## Решение
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-wolves-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -237,8 +255,8 @@ class: middle, center, inverse
 ## Этапы кластеризации 
 
 .pull-left[
-<div id="htmlwidget-f62c96e0ee521dc7a21c" style="width:432px;height:504px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f62c96e0ee521dc7a21c">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n  "},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5e52a50e4ac42b0fc52d" style="width:432px;height:540px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5e52a50e4ac42b0fc52d">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -255,7 +273,7 @@ class: middle, center, inverse
 
 ## Методы кластеризации
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-cluster-methods-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -265,7 +283,7 @@ class: middle, center, inverse
 .pull-left-66[
 .content-box-purple[
 
-### = nearest neighbour = single linkage
+__= nearest neighbour = single linkage__
 
 - к кластеру присоединяется ближайший к нему кластер/объект
 - кластеры объединяются в один на расстоянии, которое равно расстоянию между ближайшими объектами этих кластеров
@@ -274,7 +292,7 @@ class: middle, center, inverse
 
 .pull-right-33[
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-single-1.png)&lt;!-- --&gt;
 ]
 
 ### Особенности
@@ -290,13 +308,13 @@ class: middle, center, inverse
 
 
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-single-guess-1.png)&lt;!-- --&gt;
 
 ---
 
 ## Как работает метод ближайшего соседа
 
-&lt;img src="05_cluster_analysis_files/figure-html/single-ani-.gif" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/single-ani-.gif)&lt;!-- --&gt;
 
 ---
 
@@ -307,7 +325,7 @@ class: middle, center, inverse
 .pull-left-66[
 .content-box-purple[
 
-### = furthest neighbour = complete linkage
+__= furthest neighbour = complete linkage__
 
 - к кластеру присоединяется отдаленный кластер/объект
 - кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие - чем более крупная группа, тем сложнее к ней присоединиться)
@@ -315,7 +333,7 @@ class: middle, center, inverse
 
 .pull-right-33[
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-complete-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -328,13 +346,13 @@ class: middle, center, inverse
 
 ## Как работает метод отдаленного соседа
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-complete-guess-1.png)&lt;!-- --&gt;
 
 ---
 
 ## Как работает метод отдаленного соседа
 
-&lt;img src="05_cluster_analysis_files/figure-html/complete-ani-.gif" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/complete-ani-.gif)&lt;!-- --&gt;
 
 ---
 
@@ -343,13 +361,13 @@ class: middle, center, inverse
 .pull-left-66[
 .content-box-purple[
 
-### = UPGMA = Unweighted Pair Group Method with Arithmetic mean
+__= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 
 - кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.
 ]]
 .pull-right-33[
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-average-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -368,7 +386,7 @@ class: middle, center, inverse
 
 ## Как работает метод среднегруппового расстояния
 
-&lt;img src="05_cluster_analysis_files/figure-html/average-ani-.gif" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/average-ani-.gif)&lt;!-- --&gt;
 
 ---
 
@@ -377,14 +395,14 @@ class: middle, center, inverse
 .pull-left-66[
 .content-box-purple[
 
-### = Ward's Minimum Variance Clustering
+__= Ward's Minimum Variance Clustering__
 
 - объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной
 ]]
 
 .pull-right-33[
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-ward-1.png)&lt;!-- --&gt;
 ]
 
 ### Особенности
@@ -395,7 +413,7 @@ class: middle, center, inverse
 
 ## Как работает метод Варда
 
-&lt;img src="05_cluster_analysis_files/figure-html/ward-ani-.gif" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/ward-ani-.gif)&lt;!-- --&gt;
 
 ---
 
@@ -413,6 +431,12 @@ class: middle, center, inverse
 ```r
 # Матрица расстояний
 d &lt;- dist(x = s_w, method = "euclidean")
+```
+
+
+
+
+```r
 # Пакеты для визуализации кластеризации
 library(ape)
 library(dendextend)
@@ -428,7 +452,7 @@ hc_single &lt;- hclust(d, method = "single")
 plot(hc_single)
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-single-base-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -441,7 +465,7 @@ plot(ph_single, type = "phylogram")
 axisPhylo()
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-single-ape-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -453,7 +477,7 @@ den_single &lt;- as.dendrogram(hc_single)
 plot(den_single)
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-single-dend-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -467,7 +491,7 @@ plot(ph_compl, type = "phylogram")
 axisPhylo()
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-complete-ape-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -479,7 +503,7 @@ den_compl &lt;- as.dendrogram(hc_compl)
 plot(den_compl)
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-complete-dend-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -493,7 +517,7 @@ plot(ph_avg, type = "phylogram")
 axisPhylo()
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-average-ape-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -505,7 +529,7 @@ den_avg &lt;- as.dendrogram(hc_avg)
 plot(den_avg)
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-average-dend-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -519,7 +543,7 @@ plot(ph_w2, type = "phylogram")
 axisPhylo()
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-ward-ape-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -531,7 +555,7 @@ den_w2 &lt;- as.dendrogram(hc_w2)
 plot(den_w2)
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-ward-dend-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -571,7 +595,7 @@ cor(d, as.dist(c_single))
 ```
 
 ```
-## [1] 0.565
+[1] 0.5654
 ```
 
 ---
@@ -593,7 +617,7 @@ cor(d, as.dist(c_single))
 ```
 
 ```
-## [1] 0.565
+[1] 0.5654
 ```
 
 ```r
@@ -602,7 +626,7 @@ cor(d, as.dist(c_compl))
 ```
 
 ```
-## [1] 0.706
+[1] 0.7058
 ```
 
 ```r
@@ -611,7 +635,7 @@ cor(d, as.dist(c_avg))
 ```
 
 ```
-## [1] 0.745
+[1] 0.7447
 ```
 
 ```r
@@ -620,7 +644,7 @@ cor(d, as.dist(c_w2))
 ```
 
 ```
-## [1] 0.726
+[1] 0.726
 ```
 
 
@@ -668,7 +692,7 @@ complete3 &lt;- cutree(tree = hc_avg, k = 3)
 plot(silhouette(x = complete3, dist = d), cex.names = 0.6)
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-silhouette-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -687,9 +711,9 @@ cl_boot &lt;- pvclust(t(s_w), method.hclust = "average", nboot = 100,
 ```
 
 ```
-## Creating a temporary cluster...done:
-## socket cluster with 7 nodes on host 'localhost'
-## Multiscale bootstrap... Done.
+Creating a temporary cluster...done:
+socket cluster with 7 nodes on host 'localhost'
+Multiscale bootstrap... Done.
 ```
 
 Обратите внимание на число итераций: `nboot = 100` --- это очень мало. На самом деле нужно 10000 или больше.
@@ -707,7 +731,7 @@ plot(cl_boot)
 # pvrect(cl_boot) # достоверные ветвления
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/fig-cl-boot-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-cl-boot-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -721,7 +745,7 @@ seplot(cl_boot)
 # print(cl_boot) # все значения
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/fig-seplot-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-seplot-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -758,7 +782,7 @@ tanglegram(untang_w[[1]], untang_w[[2]],
 
 ## Танглграмма
 
-&lt;img src="05_cluster_analysis_files/figure-html/tang-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-tang-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -787,7 +811,7 @@ plot(ph_pri)
 axisPhylo()
 ```
 
-&lt;img src="05_cluster_analysis_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+![](05_cluster_analysis_files/figure-html/fig-gen-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -892,6 +916,7 @@ Scale bar 500 μm.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "vs",
 "highlightLines": true,
@@ -936,6 +961,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
