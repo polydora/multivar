@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
-    <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
@@ -173,7 +173,7 @@ class: middle, center, inverse
 
 ## Поправка Бонферрони
 
-`\(\alpha^*_{per\,comparison} = \alpha_{familywise} /{N}\)`
+`$$\alpha^*_{per\,comparison} = \alpha_{familywise} /{N}$$`
 
 .content-box-red[
 Это жесткий способ, т.к с возрастанием числа сравнений резко снижается уровень значимости и мощность теста. В результате растет риск не найти различий, где они есть. 
@@ -456,9 +456,14 @@ _Pachyuromys duprasi_]
 
 ## Задание
 
-- Какую меру различия можно использовать с этими данными?
-- Как можно преобразовать данные?
-- Постройте ординацию объектов в осях MDS и раскрасьте точки в соответствии с видами
+- Логарифмируйте исходные данные и сохраните в переменную `log_pesch`.
+Какие еще преобразования могли бы подойти кроме логарифма?
+- Какие меры различия подходят для этих данных? Почему не подходит коэффициент Брея-Куртиса?
+- Сделайте ординацию nMDS. Каков ее стресс?
+- Сохраните в датафрейм координаты точек после nMDS, добавьте в него переменную `Species` из исходных данных.
+- Постройте график ординации и раскрасьте точки в соответствии с видами.
+
+
 
 
 ```r
@@ -477,7 +482,7 @@ head(pesch)
 
 ## Решение
 
-Поскольку измеренные признаки варьируют в разных масштабах, целесообразно логарифмировать данные.
+Поскольку измеренные признаки варьируют в разных масштабах, целесообразно логарифмировать данные, чтобы "уменьшить" очень высокие значения.
 
 
 ```r
@@ -514,13 +519,15 @@ library(ggplot2)
 library(vegan)
 theme_set(theme_bw(base_size = 14))
 
-mds_pesch &lt;- metaMDS(log_pesch[, 3:ncol(pesch)], distance = "euclidean")
-mds_pesch &lt;- as.data.frame(mds_pesch$points)
-mds_pesch$Species &lt;- pesch$Species
+ord_pesch &lt;- metaMDS(log_pesch[, 3:ncol(pesch)], distance = "euclidean")
 
-ggplot(mds_pesch, aes(x = MDS1, y = MDS2, colour = Species)) + 
+dfr_pesch &lt;- as.data.frame(ord_pesch$points)
+dfr_pesch$Species &lt;- pesch$Species
+
+gg_ord_pesch &lt;- ggplot(dfr_pesch, aes(x = MDS1, y = MDS2, colour = Species)) + 
   geom_point(size = 5) +
   coord_fixed()
+gg_ord_pesch
 ```
 
 ![](04_perMANOVA_files/figure-html/ord-pesch-1.png)&lt;!-- --&gt;
@@ -881,7 +888,7 @@ class: middle, center, inverse
 
 ## Post hoc тесты в perMANOVA
 
-![](04_perMANOVA_files/figure-html/gg-pesch-1.png)&lt;!-- --&gt;
+![](04_perMANOVA_files/figure-html/ord-pesch-1.png)&lt;!-- --&gt;
 
 На приведенной ординации видно, что точки, соответствующие Монгольским песчанкам расположены отдельно от остальных.
 

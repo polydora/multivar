@@ -21,10 +21,19 @@ pesch <- read.csv("data/pesch.csv", header = TRUE, sep = ";")
 head(pesch)
 
 # ## Задание 1 -------------------------------------
-# - Какую меру различия можно использовать с этими данными?
-# - Как можно преобразовать данные?
-# - Постройте ординацию объектов в осях MDS и раскрасьте
-# точки в соответствии с видами
+# - Логарифмируйте исходные данные и сохраните в переменную log_pesch
+# Какие еще преобразования могли бы подойти кроме логарифма?
+log_pesch <-
+
+# - Какие меры различия подходят для этих данных? Почему не подходит коэффициент Брея-Куртиса?
+# - Сделайте ординацию nMDS. Каков ее стресс?
+ord_pesch <-
+
+# - Сохраните в датафрейм координаты точек после nMDS, добавьте в него переменную `Species` из исходных данных.
+dfr_pesch <-
+
+# - Постройте график ординации и раскрасьте точки в соответствии с видами.
+gg_ord_pesch <-
 
 
 
@@ -35,7 +44,8 @@ head(pesch)
 
 # ## PERMANOVA ###################################
 library(vegan)
-permanova_pesch <- adonis(log_pesch[3:9] ~ log_pesch$Species, method = "euclidean")
+permanova_pesch <- adonis2(log_pesch[3:9] ~ Species, data = log_pesch,
+                           method = "euclidean")
 permanova_pesch
 
 
@@ -53,19 +63,16 @@ boxplot(PCO_pesch)
 
 # ## Функция для попарных perMANOVA ###############
 pairwise_permanova <- function(dat, group, strata = NULL, ...){
-  pair <- combn(unique(as.character(group)), 2)
-  ncomb <- ncol(pair)
+  groups <- unique(as.character(group))
+  all_pairs <- combn(groups, 2, simplify = FALSE)
+  ncomb <- length(all_pairs)
   res <- rep(NA, ncomb)
   for (i in 1:ncomb) {
-    filter <- group %in% pair[, i]
-    if(is.null(strata)){
-      posthoc <- adonis(dat[filter, ] ~ group[filter], ...)$aov.tab$Pr[1]
-    } else {
-      posthoc <- adonis(dat[filter, ] ~ group[filter],
-                        strata = strata[filter], ...)$aov.tab$Pr[1]
-    }
-    res[i] <- posthoc
-    names(res)[i] <- paste(pair[, i], collapse = " vs. ")
+    flt <- group %in% all_pairs[[i]]
+    strata_flt <- if(is.null(strata)) strata[flt]
+    posthoc <- adonis2(dat[flt, ] ~ group[flt], strata = strata_flt, ...)
+    res[i] <- posthoc$`Pr(>F)`[1]
+    names(res)[i] <- paste0(all_pairs[[i]][1], "_", all_pairs[[i]][2])
   }
   return(res)
 }
@@ -92,15 +99,15 @@ p.adjust(p_vals, method = "holm")
 # песчанками были изучены только самки)
 log_pesch2 <- log_pesch[log_pesch$Species != "zhirnokhvost", ]
 
-twofact_pesch <- adonis(log_pesch2[,3:ncol(pesch)] ~ Gender * Species,
-                        data = log_pesch2, method = "euclidian")
+twofact_pesch <- adonis2(log_pesch2[,3:ncol(pesch)] ~ Gender * Species,
+                         data = log_pesch2, method = "euclidean")
 twofact_pesch
 
 # ## Здесь возможен иерархический дизайн
 # Различается ли поведение самцов и самок у этих видов песчанок?
-nested_pesch <- adonis(log_pesch2[, 3:ncol(pesch)] ~ Gender,
-                       data = log_pesch2, strata = log_pesch2$Species,
-                       method = "euclidian")
+nested_pesch <- adonis2(log_pesch2[, 3:ncol(pesch)] ~ Gender,
+                        data = log_pesch2, strata = log_pesch2$Species,
+                        method = "euclidean")
 nested_pesch
 
 
