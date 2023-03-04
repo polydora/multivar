@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
-    <script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
+    <meta name="author" content="Анастасия Лянгузова" />
+    <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
@@ -24,7 +25,7 @@
     <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
     <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
     <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
-    <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="site_libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
     <script src="site_libs/d3-3.3.8/d3.min.js"></script>
     <script src="site_libs/dagre-0.4.0/dagre-d3.min.js"></script>
     <link href="site_libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
@@ -58,6 +59,9 @@ class: middle, left, inverse, title-slide
 .author[
 ### Вадим Хайтов
 ]
+.author[
+### Анастасия Лянгузова
+]
 
 ---
 
@@ -78,17 +82,13 @@ class: middle, left, inverse, title-slide
 
 - Выбирать подходящий метод агрегации (алгоритм кластеризации)
 - Строить дендрограммы
-- Оценивать качество кластеризации (Кофенетическая корреляция, ширина силуэта, поддержка ветвей)
+- Оценивать качество кластеризации (Кофенетическая корреляция, ширина силуэта, поддержка ветвей) 
 - Сопоставлять дендрограммы, полученные разными способами, при помощи танглграмм
 
 
 
 
----
 
-class: middle, center, inverse
-
-# Кластерный анализ
 
 ---
 
@@ -105,7 +105,7 @@ class: middle, center, inverse
   - Метод максимальной бережливости
   - Метод максимального правдоподобия
 
-### И это еще далеко не все
+### И это еще далеко не всё!
 
 ---
 
@@ -198,42 +198,49 @@ ar:f ar:m rm:f rm:m
 ```r
 library(vegan)
 library(ggplot2); theme_set(theme_bw(base_size = 16))
-s_w &lt;- scale(Wolves[, 4:ncol(Wolves)]) ## стандартизируем
-ord_w &lt;- metaMDS(comm = s_w, distance = "euclidean", autotransform = FALSE)
+st_w &lt;- scale(Wolves[, 4:ncol(Wolves)]) ## стандартизируем
+ord_w &lt;- metaMDS(comm = st_w, distance = "euclidean", autotransform = FALSE)
 dfr_w &lt;- data.frame(ord_w$points, Group = Wolves$group)
-gg_w &lt;- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + geom_point(aes(colour = Group))
+gg_w &lt;- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + 
+  geom_point(aes(colour = Group)) + 
+  scale_color_manual(labels = c("Самки из Арктики", "Самцы из Арктики",
+                                "Самки из Скалистых гор", 
+                                "Самцы из скалистых гор"), 
+                      values = c("red", "green", "blue", "purple")) +
+  labs(colour = "Группы")
 ```
 
 ```
 Run 0 stress 0.101 
-Run 1 stress 0.1268 
-Run 2 stress 0.1474 
-Run 3 stress 0.1368 
-Run 4 stress 0.1406 
-Run 5 stress 0.1434 
-Run 6 stress 0.101 
-... Procrustes: rmse 0.0000006815  max resid 0.000001345 
+Run 1 stress 0.1522 
+Run 2 stress 0.136 
+Run 3 stress 0.1268 
+Run 4 stress 0.101 
+... New best solution
+... Procrustes: rmse 0.000000936  max resid 0.000002124 
 ... Similar to previous best
-Run 7 stress 0.1244 
-Run 8 stress 0.1278 
-Run 9 stress 0.101 
-... Procrustes: rmse 0.00001102  max resid 0.000037 
+Run 5 stress 0.1473 
+Run 6 stress 0.1343 
+Run 7 stress 0.101 
+... Procrustes: rmse 0.000005798  max resid 0.00001916 
 ... Similar to previous best
-Run 10 stress 0.128 
+Run 8 stress 0.1276 
+Run 9 stress 0.1339 
+Run 10 stress 0.1415 
 Run 11 stress 0.101 
-... Procrustes: rmse 0.000007407  max resid 0.00002443 
+... Procrustes: rmse 0.000006169  max resid 0.00001855 
 ... Similar to previous best
-Run 12 stress 0.101 
-... Procrustes: rmse 0.000009156  max resid 0.00003057 
-... Similar to previous best
-Run 13 stress 0.1285 
-Run 14 stress 0.1275 
-Run 15 stress 0.1422 
+Run 12 stress 0.1361 
+Run 13 stress 0.1268 
+Run 14 stress 0.1281 
+Run 15 stress 0.1244 
 Run 16 stress 0.1368 
-Run 17 stress 0.1368 
-Run 18 stress 0.1368 
-Run 19 stress 0.1284 
-Run 20 stress 0.1474 
+Run 17 stress 0.101 
+... Procrustes: rmse 0.000001779  max resid 0.000005595 
+... Similar to previous best
+Run 18 stress 0.1544 
+Run 19 stress 0.1597 
+Run 20 stress 0.1389 
 *** Best solution repeated 4 times
 ```
 ]
@@ -255,8 +262,8 @@ class: middle, center, inverse
 ## Этапы кластеризации 
 
 .pull-left[
-<div id="htmlwidget-5e52a50e4ac42b0fc52d" style="width:432px;height:540px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5e52a50e4ac42b0fc52d">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-019bd53d3bca7269ec71" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-019bd53d3bca7269ec71">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style A color:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -281,7 +288,7 @@ class: middle, center, inverse
 
 
 .pull-left-66[
-.content-box-purple[
+.content-box-green[
 
 __= nearest neighbour = single linkage__
 
@@ -299,7 +306,7 @@ __= nearest neighbour = single linkage__
 
 - Может быть сложно интерпретировать, если нужны группы
   - объекты на дендрограмме часто не образуют четко разделенных групп
-  - часто получаются цепочки кластеров (объекты присоединяются как бы по-одному)
+  - часто получаются цепочки кластеров (объекты присоединяются как бы по одному)
 - Хорош для выявления градиентов
 
 ---
@@ -322,16 +329,16 @@ __= nearest neighbour = single linkage__
 
 
 
-.pull-left-66[
-.content-box-purple[
+.pull-left-60[
+.content-box-green[
 
 __= furthest neighbour = complete linkage__
 
 - к кластеру присоединяется отдаленный кластер/объект
-- кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие - чем более крупная группа, тем сложнее к ней присоединиться)
+- кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие — чем более крупная группа, тем сложнее к ней присоединиться)
 ]]
 
-.pull-right-33[
+.pull-right-25[
 
 ![](05_cluster_analysis_files/figure-html/fig-complete-1.png)&lt;!-- --&gt;
 
@@ -359,7 +366,7 @@ __= furthest neighbour = complete linkage__
 ## Метод невзвешенного попарного среднего
 
 .pull-left-66[
-.content-box-purple[
+.content-box-green[
 
 __= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 
@@ -392,22 +399,21 @@ __= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 
 ## Метод Варда
 
-.pull-left-66[
-.content-box-purple[
+
+.pull-left-66[.content-box-green[
 
 __= Ward's Minimum Variance Clustering__
 
-- объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной
-]]
+- объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной.
+]
 
-.pull-right-33[
 
 ![](05_cluster_analysis_files/figure-html/fig-ward-1.png)&lt;!-- --&gt;
 ]
-
+.pull-left-33[
 ### Особенности
 
-- метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния
+- метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния.]
 
 ---
 
@@ -429,18 +435,17 @@ class: middle, center, inverse
 
 
 ```r
-# Матрица расстояний
-d &lt;- dist(x = s_w, method = "euclidean")
-```
-
-
-
-
-```r
 # Пакеты для визуализации кластеризации
 library(ape)
 library(dendextend)
 ```
+
+
+```r
+# Матрица расстояний
+d &lt;- dist(x = st_w, method = "euclidean")
+```
+
 
 ---
 
@@ -507,7 +512,7 @@ plot(den_compl)
 
 ---
 
-## (3.1) Метод невзвешенного попарного среднего + `ape`
+## (3.1) Метод невзвешенного попарного среднего (UPGMA) + `ape`
 
 
 ```r
@@ -521,7 +526,7 @@ axisPhylo()
 
 ---
 
-## (3.2) Метод невзвешенного попарного среднего + `dendextend`
+## (3.2) Метод невзвешенного попарного среднего (UPGMA) + `dendextend`
 
 
 ```r
@@ -567,18 +572,18 @@ class: middle, center, inverse
 
 ## Кофенетическая корреляция
 
-__Кофенетическое расстояние__ - расстояние между объектами на дендрограмме
+__Кофенетическое расстояние__  — расстояние между объектами на дендрограмме, т.е. то расстояние, на котором объекты становятся частью одной группы в ходе процесса кластеризации.
 
-.content-box-purple[
-__Кофенетическая корреляция__ - мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов
+.content-box-green[
+__Кофенетическая корреляция__  — мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов. В идеальном случае равна 1. 
 ]
 
 
 &lt;br/&gt;
 
-Метод агрегации, который дает наибольшую кофенетическую корреляцию, дает кластеры, лучше всего отражающие исходные данные
+Метод агрегации, который дает наибольшую кофенетическую корреляцию, дает кластеры, лучше всего отражающие исходные данные.
 
-Можно рассчитать при помощи функции из пакета `ape`
+Матрицу кофенетических расстояний и кофенетическую корреляцию можно рассчитать при помощи функций из пакета `stats` (`dendextend`) и `ape`, соответственно.
 
 ---
 
@@ -662,7 +667,7 @@ cor(d, as.dist(c_w2))
 
 ## Ширина силуэта
 
-.content-box-purple[
+.content-box-green[
 Ширина силуэта `\(s_i\)` --- мера степени принадлежности объекта `\(i\)` к кластеру 
 ]
 
@@ -696,9 +701,24 @@ plot(silhouette(x = complete3, dist = d), cex.names = 0.6)
 
 ---
 
+## Бутстреп
+
+.content-box-green[
+__Бутстреп__ --- один из методов оценки значимости полученных результатов; повторная выборка из имеющихся данных. В такой выборке элементы могут повторяться.]
+
+### Алгоритм
+- Имеющиеся данные делим на группы одинакового размера: какие-то элементы могут отсутствовать, а какие-то --- повторяться несколько раз. 
+- На основе полученных данных строим дендрограмму. 
+- Повторяем всё много раз.   
+
+---
+
 ## Бутстреп поддержка ветвей
 
-"An approximately unbiased test of phylogenetic tree selection" (Shimodaria, 2002)
+
+&gt; "An approximately unbiased test of phylogenetic tree selection."
+&gt;
+&gt; --- Shimodaria, 2002
 
 Этот тест использует специальный вариант бутстрепа --- multiscale bootstrap. Мы не просто многократно берем бутстреп-выборки и оцениваем для них вероятность получения топологий (BP p-value), эти выборки еще и будут с разным числом объектов. По изменению BP при разных объемах выборки можно вычислить AU (approximately unbiased p-value). 
 
@@ -706,13 +726,13 @@ plot(silhouette(x = complete3, dist = d), cex.names = 0.6)
 ```r
 library(pvclust)
 # итераций должно быть 1000 и больше, здесь мало для скорости
-cl_boot &lt;- pvclust(t(s_w), method.hclust = "average", nboot = 100, 
+cl_boot &lt;- pvclust(t(st_w), method.hclust = "average", nboot = 100, 
                    method.dist = "euclidean", parallel = TRUE, iseed = 42)
 ```
 
 ```
 Creating a temporary cluster...done:
-socket cluster with 7 nodes on host 'localhost'
+socket cluster with 11 nodes on host 'localhost'
 Multiscale bootstrap... Done.
 ```
 
@@ -728,7 +748,7 @@ BP --- bootstrap p-values (зеленый)
 
 ```r
 plot(cl_boot)
-# pvrect(cl_boot) # достоверные ветвления
+#pvrect(cl_boot) # достоверные ветвления
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-cl-boot-1.png)&lt;!-- --&gt;
@@ -798,21 +818,30 @@ class: middle, center, inverse
 
 ---
 
-## И небольшая демонстрация - дерево по генетическим данным
+## И небольшая демонстрация --- дерево по генетическим данным
 
+.pull-left[.
 
 ```r
-webpage &lt;-"http://evolution.genetics.washington.edu/book/primates.dna"
+webpage &lt;- "http://evolution.genetics.washington.edu/book/primates.dna"
 primates.dna &lt;- read.dna(webpage)
 d_pri &lt;- dist.dna(primates.dna)
 hc_pri &lt;- hclust(d_pri, method = "average")
 ph_pri &lt;- as.phylo(hc_pri)
-plot(ph_pri)
+plot.phylo(ph_pri)
 axisPhylo()
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-gen-1.png)&lt;!-- --&gt;
+]
+.pull-right[.
 
+```r
+plot.phylo(ph_pri, type = "radial")
+```
+
+![](05_cluster_analysis_files/figure-html/fig-circle-1.png)&lt;!-- --&gt;
+]
 ---
 
 ## Take-home messages

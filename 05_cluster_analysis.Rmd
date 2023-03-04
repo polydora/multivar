@@ -4,6 +4,7 @@ subtitle: "Анализ и визуализация многомерных да�
 author: 
   - Марина Варфоломеева
   - Вадим Хайтов
+  - Анастасия Лянгузова
 company: 'Каф. Зоологии беспозвоночных, СПбГУ'
 output:
   xaringan::moon_reader:
@@ -38,7 +39,7 @@ output:
 
 - Выбирать подходящий метод агрегации (алгоритм кластеризации)
 - Строить дендрограммы
-- Оценивать качество кластеризации (Кофенетическая корреляция, ширина силуэта, поддержка ветвей)
+- Оценивать качество кластеризации (Кофенетическая корреляция, ширина силуэта, поддержка ветвей) 
 - Сопоставлять дендрограммы, полученные разными способами, при помощи танглграмм
 
 
@@ -48,7 +49,7 @@ library(xaringanExtra)
 use_tile_view()
 use_scribble()
 use_search(show_icon = FALSE)
-use_progress_bar(color = "#6d2b5e", location = "bottom", height = "10px")
+use_progress_bar(color = "#C6FFE7", location = "bottom", height = "10px")
 use_freezeframe()
 # use_webcam()
 # use_panelset()
@@ -59,11 +60,7 @@ use_freezeframe()
 use_tachyons()
 ```
 
----
 
-class: middle, center, inverse
-
-# Кластерный анализ
 
 ---
 
@@ -80,7 +77,7 @@ class: middle, center, inverse
   - Метод максимальной бережливости
   - Метод максимального правдоподобия
 
-### И это еще далеко не все
+### И это еще далеко не всё!
 
 ---
 
@@ -132,15 +129,21 @@ table(Wolves$group)
 ## Решение
 
 .scroll-box-20[
-```{r results='hold', echo=-c(3, 4), purl=FALSE}
+```{r results='hold', echo=-c(3, 4)}
 library(vegan)
 library(ggplot2); theme_set(theme_bw(base_size = 16))
 update_geom_defaults("point", list(size = 4)); 
 update_geom_defaults("text", list(size = 5))
-s_w <- scale(Wolves[, 4:ncol(Wolves)]) ## стандартизируем
-ord_w <- metaMDS(comm = s_w, distance = "euclidean", autotransform = FALSE)
+st_w <- scale(Wolves[, 4:ncol(Wolves)]) ## стандартизируем
+ord_w <- metaMDS(comm = st_w, distance = "euclidean", autotransform = FALSE)
 dfr_w <- data.frame(ord_w$points, Group = Wolves$group)
-gg_w <- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + geom_point(aes(colour = Group))
+gg_w <- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) + 
+  geom_point(aes(colour = Group)) + 
+  scale_color_manual(labels = c("Самки из Арктики", "Самцы из Арктики",
+                                "Самки из Скалистых гор", 
+                                "Самцы из скалистых гор"), 
+                      values = c("red", "green", "blue", "purple")) +
+  labs(colour = "Группы")
 ```
 ]
 
@@ -163,13 +166,19 @@ class: middle, center, inverse
 ## Этапы кластеризации 
 
 .pull-left[
-```{r fig-cluster-steps, echo=FALSE, cache=FALSE, opts.label='MxXL'}
+```{r fig-cluster-steps, echo=FALSE, cache=FALSE, opts.label='MxXL', purl=FALSE}
 library(DiagrammeR)
 DiagrammeR(
   "graph TD; 
            A(Набор признаков)-->B(Матрица расстояний или сходств); 
            B-->C(Группировка объектов);
            C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;
+           style A fill:#C6FFE7,stroke:#C6FFE7;
+           style B fill:#C6FFE7,stroke:#C6FFE7;
+           style C fill:#C6FFE7,stroke:#C6FFE7;
+           style D fill:#C6FFE7,stroke:#C6FFE7;
+           style E fill:#C6FFE7,stroke:#C6FFE7;
+           style A color:#C6FFE7,stroke:#C6FFE7;
   ")
 ```
 ]
@@ -188,30 +197,32 @@ DiagrammeR(
 
 ## Методы кластеризации
 
-```{r fig-cluster-methods, echo=FALSE, opts.label='LxL'}
+```{r fig-cluster-methods, echo=FALSE, purl=FALSE}
 library(gridExtra)
+library(ggtext)
 theme_set(theme_bw(base_size = 16))
 update_geom_defaults("point", list(size = 4))
 cl_dat <- data.frame(cl = c(rep("A", 5), rep("B", 4)), 
-           x = c(1, 2.7, 2, 1.5, 2, 5, 6, 5.5, 5.8),
-           y = c(1, 1.2, 3, 2, 1.5, 1.2, 1, 3, 2))
+                     x = c(1, 2.7, 2, 1.5, 2, 5, 6, 5.5, 5.8),
+                     y = c(1, 1.2, 3, 2, 1.5, 1.2, 1, 3, 2))
 
 segm_between <- function(ind1, ind2, dat){
-i_betw <- expand.grid(ind1, ind2)
-segm <- lapply(1:nrow(i_betw), function(i) cbind(dat[i_betw[i, 1], ], dat[i_betw[i, 2], ]))
-segm <- Reduce(rbind, segm)
-colnames(segm) <- c("x", "y", "xend", "yend")
-return(segm)
+  i_betw <- expand.grid(ind1, ind2)
+  segm <- lapply(1:nrow(i_betw), function(i) cbind(dat[i_betw[i, 1], ], 
+                                                   dat[i_betw[i, 2], ]))
+  segm <- Reduce(rbind, segm)
+  colnames(segm) <- c("x", "y", "xend", "yend")
+  return(segm)
 }
 
 segm_within <- function(ind1, ind2, dat){
   # for ward
   dat1 <- dat[ind1, ]
   dat2 <- dat[ind2, ]
-with1 <- segm_between(1:nrow(dat1), nrow(dat1)+1, rbind(dat1, colMeans(dat1)))
-with2 <- segm_between(1:nrow(dat2), nrow(dat2)+1, rbind(dat2, colMeans(dat2)))
-segm <- rbind(with1, with2)
-return(segm)
+  with1 <- segm_between(1:nrow(dat1), nrow(dat1)+1, rbind(dat1, colMeans(dat1)))
+  with2 <- segm_between(1:nrow(dat2), nrow(dat2)+1, rbind(dat2, colMeans(dat2)))
+  segm <- rbind(with1, with2)
+  return(segm)
 }
 
 betw_segm <- segm_between(1:5, 6:9, cl_dat[, 2:3])
@@ -224,19 +235,34 @@ cl_means <- cl_dat %>% group_by(cl) %>% summarise(
 betw <- as.matrix(dist(cl_dat[, 2:3]))[6:9, 1:5]
 # which.min(betw)
 # which.max(betw)
-th <- theme_classic(base_size = 16) + theme(axis.line = element_blank(), axis.title = element_blank(), axis.ticks = element_blank(), axis.text = element_blank(), legend.position = "none")
+th <- theme_classic(base_size = 16) + theme(axis.line = element_blank(), 
+                                            axis.title = element_blank(),
+                                            axis.ticks = element_blank(), 
+                                            axis.text = element_blank(), 
+                                            legend.position = "none",
+                                            plot.title = element_textbox_simple())
 
-gg <- ggplot(cl_dat, aes(x = x, y = y, colour = cl)) + geom_point() + stat_ellipse(level = 0.8) + geom_point(data = cl_means, size = 4, shape = 5) + th
+gg <- ggplot(cl_dat, aes(x = x, y = y, colour = cl)) + geom_point() + 
+  stat_ellipse(level = 0.8) + geom_point(data = cl_means, size = 4, shape = 5) + th
 
-gg_single <- gg +  annotate(geom = "segment", x = 2.7, y = 1.2, xend = 5, yend = 1.2, colour = "grey60")
+gg_single <- gg + annotate(geom = "segment", x = 2.7, y = 1.2, 
+                           xend = 5, yend = 1.2, colour = "grey60")
 
-gg_complete <- gg +  annotate(geom = "segment", x = 1, y = 1, xend = 6, yend = 1, colour = "grey60")
+gg_complete <- gg + annotate(geom = "segment", x = 1, y = 1, 
+                             xend = 6, yend = 1, colour = "grey60")
 
-gg_average <- gg + geom_segment(data = betw_segm, aes(x = x, y = y, xend = xend, yend = yend, colour = NULL), colour = "grey60")
+gg_average <- gg + geom_segment(data = betw_segm, aes(x = x, y = y, xend = xend, 
+                                                      yend = yend, colour = NULL), 
+                                colour = "grey60")
 
-gg_ward <- gg + geom_segment(data = with_segm, aes(x = x, y = y, xend = xend, yend = yend, colour = NULL), colour = "grey60")
+gg_ward <- gg + geom_segment(data = with_segm, aes(x = x, y = y, xend = xend, 
+                                                   yend = yend, colour = NULL), 
+                             colour = "grey60")
 
-grid.arrange(gg_single + ggtitle("Метод ближайшего соседа"), gg_complete + ggtitle("Метод отдаленного соседа"), gg_average + ggtitle("Метод среднегруппового расст."), gg_ward + ggtitle("Метод Варда"), ncol = 2)
+grid.arrange(gg_single + ggtitle("Метод ближайшего соседа"), gg_complete + 
+               ggtitle("Метод отдаленного соседа"), gg_average + 
+               ggtitle("Метод среднегруппового расстояния"), gg_ward + 
+               ggtitle("Метод Варда"), ncol = 2)
 ```
 
 ---
@@ -245,7 +271,7 @@ grid.arrange(gg_single + ggtitle("Метод ближайшего соседа")
 
 
 .pull-left-66[
-.content-box-purple[
+.content-box-green[
 
 __= nearest neighbour = single linkage__
 
@@ -256,7 +282,7 @@ __= nearest neighbour = single linkage__
 
 .pull-right-33[
 
-```{r fig-single, echo=FALSE, opts.label='SxS'}
+```{r fig-single, echo=FALSE, opts.label='SxS', purl=FALSE}
 gg_single
 ```
 ]
@@ -265,7 +291,7 @@ gg_single
 
 - Может быть сложно интерпретировать, если нужны группы
   - объекты на дендрограмме часто не образуют четко разделенных групп
-  - часто получаются цепочки кластеров (объекты присоединяются как бы по-одному)
+  - часто получаются цепочки кластеров (объекты присоединяются как бы по одному)
 - Хорош для выявления градиентов
 
 ---
@@ -343,7 +369,7 @@ ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
 
 ## Как работает метод ближайшего соседа
 
-```{r single-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r single-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide', purl=FALSE}
 sapply(gg_list_s, plot)
 ```
 
@@ -353,18 +379,18 @@ sapply(gg_list_s, plot)
 
 
 
-.pull-left-66[
-.content-box-purple[
+.pull-left-60[
+.content-box-green[
 
 __= furthest neighbour = complete linkage__
 
 - к кластеру присоединяется отдаленный кластер/объект
-- кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие - чем более крупная группа, тем сложнее к ней присоединиться)
+- кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие — чем более крупная группа, тем сложнее к ней присоединиться)
 ]]
 
-.pull-right-33[
+.pull-right-25[
 
-```{r fig-complete, echo=FALSE, opts.label='SxM'}
+```{r fig-complete, echo=FALSE, opts.label='SxM', purl=FALSE}
 gg_complete
 ```
 
@@ -390,7 +416,7 @@ ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
 
 ## Как работает метод отдаленного соседа
 
-```{r complete-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
+```{r complete-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide', purl=FALSE}
 sapply(gg_list_c, plot)
 ```
 
@@ -399,7 +425,7 @@ sapply(gg_list_c, plot)
 ## Метод невзвешенного попарного среднего
 
 .pull-left-66[
-.content-box-purple[
+.content-box-green[
 
 __= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 
@@ -407,7 +433,7 @@ __= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 ]]
 .pull-right-33[
 
-```{r fig-average, echo=FALSE, opts.label='SxM'}
+```{r fig-average, echo=FALSE, opts.label='SxM', purl=FALSE}
 gg_average
 ```
 
@@ -436,24 +462,23 @@ sapply(gg_list_a, plot)
 
 ## Метод Варда
 
-.pull-left-66[
-.content-box-purple[
+
+.pull-left-66[.content-box-green[
 
 __= Ward's Minimum Variance Clustering__
 
-- объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной
-]]
+- объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной.
+]
 
-.pull-right-33[
 
-```{r fig-ward, echo=FALSE, opts.label='SxM'}
+```{r fig-ward, echo=FALSE, opts.label='SxM', purl=FALSE}
 gg_ward
 ```
 ]
-
+.pull-left-33[
 ### Особенности
 
-- метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния
+- метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния.]
 
 ---
 
@@ -476,17 +501,16 @@ class: middle, center, inverse
 Давайте построим деревья при помощи нескольких алгоритмов кластеризации (по стандартизованным данным, с использованием Евклидова расстояния) и сравним их.
 
 ```{r}
-# Матрица расстояний
-d <- dist(x = s_w, method = "euclidean")
-```
-
-
-
-```{r}
 # Пакеты для визуализации кластеризации
 library(ape)
 library(dendextend)
 ```
+
+```{r}
+# Матрица расстояний
+d <- dist(x = st_w, method = "euclidean")
+```
+
 
 ---
 
@@ -538,7 +562,7 @@ plot(den_compl)
 
 ---
 
-## (3.1) Метод невзвешенного попарного среднего + `ape`
+## (3.1) Метод невзвешенного попарного среднего (UPGMA) + `ape`
 
 ```{r fig-average-ape, opts.label='XLxL'}
 hc_avg <- hclust(d, method = "average")
@@ -549,7 +573,7 @@ axisPhylo()
 
 ---
 
-## (3.2) Метод невзвешенного попарного среднего + `dendextend`
+## (3.2) Метод невзвешенного попарного среднего (UPGMA) + `dendextend`
 
 ```{r fig-average-dend, opts.label='XLxL'}
 den_avg <- as.dendrogram(hc_avg)
@@ -586,18 +610,18 @@ class: middle, center, inverse
 
 ## Кофенетическая корреляция
 
-__Кофенетическое расстояние__ - расстояние между объектами на дендрограмме
+__Кофенетическое расстояние__  — расстояние между объектами на дендрограмме, т.е. то расстояние, на котором объекты становятся частью одной группы в ходе процесса кластеризации.
 
-.content-box-purple[
-__Кофенетическая корреляция__ - мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов
+.content-box-green[
+__Кофенетическая корреляция__  — мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов. В идеальном случае равна 1. 
 ]
 
 
 <br/>
 
-Метод агрегации, который дает наибольшую кофенетическую корреляцию, дает кластеры, лучше всего отражающие исходные данные
+Метод агрегации, который дает наибольшую кофенетическую корреляцию, дает кластеры, лучше всего отражающие исходные данные.
 
-Можно рассчитать при помощи функции из пакета `ape`
+Матрицу кофенетических расстояний и кофенетическую корреляцию можно рассчитать при помощи функций из пакета `stats` (`dendextend`) и `ape`, соответственно.
 
 ---
 
@@ -653,7 +677,7 @@ cor(d, as.dist(c_w2))
 
 ## Ширина силуэта
 
-.content-box-purple[
+.content-box-green[
 Ширина силуэта $s_i$ --- мера степени принадлежности объекта $i$ к кластеру 
 ]
 
@@ -684,16 +708,31 @@ plot(silhouette(x = complete3, dist = d), cex.names = 0.6)
 
 ---
 
+## Бутстреп
+
+.content-box-green[
+__Бутстреп__ --- один из методов оценки значимости полученных результатов; повторная выборка из имеющихся данных. В такой выборке элементы могут повторяться.]
+
+### Алгоритм
+- Имеющиеся данные делим на группы одинакового размера: какие-то элементы могут отсутствовать, а какие-то --- повторяться несколько раз. 
+- На основе полученных данных строим дендрограмму. 
+- Повторяем всё много раз.   
+
+---
+
 ## Бутстреп поддержка ветвей
 
-"An approximately unbiased test of phylogenetic tree selection" (Shimodaria, 2002)
+
+> "An approximately unbiased test of phylogenetic tree selection."
+>
+> --- Shimodaria, 2002
 
 Этот тест использует специальный вариант бутстрепа --- multiscale bootstrap. Мы не просто многократно берем бутстреп-выборки и оцениваем для них вероятность получения топологий (BP p-value), эти выборки еще и будут с разным числом объектов. По изменению BP при разных объемах выборки можно вычислить AU (approximately unbiased p-value). 
 
 ```{r}
 library(pvclust)
 # итераций должно быть 1000 и больше, здесь мало для скорости
-cl_boot <- pvclust(t(s_w), method.hclust = "average", nboot = 100, 
+cl_boot <- pvclust(t(st_w), method.hclust = "average", nboot = 100, 
                    method.dist = "euclidean", parallel = TRUE, iseed = 42)
 ```
 
@@ -708,7 +747,7 @@ BP --- bootstrap p-values (зеленый)
 
 ```{r fig-cl-boot, fig.show='hold', opts.label='XLxL'}
 plot(cl_boot)
-# pvrect(cl_boot) # достоверные ветвления
+#pvrect(cl_boot) # достоверные ветвления
 ```
 
 ---
@@ -773,18 +812,24 @@ class: middle, center, inverse
 
 ---
 
-## И небольшая демонстрация - дерево по генетическим данным
+## И небольшая демонстрация --- дерево по генетическим данным
 
+.pull-left[.
 ```{r fig-gen, cache=TRUE}
-webpage <-"http://evolution.genetics.washington.edu/book/primates.dna"
+webpage <- "http://evolution.genetics.washington.edu/book/primates.dna"
 primates.dna <- read.dna(webpage)
 d_pri <- dist.dna(primates.dna)
 hc_pri <- hclust(d_pri, method = "average")
 ph_pri <- as.phylo(hc_pri)
-plot(ph_pri)
+plot.phylo(ph_pri)
 axisPhylo()
 ```
-
+]
+.pull-right[.
+```{r fig-circle}
+plot.phylo(ph_pri, type = "radial")
+```
+]
 ---
 
 ## Take-home messages
