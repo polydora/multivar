@@ -6,33 +6,33 @@
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
     <meta name="author" content="Анастасия Лянгузова" />
-    <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
-    <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
-    <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
-    <link href="site_libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
-    <script src="site_libs/tile-view-0.2.6/tile-view.js"></script>
-    <script src="site_libs/fabric-4.3.1/fabric.min.js"></script>
-    <link href="site_libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
-    <script src="site_libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
-    <script src="site_libs/mark.js-8.11.1/mark.min.js"></script>
-    <link href="site_libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
-    <script src="site_libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
     <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
-    <script src="site_libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
-    <script src="site_libs/freezeframe-5.0.2/freezeframe.min.js"></script>
-    <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script src="libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
     <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
-    <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
-    <script src="site_libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
-    <script src="site_libs/d3-3.3.8/d3.min.js"></script>
-    <script src="site_libs/dagre-0.4.0/dagre-d3.min.js"></script>
-    <link href="site_libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
-    <script src="site_libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
-    <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-    <script src="site_libs/chromatography-0.1/chromatography.js"></script>
-    <script src="site_libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+    <script src="libs/d3-3.3.8/d3.min.js"></script>
+    <script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+    <link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography-0.1/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
     <!-- https://github.com/fnaufel/xaringan-smartify-->
     <script
     			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -212,35 +212,37 @@ gg_w &lt;- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) +
 
 ```
 Run 0 stress 0.101 
-Run 1 stress 0.1522 
-Run 2 stress 0.136 
-Run 3 stress 0.1268 
-Run 4 stress 0.101 
+Run 1 stress 0.1268 
+Run 2 stress 0.1368 
+Run 3 stress 0.101 
+... Procrustes: rmse 0.00000361  max resid 0.0000127 
+... Similar to previous best
+Run 4 stress 0.1359 
+Run 5 stress 0.1403 
+Run 6 stress 0.1268 
+Run 7 stress 0.1281 
+Run 8 stress 0.136 
+Run 9 stress 0.1285 
+Run 10 stress 0.1265 
+Run 11 stress 0.1376 
+Run 12 stress 0.1285 
+Run 13 stress 0.3856 
+Run 14 stress 0.101 
 ... New best solution
-... Procrustes: rmse 0.000000936  max resid 0.000002124 
+... Procrustes: rmse 0.000004676  max resid 0.00001555 
 ... Similar to previous best
-Run 5 stress 0.1473 
-Run 6 stress 0.1343 
-Run 7 stress 0.101 
-... Procrustes: rmse 0.000005798  max resid 0.00001916 
-... Similar to previous best
-Run 8 stress 0.1276 
-Run 9 stress 0.1339 
-Run 10 stress 0.1415 
-Run 11 stress 0.101 
-... Procrustes: rmse 0.000006169  max resid 0.00001855 
-... Similar to previous best
-Run 12 stress 0.1361 
-Run 13 stress 0.1268 
-Run 14 stress 0.1281 
-Run 15 stress 0.1244 
-Run 16 stress 0.1368 
+Run 15 stress 0.1356 
+Run 16 stress 0.1352 
 Run 17 stress 0.101 
-... Procrustes: rmse 0.000001779  max resid 0.000005595 
+... Procrustes: rmse 0.00001078  max resid 0.00003611 
 ... Similar to previous best
-Run 18 stress 0.1544 
-Run 19 stress 0.1597 
-Run 20 stress 0.1389 
+Run 18 stress 0.101 
+... Procrustes: rmse 0.000002862  max resid 0.000008435 
+... Similar to previous best
+Run 19 stress 0.1392 
+Run 20 stress 0.101 
+... Procrustes: rmse 0.00000568  max resid 0.00001901 
+... Similar to previous best
 *** Best solution repeated 4 times
 ```
 ]
@@ -262,8 +264,8 @@ class: middle, center, inverse
 ## Этапы кластеризации 
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-019bd53d3bca7269ec71" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-019bd53d3bca7269ec71">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style A color:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1e893cd0a1cebc1ace79" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-1e893cd0a1cebc1ace79">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style A color:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -479,7 +481,7 @@ axisPhylo()
 
 ```r
 den_single &lt;- as.dendrogram(hc_single)
-plot(den_single)
+plot(den_single, horiz = TRUE)
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-single-dend-1.png)&lt;!-- --&gt;
@@ -505,7 +507,7 @@ axisPhylo()
 
 ```r
 den_compl &lt;- as.dendrogram(hc_compl)
-plot(den_compl)
+plot(den_compl, horiz = TRUE)
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-complete-dend-1.png)&lt;!-- --&gt;
@@ -531,7 +533,7 @@ axisPhylo()
 
 ```r
 den_avg &lt;- as.dendrogram(hc_avg)
-plot(den_avg)
+plot(den_avg, horiz = TRUE)
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-average-dend-1.png)&lt;!-- --&gt;
@@ -557,7 +559,7 @@ axisPhylo()
 
 ```r
 den_w2 &lt;- as.dendrogram(hc_w2)
-plot(den_w2)
+plot(den_w2, horiz = TRUE)
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-ward-dend-1.png)&lt;!-- --&gt;
@@ -748,7 +750,7 @@ BP --- bootstrap p-values (зеленый)
 
 ```r
 plot(cl_boot)
-#pvrect(cl_boot) # достоверные ветвления
+pvrect(cl_boot) # достоверные ветвления
 ```
 
 ![](05_cluster_analysis_files/figure-html/fig-cl-boot-1.png)&lt;!-- --&gt;

@@ -537,7 +537,7 @@ axisPhylo()
 
 ```{r fig-single-dend, opts.label='XLxL'}
 den_single <- as.dendrogram(hc_single)
-plot(den_single)
+plot(den_single, horiz = TRUE)
 ```
 
 ---
@@ -557,7 +557,7 @@ axisPhylo()
 
 ```{r fig-complete-dend, opts.label='XLxL'}
 den_compl <- as.dendrogram(hc_compl)
-plot(den_compl)
+plot(den_compl, horiz = TRUE)
 ```
 
 ---
@@ -577,7 +577,7 @@ axisPhylo()
 
 ```{r fig-average-dend, opts.label='XLxL'}
 den_avg <- as.dendrogram(hc_avg)
-plot(den_avg)
+plot(den_avg, horiz = TRUE)
 ```
 
 ---
@@ -597,7 +597,7 @@ axisPhylo()
 
 ```{r fig-ward-dend, opts.label='XLxL'}
 den_w2 <- as.dendrogram(hc_w2)
-plot(den_w2)
+plot(den_w2, horiz = TRUE)
 ```
 
 ---
@@ -747,7 +747,7 @@ BP --- bootstrap p-values (зеленый)
 
 ```{r fig-cl-boot, fig.show='hold', opts.label='XLxL'}
 plot(cl_boot)
-#pvrect(cl_boot) # достоверные ветвления
+pvrect(cl_boot) # достоверные ветвления
 ```
 
 ---
