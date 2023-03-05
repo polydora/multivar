@@ -731,6 +731,7 @@ __Бутстреп__ --- один из методов оценки значим�
 
 ```{r}
 library(pvclust)
+set.seed(389)
 # итераций должно быть 1000 и больше, здесь мало для скорости
 cl_boot <- pvclust(t(st_w), method.hclust = "average", nboot = 100, 
                    method.dist = "euclidean", parallel = TRUE, iseed = 42)
