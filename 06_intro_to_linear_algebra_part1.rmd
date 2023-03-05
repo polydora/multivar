@@ -1,11 +1,10 @@
 ---
-title: "Краткое введение в мир линейной алгебры. Часть 2"
-subtitle: "Анализ и визуализация многомерных данных с использованием R"
+title: "Краткое введение в мир линейной алгебры"
 author: Вадим Хайтов, Марина Варфоломеева
 presenters: [{
-    name: 'Вадим Хайтов',
-    company: 'Каф. Зоологии беспозвоночных, СПбГУ',
-    }]
+  name: 'Вадим Хайтов',
+  company: 'Каф. Зоологии беспозвоночных, СПбГУ',
+  }]
 output:
  ioslides_presentation:
   widescreen: true
@@ -32,6 +31,9 @@ opts_chunk$set(fig.align='center', tidy = FALSE, fig.width = 7, fig.height = 3, 
 
 ar <- arrow(type = "closed", length = unit(0.15,"cm"))
 ```
+
+
+
 
 # Level 1: Немного повторения: *Зоопарк матричных объектов* 
 
@@ -114,7 +116,8 @@ $$
 
 Это наиболее "операбельные" матрицы
 
-$$ \textbf {E} =
+$$ 
+\textbf {E} =
 \begin{pmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\    
@@ -124,7 +127,8 @@ $$
 
 Диагональные матрицы (diagonal matrix)
 
-$$ \textbf {F} =
+$$ 
+\textbf {F} =
 \begin{pmatrix}
 1 & 0 & 0 & 0 \\
 0 & 5 & 0 & 0 \\    
@@ -136,7 +140,9 @@ $$
 ## Квадратные матрицы (square matrices) {.smaller}
 
 Треугольные матрицы (triangular matrices)
-$$ \textbf {H} =
+
+$$ 
+\textbf {H} =
 \begin{pmatrix}
 1 & 2 & 3 & 4 \\
 0 & 5 & 6 & 7 \\    
@@ -147,7 +153,8 @@ $$
 
 или
 
-$$ \textbf {H} =
+$$ 
+\textbf {H} =
 \begin{pmatrix}
 1 & 0 & 0 & 0 \\
 3 & 5 & 0 & 0 \\    
@@ -221,10 +228,6 @@ $$
 
 Для квадратных матриц могут быть найдены (но не обязательно существуют) некоторые важные для линейной алгебры показатели: *определитель*, *инверсия*, *собственные значения* и *собственные векторы*
 
-
- 
- 
- 
 
 ## Задание
 Создайте с помощью R следующие матрицы
@@ -333,6 +336,9 @@ runif(1)
 Pl_numeric_axis <- ggplot() + geom_hline(yintercept = 0) + theme(panel.background = element_blank(), axis.title = element_blank(), axis.text.y = element_blank()) + xlim(0,15) + ylim(1,-1) + geom_text(aes(x = 0:15, y = 0.1, label = paste(c(0,1:15) ))) + geom_segment(aes(x = 0:15, xend = 0:15, y =0, yend = 0.05)) + theme(axis.text.x = element_blank())
 ```
 
+
+
+
 ```{r fig.width= 4, echo=F}
 Pl_numeric_axis + 
   geom_point(aes(x= 10, y = 0), color = "red", size = 4)
@@ -340,7 +346,9 @@ Pl_numeric_axis +
 
 
 
+
 Но! Это же самое число можно представить в виде вектора, направленного отрезка, идущего от точки "0" к точке "10"
+
 
 
 ```{r fig.width= 4, echo=F}
@@ -348,6 +356,8 @@ Pl_numeric_axis +
   geom_point(aes(x= 10, y = 0), color = "red", size = 4) +
   geom_segment(aes(x = 0, xend = 10, y = 0, yend = 0), color="blue", size = 2, arrow = arrow())
 ```
+
+
 
 
 
@@ -712,8 +722,6 @@ $$
 vectors <- data.frame(a = c(1, 5), b = c(0.25, 4), c = c(-3, 0))
 vectors
 
-
-
 ```
 
 
@@ -743,12 +751,15 @@ with(vectors, b %*% c/(norm(t(b), type = "F") * norm(t(c), type = "F")) )
 
 ## Коэффициент корреляции и косинус угла между векторами {.smaller .columns-2}
 
+
 Пусть есть два вектора в 100-мерном пространстве
+
 ```{r}
 set.seed(12345)
 vec_1 <- rnorm(100, 10, 1)
 vec_2 <- -10*vec_1 + 10 + rnorm(100, 0, 10)
 ```
+
 
 
 Коэффициент корреляции
@@ -759,10 +770,15 @@ cor(vec_1, vec_2)
 Косинус угла в 100-мерном пространстве
 ```{r}
 # Центрированные векторы
-vec_1_c <- as.vector(scale(vec_1, center = T, scale = F))
-vec_2_c <- as.vector(scale(vec_2, center = T, scale = F))
+vec_1_c <- as.vector(scale(vec_1, 
+                           center = T, scale = F))
+vec_2_c <- as.vector(scale(vec_2, 
+                           center = T, scale = F))
 
-cos_alpha <- (vec_1_c %*% vec_2_c)/(norm(t(vec_1_c), type = "F")*norm(t(vec_2_c), type = "F"))
+cos_alpha <- (vec_1_c %*% vec_2_c)/
+  (norm(t(vec_1_c), type = "F")*
+     norm(t(vec_2_c), type = "F"))
+
 cos_alpha
 ```
 
@@ -788,6 +804,7 @@ $$
 Vec <- 1:5
 Vec
 ```
+
 
 ## Решение
 ```{r, purl=FALSE}

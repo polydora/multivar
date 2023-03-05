@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Краткое введение в мир линейной алгебры. Часть 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Вадим Хайтов" />
+    <meta name="author" content="Марина Варфоломеева" />
+    <meta name="author" content="Анастасия Лянгузова" />
+    <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <!-- https://github.com/fnaufel/xaringan-smartify-->
+    <script
+    			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    			  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    			  crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: middle, left, inverse, title-slide
+
+# Краткое введение в мир линейной алгебры. Часть 2
+## Анализ и визуализация многомерных данных с использованием R
+### Вадим Хайтов
+### Марина Варфоломеева
+### Анастасия Лянгузова
+
+---
+
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 40px;
+height: 128px;
+z-index: 0;
+background-image: url(assets/Linmod_logo.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:1em;right:1em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+## Вы сможете
+- Объяснить что такое матрицы и какие бывают их основные разновидности
+- Выполнить базовые операции с матрицами с использованием функций R
+- Применить в среде R методы линейной алгебры для решения простейших задач
+
+
+
+---
+
+class: middle, center, inverse
+
+# Level 1: Немного повторения: *Зоопарк матричных объектов* 
+
+---
+
+## Матричные объекты
+
+- Есть много типов объектов, для которых такое выражение оказывается наиболее естественным (изображения, описания многомерных объектов и т.д.)
+- В матрицах, как и в обычных числах, скрыта информация, которую можно извлекать и преобразовывать по определенным правилам
+
+---
+
+## Структура матриц
+
+$$
+`\begin{pmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1c} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2c} \\    
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+a_{r1} &amp; a_{r2} &amp; \cdots &amp; a_{rc}
+\end{pmatrix}`
+$$
+
+Размер (порядок) матрицы `\(r \times c\)` 
+
+---
+
+## Векторы 
+
+.pull-left[
+Вектор-строка (Row matrix)
+
+$$ 
+\textbf {a} =
+`\begin{pmatrix}
+1 &amp; 2 &amp; 3 
+\end{pmatrix}`
+$$
+]
+
+.pull-right[
+Вектор-столбец (column matrix)
+
+$$ 
+\textbf {b} =
+`\begin{pmatrix}
+1 \\
+4 \\    
+7 \\
+10 
+\end{pmatrix}`
+$$
+]
+
+---
+
+## Прямоугольные матрицы 
+
+.pull-left[
+$$ 
+\textbf {C} =
+`\begin{pmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\    
+7 &amp; 8 &amp; 9 \\
+10 &amp; 11 &amp; 12 
+\end{pmatrix}`
+$$
+]
+
+.pull-right[
+
+$$ 
+\textbf {D} =
+`\begin{pmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6     
+\end{pmatrix}`
+$$
+
+]
+
+В таком виде обычно представляются исходные данные при многомерном анализе. 
+
+В такой матрице столбцы - признаки (p), а строки - объекты (n).
+
+Лучше, когда n &gt; p, то есть когда объектов больше, чем признаков.
+
+---
+
+## Квадратные матрицы (square matrices)
+
+Это наиболее "операбельные" матрицы
+
+.pull-left[
+$$ 
+\textbf {E} =
+`\begin{pmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\    
+7 &amp; 8 &amp; 9 
+\end{pmatrix}`
+$$
+]
+
+.pull-right[
+$$ 
+\textbf {F} =
+`\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 5 &amp; 0 &amp; 0 \\    
+0 &amp; 0 &amp; 9 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}`
+$$
+Диагональные матрицы (diagonal matrix) 
+
+Иногда в них удобно превращать векторы
+]
+
+---
+
+## Треугольные матрицы (triangular matrices)
+
+
+$$ 
+\textbf {H} =
+`\begin{pmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 \\
+0 &amp; 5 &amp; 6 &amp; 7 \\    
+0 &amp; 0 &amp; 9 &amp; 10 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}`
+$$
+
+или
+
+$$ 
+\textbf {H} =
+`\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+3 &amp; 5 &amp; 0 &amp; 0 \\    
+4 &amp; 7 &amp; 9 &amp; 0 \\
+5 &amp; 8 &amp; 10 &amp; 11
+\end{pmatrix}`
+$$
+
+---
+
+## Единичная матрица (identity matrix)
+
+
+
+$$ 
+\textbf {I} =
+`\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\    
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}`
+$$
+
+
+Единичная матрица (обозначение `\(\textbf{I}\)`) занимают особое место в матричной алгебре.   
+Она выполняет ту же роль, которую выполняет единица в обычной алгебре. 
+
+
+---
+
+
+## Матрицы ассоциации
+
+Изначально результаты исследования имеют вид исходной матрицы (обычно прямоугольной)
+
+`\(\textbf {Y} = [n_{objects} \times p_{descriptors}]\)`
+
+Информация из этой матрицы конденсируется в двух других матрицах 
+
+
+Q анализ
+
+`\(\textbf {A}_{nn} = [n_{objects} \times n_{objects}]\)`
+
+R анализ
+
+`\(\textbf{A}_{pp} = [p_{descriptors} \times p_{descriptors}]\)`
+
+---
+
+## Матрицы ассоциации 
+
+Это симметричные квадратные матрицы
+
+$$
+\textbf{A}_{pp} = 
+`\begin{pmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1p} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2p} \\    
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+a_{p1} &amp; a_{p2} &amp; \cdots &amp; a_{pp}
+\end{pmatrix}`
+$$
+
+
+В этой матрице `\(a_{ij} = a_{ji}\)`
+
+Большинство многомерных методов имеет дело именно с такими матрицами
+
+---
+
+
+## Особенность квадратных матриц
+
+Для квадратных матриц могут быть найдены (но не обязательно существуют) некоторые важные для линейной алгебры показатели: *определитель*, *инверсия*, *собственные значения* и *собственные векторы*
+
+
+--- 
+ 
+## Задание
+Создайте с помощью R следующие матрицы
+
+
+```
+##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12
+```
+
+
+
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    0    0    0    0
+## [2,]    0    2    0    0    0
+## [3,]    0    0    3    0    0
+## [4,]    0    0    0    4    0
+## [5,]    0    0    0    0    5
+```
+
+---
+
+class: middle, center, inverse
+
+
+# Level 2: Еще немного повторения: *Простейшие операции с матричными объектами*
+
+---
+
+## Транспонирование матриц
+
+
+```r
+A &lt;- matrix(1:12, ncol = 3)
+A
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12
+```
+
+Транспонированная матрица `\(\textbf{B} = \textbf{A}'\)` синонимичная запись `\(\textbf{B} = \textbf{A}^{T}\)`
+
+
+```r
+B &lt;- t(A)
+B
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12
+```
+
+---
+
+## Сложение матриц
+
+
+```r
+A + 4
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    5    9   13
+## [2,]    6   10   14
+## [3,]    7   11   15
+## [4,]    8   12   16
+```
+
+
+
+```r
+A + A
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    2   10   18
+## [2,]    4   12   20
+## [3,]    6   14   22
+## [4,]    8   16   24
+```
+
+Но! Нельзя складывать матрицы разных размеров
+
+```r
+A + B
+```
+
+---
+
+## Простое умножение 
+
+Умножение на число
+
+```r
+A * 4
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    4   20   36
+## [2,]    8   24   40
+## [3,]   12   28   44
+## [4,]   16   32   48
+```
+
+Простое умножение матрицы на вектор возможно только если число элементов в векторе равно числу строк в матрице
+
+
+```r
+A * c(10, 11, 12, 13)
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]   10   50   90
+## [2,]   22   66  110
+## [3,]   36   84  132
+## [4,]   52  104  156
+```
+
+Все элементы первой строки матрицы умножаются на первый элемент вектора, все элементы второй строки на второй элемент вектора и т.д.  
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "vs",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- https://github.com/fnaufel/xaringan-smartify-->
+<script type="text/javascript">
+  smartify();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

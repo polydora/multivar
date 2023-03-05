@@ -1,6 +1,5 @@
 ---
-title: "Краткое введение в мир линейной алгебры. Часть 3"
-subtitle: "Анализ и визуализация многомерных данных с использованием R"
+title: "Краткое введение в мир линейной алгебры"
 author: Вадим Хайтов, Марина Варфоломеева
 presenters: [{
     name: 'Вадим Хайтов',
@@ -76,7 +75,7 @@ y1 <- rnorm(500, 700, 50)
   # 10 * x1 + rnorm(500, 0, 100)
 
 x2 <- rnorm(500, 40, 5)
-y2 <- 10 * x2 + 200 + rnorm(500, 0, 100)
+y2 <- 20 * x2 - 150 + rnorm(500, 0, 50)
 
 
 XY <-data.frame(x = c(x1, x2), y = c(y1, y2) )
@@ -97,32 +96,58 @@ qplot(XY$x, XY$y) + labs(x = "Переменная 1", y = "Переменная
 
 ```{r echo=F, message=F}
 Pl_hist_x <- 
-ggplot(XY, aes(x = x)) + geom_histogram() + labs(x = "Переменная 1")
+ggplot(XY, aes(x = x)) + geom_histogram(bins = 25) + labs(x = "Переменная 1")
 
 Pl_hist_y <- 
-ggplot(XY, aes(x = y)) + geom_histogram()  + labs(x = "Переменная 2")
+ggplot(XY, aes(x = y)) + geom_histogram(bins = 25)  + labs(x = "Переменная 2")
 
 
 ```
 
 
 
-```{r echo=F, message=F}
+```{r echo=F, message=F, fig.width=5, fig.height=5}
 library(patchwork)
+
 
 Pl_cloud/plot_grid(Pl_hist_x, Pl_hist_y)
 ```
 
 
+## Как решить проблему разделения облаков?
+
+Можно ввести новую систему координат 
+
+```{r echo=FALSE, message=FALSE}
+XY_cent <- as.data.frame(scale(XY, center = T, scale = F))
+
+library(vegan)
+pca_XY <- rda(XY_cent)
+
+v <- pca_XY$CA$v
+
+qplot(x = XY_cent$x, y =  XY_cent$y) + 
+  geom_abline(slope = tan(acos(v[1,1])), 
+              color = "blue", size = 2) +
+  labs(x = "Центрированная Переменная 1", y = "Центрированная Переменная 2") 
+
+```
+
+Проекции точек на новую ось дадут две совокупности.
+
+
 
 ## Переформулировка проблемы {.columns-2 .smaller}
 
-В исходной матрице большинство векторов неортогональны, то есть взаимозависимые (между ними существует корреляция).  
+В исходной матрице векторы могут быть неортогональны 
 
-### Корреляция между переменными 
+Между векторами существует корреляция  
+
+### Корреляция между переменными {.smaller}
 ```{r}
 XY_cent <- as.data.frame(scale(XY, 
-                               center = T, scale = F))
+                               center = T, 
+                               scale = F))
 
 head(XY_cent)
 
@@ -137,9 +162,14 @@ Cos_alpha <-
             norm(t(y), type = "F"))  ) 
 
 Cos_alpha
+```
+
+
+```{r}
 
 cor(XY$x, XY$y)
 ```
+
 
 Наличие корреляции между векторами - это проблема, так как в каждой из переменных "спрятана" информация и о другой переменной. 
 
@@ -150,9 +180,12 @@ cor(XY$x, XY$y)
 
 
 
+
+
+
 ## Собственные числа и собственные векторы  {.smaller .columns-2}
 
-Связь между векторами в исходной матрице $\textbf{Y}$ выражается через ковариационную  матрицу  $\textbf{S}$ или корреляционную матрицу ($\textbf {R}$).   
+Связь между векторами в исходной матрице $\textbf{Y}$ выражается через ковариационную  матрицу  $\textbf{S}$ (или корреляционную матрицу $\textbf {R}$).   
 
 $\textbf{S}$ - это квадратная симметричная матрица.
 
@@ -245,11 +278,12 @@ $$
 Во многих многомерных методах требуется найти оси максимального варьирования 
 
 ```{r, purl=TRUE, echo=F}
-qplot(XY$x, XY$y) + labs(x = "Переменная 1", y = "Переменная 2") + 
-  geom_point(aes(x = mean(x), y = mean(y)), size = 4, color = "yellow") + 
-  stat_ellipse(type = "norm", level = 0.98) 
+library(ggforce)
 
-    # geom_segment(aes(x = mean(x), y = mean(y), xend = (mean(x) + 1.96*sd(x)), yend = (mean(y) + 1.96*sd(y))),  arrow = ar, color = "blue", size = 2)
+qplot(XY$x, XY$y) + labs(x = "Переменная 1", y = "Переменная 2") + 
+  geom_point(aes(x = mean(XY$x), y = mean(XY$y)), size = 4, color = "yellow") + 
+  stat_ellipse(type = "norm", level = 0.95, size = 2, color = "red") +
+  geom_segment(aes(x = mean(XY$x), y = mean(XY$y), xend = (mean(x) + 1.96*sd(XY$x)), yend = (mean(XY$y) + 1.96*sd(XY$y))),  arrow = ar, color = "blue", size = 2)
 
 ```
 
@@ -386,6 +420,9 @@ ggplot(XY_norm_cent, aes(x = x, y = y)) + geom_point() +
 
 ```
 
+Собственные векторы задают "опору" для новых осей координат
+
+
 ## Рисуем главные оси {.smaller .columns-2}
 
 <!-- <img src="images/Principal_axes_Legendre_and_Legendre.png" style="height:350px;"> -->
@@ -417,9 +454,9 @@ U
   geom_line(data = PC2, aes(x = x, y = y), 
             color = "yellow", size = 1.5) +
   coord_equal() + 
-  geom_abline(slope = tan(acos(U[1,1])), 
-              color = "blue")+ 
-  geom_abline(slope = (U[2,2])/(U[1,2]), 
+    geom_abline(slope = (U[2,1])/(U[1,1]),
+              color = "blue") + 
+geom_abline(slope = (U[2,2])/(U[1,2]),   
               color = "blue") 
 
 ```
@@ -485,7 +522,7 @@ Pl_main_axis_rotated
 
 ## Вращение осей {.smaller}
 
-Новые и старые оси
+Новые  и старые главные оси
 
 ```{r}
 Pl_main_axis_rotated +
@@ -496,9 +533,9 @@ Pl_main_axis_rotated +
   geom_line(data = PC2, aes(x = x, y = y), 
             color = "yellow", size = 1.5) +
   coord_equal() + 
-  geom_abline(slope = tan(acos(U[1,1])), 
-              color = "blue") +
-  geom_abline(slope = (U[2,2])/(U[1,2]), 
+  geom_abline(slope = (U[2,1])/(U[1,1]),
+              color = "blue") + 
+geom_abline(slope = (U[2,2])/(U[1,2]),   
               color = "blue") 
 
 ```
