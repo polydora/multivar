@@ -139,6 +139,7 @@ plot(silhouette(x = complete3, dist = d), cex.names = x.names = 0.6)
 
 ## Бутстреп поддержка ветвей ===============================
 library(pvclust)
+set.seed(389)
 # итераций должно быть 1000 и больше, здесь мало для скорости
 cl_boot <- pvclust(t(st_w), method.hclust = "average", nboot = 100,
                    method.dist = "euclidean", parallel = TRUE, iseed = 42)
