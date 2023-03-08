@@ -7,7 +7,6 @@
 #' Во многих многомерных методах требуется найти оси максимального варьирования
 
 set.seed(123456789)
-set.seed(123456789)
 
 x1 <- rnorm(500, 30, 4)
 y1 <- rnorm(500, 700, 50)
@@ -33,6 +32,8 @@ Cos_alpha <-
        (x %*% y) /
          (norm(t(x), type = "F") *
             norm(t(y), type = "F"))  )
+
+Cos_alpha
 
 cor(XY$x, XY$y)
 
@@ -251,7 +252,7 @@ V_face <- SVD_face$v
 
 reduction <- function(x, U, D, V) U[,1:x] %*% diag(D[1:x]) %*% t(V[, 1:x])
 
-gg_face(reduction(2, U_face, D_face, V_face))
+gg_face(reduction(5, U_face, D_face, V_face))
 
 
 
