@@ -116,24 +116,29 @@ Pl_cloud/plot_grid(Pl_hist_x, Pl_hist_y)
 
 ## Как решить проблему разделения облаков?
 
-Можно ввести новую систему координат 
+Можно ввести некоторую новую систему координат 
 
 ```{r echo=FALSE, message=FALSE}
-XY_cent <- as.data.frame(scale(XY, center = T, scale = F))
+XY_cent <- as.data.frame(scale(XY, center = T, scale = T))
 
-library(vegan)
-pca_XY <- rda(XY_cent)
 
-v <- pca_XY$CA$v
 
-qplot(x = XY_cent$x, y =  XY_cent$y) + 
-  geom_abline(slope = tan(acos(v[1,1])), 
+qplot(x = XY_cent$x , y =  XY_cent$y) + 
+geom_abline(slope = -0.7, 
               color = "blue", size = 2) +
-  labs(x = "Центрированная Переменная 1", y = "Центрированная Переменная 2") 
+geom_abline(slope =  1/0.7, 
+              color = "blue", size = 2) +
+  xlim(-3,3) +
+  ylim(-3,3) +
+  labs(x = "Стандартизованная Переменная 1", y = "Стандартизованная Переменная 2") +
+  coord_fixed()
 
 ```
 
-Проекции точек на новую ось дадут две совокупности.
+
+Проекции точек на новую ось координат дадут две совокупности. 
+
+Изменение системы координат - это одна из задач, которая решается методами матричной алгебры. 
 
 
 
@@ -144,6 +149,7 @@ qplot(x = XY_cent$x, y =  XY_cent$y) +
 Между векторами существует корреляция  
 
 ### Корреляция между переменными {.smaller}
+
 ```{r}
 XY_cent <- as.data.frame(scale(XY, 
                                center = T, 
@@ -680,8 +686,8 @@ $$
 
 То есть можно найти три "вспомогательных" матрицы, через которые можно выразить любую другую матрицу. 
 
----
-
+--- 
+  
 $$
 \textbf{Y}_{n \times p} = \textbf{U}_{n \times p} \textbf{D}_{p \times p} \textbf{V}'_{p \times p} 
 $$
@@ -696,7 +702,9 @@ $\textbf{D}_{p \times p}$ - диагональная матрица $\begin{pmat
 
 $\textbf{U}_{n \times p}$ и $\textbf{V}_{p \times p}$ - левая и правая матрицы сингулярных векторов.
 
+
 ## Сингулярное разложение матрицы средствами R {.smaller}
+
 ```{r, purl=TRUE}
 set.seed(123456789)
 B <- matrix(round(runif(50, 1, 5))  , byrow = T, ncol=5) #Некоторая матрица

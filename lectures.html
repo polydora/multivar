@@ -13,7 +13,7 @@
 
 <title>Презентации и данные</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -42,7 +42,6 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
-
 
 
 <style type="text/css">
@@ -121,20 +120,13 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
+    for (var j = 0; j < rules.length; j++) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -170,9 +162,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -230,15 +219,11 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark the anchor link active (and if it's in a dropdown, also mark that active)
-  var dropdown = menuAnchor.closest('li.dropdown');
-  if (window.bootstrap) { // Bootstrap 4+
-    menuAnchor.addClass('active');
-    dropdown.find('> .dropdown-toggle').addClass('active');
-  } else { // Bootstrap 3
-    menuAnchor.parent().addClass('active');
-    dropdown.addClass('active');
-  }
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -267,8 +252,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -276,9 +261,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -657,20 +649,31 @@ href="data/Golikova_etal_2020_cluster_data.csv">Golikova_etal_2020_cluster_data.
 <h2>6. Основы линейной алгебры</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;jpeg&quot;</span>)</span></code></pre></div>
 <!-- - Презентация [html](06_intro_to_linear_algebra_part1.html) -->
-<!-- - [код R](06_intro_to_linear_algebra_part1.R) -->
-<!-- - Данные -->
-<!--   + [Матрица 1](data/face.rda)      -->
-<!--   + [Матрица 2](data/a_matrix.csv) -->
+<ul>
+<li><a href="06_intro_to_linear_algebra_part1.R">код R</a></li>
+<li>Данные
+<ul>
+<li><a href="data/face.rda">Матрица 1</a></li>
+<li><a href="data/a_matrix.csv">Матрица 2</a></li>
+</ul></li>
+</ul>
 </div>
 <div id="svd" class="section level2">
 <h2>7. SVD</h2>
 <!-- - Презентация [html](07_intro_to_linear_algebra_part2.html) -->
-<!-- - [код R](07_intro_to_linear_algebra_part2.R) -->
-<!-- - RMD-файл с рассказом о фотографиях, как матричных объектах. После knitr дает интерактивный html-файл  [RMD](07_Shiny_SVD_demonstration.RMD) -->
-<!-- - Данные -->
-<!--     + [Матрица 1](data/face.rda) -->
-<!--     + [Матрица 2](data/a_matrix.csv) -->
-<!-- [**Данные для самостоятельной работы**](07_linear_algebra_task.html) -->
+<ul>
+<li><a href="07_intro_to_linear_algebra_part2.R">код R</a></li>
+<li>RMD-файл с рассказом о фотографиях, как матричных объектах. После
+knitr дает интерактивный html-файл <a
+href="07_Shiny_SVD_demonstration.RMD">RMD</a></li>
+<li>Данные
+<ul>
+<li><a href="data/face.rda">Матрица 1</a></li>
+<li><a href="data/a_matrix.csv">Матрица 2</a></li>
+</ul></li>
+</ul>
+<p><a href="07_linear_algebra_task.html"><strong>Данные для
+самостоятельной работы</strong></a></p>
 </div>
 <div id="анализ-главных-компонент-principal-component-analysis-pca"
 class="section level2">

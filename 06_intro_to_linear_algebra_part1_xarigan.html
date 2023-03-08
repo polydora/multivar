@@ -6,10 +6,10 @@
     <meta name="author" content="Вадим Хайтов" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Анастасия Лянгузова" />
-    <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-    <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
-    <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
     <!-- https://github.com/fnaufel/xaringan-smartify-->
     <script
     			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -271,30 +271,28 @@ R анализ
 
 Это симметричные квадратные матрицы
 
-$$
-\textbf{A}_{pp} = 
-`\begin{pmatrix}
+
+`$$\begin{pmatrix}
 a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1p} \\
 a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2p} \\    
 \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
 a_{p1} &amp; a_{p2} &amp; \cdots &amp; a_{pp}
-\end{pmatrix}`
-$$
+\end{pmatrix}$$`
 
 
 В этой матрице `\(a_{ij} = a_{ji}\)`
 
 Большинство многомерных методов имеет дело именно с такими матрицами
 
----
 
+---
 
 ## Особенность квадратных матриц
 
 Для квадратных матриц могут быть найдены (но не обязательно существуют) некоторые важные для линейной алгебры показатели: *определитель*, *инверсия*, *собственные значения* и *собственные векторы*
 
 
---- 
+---
  
 ## Задание
 Создайте с помощью R следующие матрицы
