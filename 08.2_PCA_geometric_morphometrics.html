@@ -1,320 +1,212 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>(Геометрическая) морфометрия</title>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <meta name="generator" content="pandoc" />
-
-
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <base target="_blank">
-
-  <script type="text/javascript">
-    var SLIDE_CONFIG = {
-      // Slide settings
-      settings: {
-                title: '(Геометрическая) морфометрия',
-                        subtitle: 'Анализ и визуализация многомерных данных с использованием R',
-                useBuilds: true,
-        usePrettify: true,
-        enableSlideAreas: true,
-        enableTouch: true,
-                        favIcon: '08.2_PCA_geometric_morphometrics_files/logo.png',
-              },
-
-      // Author information
-      presenters: [
-            {
-        name:  'Марина Варфоломеева' ,
-        company: '',
-        gplus: '',
-        twitter: '',
-        www: '',
-        github: ''
-      },
-            ]
-    };
-  </script>
-
-  <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-  <link href="site_libs/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
-  <link href="site_libs/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
-  <link href="site_libs/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
-  <script src="site_libs/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
-  <script src="site_libs/ioslides-13.5.1/js/prettify/prettify.js"></script>
-  <script src="site_libs/ioslides-13.5.1/js/prettify/lang-r.js"></script>
-  <script src="site_libs/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
-  <script src="site_libs/ioslides-13.5.1/js/hammer.js"></script>
-  <script src="site_libs/ioslides-13.5.1/js/slide-controller.js"></script>
-  <script src="site_libs/ioslides-13.5.1/js/slide-deck.js"></script>
-
-  <style type="text/css">
-
-    b, strong {
-      font-weight: bold;
-    }
-
-    em {
-      font-style: italic;
-    }
-
-    summary {
-      display: list-item;
-    }
-
-    slides > slide {
-      -webkit-transition: all 0.4s ease-in-out;
-      -moz-transition: all 0.4s ease-in-out;
-      -o-transition: all 0.4s ease-in-out;
-      transition: all 0.4s ease-in-out;
-    }
-
-    .auto-fadein {
-      -webkit-transition: opacity 0.6s ease-in;
-      -webkit-transition-delay: 0.4s;
-      -moz-transition: opacity 0.6s ease-in 0.4s;
-      -o-transition: opacity 0.6s ease-in 0.4s;
-      transition: opacity 0.6s ease-in 0.4s;
-      opacity: 0;
-    }
-/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
-slide:not(.current) .plotly.html-widget{
-  display: block;
-}
-
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-            pre > code.sourceCode { white-space: pre; position: relative; }
-            pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-            pre > code.sourceCode > span:empty { height: 1.2em; }
-            .sourceCode { overflow: visible; }
-            code.sourceCode > span { color: inherit; text-decoration: inherit; }
-            div.sourceCode { margin: 1em 0; }
-            pre.sourceCode { margin: 0; }
-            @media screen {
-            div.sourceCode { overflow: auto; }
-            }
-            @media print {
-            pre > code.sourceCode { white-space: pre-wrap; }
-            pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-            }
-            pre.numberSource code
-              { counter-reset: source-line 0; }
-            pre.numberSource code > span
-              { position: relative; left: -4em; counter-increment: source-line; }
-            pre.numberSource code > span > a:first-child::before
-              { content: counter(source-line);
-                position: relative; left: -1em; text-align: right; vertical-align: baseline;
-                border: none; display: inline-block;
-                -webkit-touch-callout: none; -webkit-user-select: none;
-                -khtml-user-select: none; -moz-user-select: none;
-                -ms-user-select: none; user-select: none;
-                padding: 0 4px; width: 4em;
-                color: #aaaaaa;
-              }
-            pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-            div.sourceCode
-              {   }
-            @media screen {
-            pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-            }
-            code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-            code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-            code span.at { color: #7d9029; } /* Attribute */
-            code span.bn { color: #40a070; } /* BaseN */
-            code span.bu { } /* BuiltIn */
-            code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-            code span.ch { color: #4070a0; } /* Char */
-            code span.cn { color: #880000; } /* Constant */
-            code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-            code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-            code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-            code span.dt { color: #902000; } /* DataType */
-            code span.dv { color: #40a070; } /* DecVal */
-            code span.er { color: #ff0000; font-weight: bold; } /* Error */
-            code span.ex { } /* Extension */
-            code span.fl { color: #40a070; } /* Float */
-            code span.fu { color: #06287e; } /* Function */
-            code span.im { } /* Import */
-            code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-            code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-            code span.op { color: #666666; } /* Operator */
-            code span.ot { color: #007020; } /* Other */
-            code span.pp { color: #bc7a00; } /* Preprocessor */
-            code span.sc { color: #4070a0; } /* SpecialChar */
-            code span.ss { color: #bb6688; } /* SpecialString */
-            code span.st { color: #4070a0; } /* String */
-            code span.va { color: #19177c; } /* Variable */
-            code span.vs { color: #4070a0; } /* VerbatimString */
-            code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-        
-    slides > slide:not(.nobackground):before {
-      font-size: 12pt;
-      content: "";
-      position: absolute;
-      bottom: 20px;
-      left: 60px;
-      background: url(08.2_PCA_geometric_morphometrics_files/logo.png) no-repeat 0 50%;
-      -webkit-background-size: 30px 30px;
-      -moz-background-size: 30px 30px;
-      -o-background-size: 30px 30px;
-      background-size: 30px 30px;
-      padding-left: 40px;
-      height: 30px;
-      line-height: 1.9;
-    }
-  </style>
-
-  <link rel="stylesheet" href="assets/my_styles.css" type="text/css" />
-
-</head>
-
-<body style="opacity: 0">
-
-<slides class="layout-widescreen">
-
-  <slide class="title-slide segue nobackground">
-        <aside class="gdbar"><img src="08.2_PCA_geometric_morphometrics_files/logo.png"></aside>
-        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
-    <hgroup class="auto-fadein">
-      <h1 data-config-title><!-- populated from slide_config.json --></h1>
-      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
-      <p data-config-presenter><!-- populated from slide_config.json --></p>
-          </hgroup>
-  </slide>
-
-<slide class=""><hgroup><h2>Анализ морфометрических данных при помощи анализа главных компонент</h2></hgroup><article  id="анализ-морфометрических-данных-при-помощи-анализа-главных-компонент">
-
-<ul>
-<li>Классический подход к морфометрии</li>
-<li>Геометрическая морфометрия</li>
-<li>Эволюция формы</li>
-</ul>
-
-<h3>Вы сможете</h3>
-
-<ul>
-<li>Проанализировать морфометрические данные корректно удалив влияние абсолютного размера</li>
-<li>Рассказать, что происходит во время обобщенного прокрустова анализа</li>
-<li>Проанализировать данные о координатах меток используя методы геометрической морфометрии</li>
-<li>Понимать, каким образом происходит отображение филогенетического древа в пространство форм</li>
-</ul>
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Классический подход к морфометрии</h2></hgroup><article  id="классический-подход-к-морфометрии">
-
-</article></slide><slide class=""><hgroup><h2>Классический подход к морфометрии</h2></hgroup><article  id="классический-подход-к-морфометрии-1">
-
-<p>Для анализа формы различных структур анализируются расстояния между метками, а не их координаты.</p>
-
-<p>Признаки сильно интегрированных структур, например частей скелета, лучше анализировать совместно друг с другом. Один из вариантов анализа - анализ главных компонент.</p>
-
-</article></slide><slide class=""><hgroup><h2>Пример: морфометрия черепах</h2></hgroup><article  id="пример-морфометрия-черепах">
-
-<p>Черепахи - единственные живые представители анапсид (череп не имеет височных окон). Морфология черепа важна для их систематики (Claude et al., 2004).</p>
-
-<p>Данные - 24 разных измерения черепов черепах 122 ныне живущих пресноводных, морских и наземных видов и одного ископаемого.</p>
-
-<img src='images/Fig30.1ZuurAED-mod.jpg' title='fig:'/><p class='caption'>Морфометрия черепах</p>
-
-<div class="footnote">
-Рис. 30.1 из Zuur et al. 2007</div>
-
-</article></slide><slide class=""><hgroup><h2>Читаем данные</h2></hgroup><article  id="читаем-данные">
-
-<pre class = 'prettyprint lang-r'>turt &lt;- read.table(&quot;data/turtles.txt&quot;, header = TRUE)
-turt$Environment3 &lt;- factor(turt$Environment3, levels = c(0, 1, 2, 9), labels = c(&quot;Freshwater&quot;, &quot;Terrestrial&quot;, &quot;Marine&quot;, &quot;Fossil&quot;))
-colnames(turt)</pre>
-
-<pre >##  [1] &quot;nspecies&quot;     &quot;species_name&quot; &quot;Family&quot;       &quot;SuperFamily&quot; 
-##  [5] &quot;Order&quot;        &quot;Environment&quot;  &quot;Environment3&quot; &quot;D1&quot;          
-##  [9] &quot;D2&quot;           &quot;D3&quot;           &quot;D4&quot;           &quot;D5&quot;          
-## [13] &quot;D6&quot;           &quot;D7&quot;           &quot;D8&quot;           &quot;D9&quot;          
-## [17] &quot;D10&quot;          &quot;D11&quot;          &quot;D12&quot;          &quot;D13&quot;         
-## [21] &quot;D14&quot;          &quot;D15&quot;          &quot;D16&quot;          &quot;D17&quot;         
-## [25] &quot;D18&quot;          &quot;D19&quot;          &quot;D20&quot;          &quot;D21&quot;         
-## [29] &quot;D22&quot;          &quot;D23&quot;          &quot;D24&quot;</pre>
-
-<div class="footnote">
-Данные из Zuur et al. 2007</div>
-
-</article></slide><slide class=""><hgroup><h2>Чтобы понять, нужно ли стандартизовать исходные данные, построим боксплот</h2></hgroup><article  id="чтобы-понять-нужно-ли-стандартизовать-исходные-данные-построим-боксплот">
-
-<pre class = 'prettyprint lang-r'>boxplot(x = turt[8:31])</pre>
-
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
-
-<ul class = 'build'>
-<li>Наверное, лучше стандартизовать</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Делаем анализ главных компонент по стандартизованным данным</h2></hgroup><article  id="делаем-анализ-главных-компонент-по-стандартизованным-данным">
-
-<pre class = 'prettyprint lang-r'>library(vegan)</pre>
-
-<pre >## Loading required package: permute</pre>
-
-<pre >## Loading required package: lattice</pre>
-
-<pre >## This is vegan 2.5-7</pre>
-
-<pre class = 'prettyprint lang-r'>turt_pca &lt;- rda(turt[, 8:31], scale = TRUE)</pre>
-
-</article></slide><slide class=""><hgroup><h2>Сколько компонент достаточно для описания данных?</h2></hgroup><article  id="сколько-компонент-достаточно-для-описания-данных">
-
-<pre class = 'prettyprint lang-r'>eig &lt;- eigenvals(turt_pca)[1:5]
-eig*100/sum(eig) # доля объясненной изменчивости</pre>
-
-<pre >##   PC1   PC2   PC3   PC4   PC5 
-## 86.76  6.94  3.07  1.96  1.27</pre>
-
-<pre class = 'prettyprint lang-r'>screeplot(turt_pca, bstick = TRUE)</pre>
-
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-
-<ul class = 'build'>
-<li>Первая компонента объясняет очень много, остальные - почти ничего. Одной компоненты достаточно?</li>
-<li>Нет! Не все так просто.</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Что странного в этой картинке?</h2></hgroup><article  id="что-странного-в-этой-картинке">
-
-<pre class = 'prettyprint lang-r'>biplot(turt_pca, display = &quot;species&quot;, scaling = 2)</pre>
-
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/biplot-raw-1.png" width="576" style="display: block; margin: auto;" /></p>
-
-<ul>
-<li><p>Как вы думаете, почему у всех переменных большие нагрузки по первой компоненте?</p></li>
-<li><p>Что отражает первая компонента?</p></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>При анализе сырых морфометрических данных первая компонента отражает размер объектов и, возможно, немножко - их форму</h2></hgroup><article  id="при-анализе-сырых-морфометрических-данных-первая-компонента-отражает-размер-объектов-и-возможно-немножко---их-форму">
-
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/biplot-raw-1.png" width="576" style="display: block; margin: auto;" /></p>
-
-</article></slide><slide class=""><hgroup><h2>Классические способы избавиться от влияния размера:</h2></hgroup><article  id="классические-способы-избавиться-от-влияния-размера">
-
-<ul>
-<li>использовать одну из исходных переменных как оценку &ldquo;размера&rdquo;: использовать в PCA остатки от регрессий исходных признаков от &ldquo;размера&rdquo;</li>
-<li>стандартизация исходных данных при помощи деления на величину &ldquo;размера&rdquo; для каждого образца (корень из суммы квадратов измерений)</li>
-<li>сделать двойное центрирование (логарифмированных) исходных данных</li>
-<li>и т.д. и т.п.</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Двойное центрирование</h2></hgroup><article  id="двойное-центрирование">
-
-<p>Нам достаточно центрировать строки, т.к. столбцы будут центрированы автоматически в процессе анализа главных компонент.</p>
-
-<pre class = 'prettyprint lang-r'># Функция, которая может центрировать вектор
+<html lang="" xml:lang="">
+  <head>
+    <title>(Геометрическая) морфометрия</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Марина Варфоломеева" />
+    <script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
+    <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="site_libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="site_libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="site_libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="site_libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="site_libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="site_libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="site_libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <script src="site_libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="site_libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <!-- https://github.com/fnaufel/xaringan-smartify-->
+    <script
+    			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    			  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    			  crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: middle, left, inverse, title-slide
+
+.title[
+# (Геометрическая) морфометрия
+]
+.subtitle[
+## Анализ и визуализация многомерных данных с использованием R
+]
+.author[
+### Марина Варфоломеева
+]
+
+---
+
+
+
+
+
+
+## Анализ морфометрических данных при помощи анализа главных компонент
+
+- Классический подход к морфометрии
+- Геометрическая морфометрия
+- Эволюция формы
+
+### Вы сможете
+
+- Проанализировать морфометрические данные корректно удалив влияние абсолютного размера
+- Рассказать, что происходит во время обобщенного прокрустова анализа
+- Проанализировать данные о координатах меток используя методы геометрической морфометрии
+- Понимать, каким образом происходит отображение филогенетического древа в пространство форм
+
+---
+
+class: middle, center, inverse
+
+# Классический подход к морфометрии
+
+---
+
+## Классический подход к морфометрии
+
+Для анализа формы различных структур анализируются расстояния между метками, а не их координаты.
+
+Признаки сильно интегрированных структур, например частей скелета, лучше анализировать совместно друг с другом. Один из вариантов анализа - анализ главных компонент.
+
+---
+
+## Пример: морфометрия черепах
+
+Черепахи - единственные живые представители анапсид (череп не имеет височных окон). Морфология черепа важна для их систематики (Claude et al., 2004).
+
+Данные - 24 разных измерения черепов черепах 122 ныне живущих пресноводных, морских и наземных видов и одного ископаемого.
+
+![Морфометрия черепах](images/Fig30.1ZuurAED-mod.jpg)
+
+&lt;div class = "footnote"&gt;Рис. 30.1 из Zuur et al. 2007&lt;/div&gt;
+
+---
+
+## Читаем данные
+
+
+```r
+turt &lt;- read.table("data/turtles.txt", header = TRUE)
+turt$Environment3 &lt;- factor(turt$Environment3, levels = c(0, 1, 2, 9),
+          labels = c("Freshwater", "Terrestrial", "Marine", "Fossil"))
+colnames(turt)
+```
+
+```
+ [1] "nspecies"     "species_name" "Family"       "SuperFamily"  "Order"       
+ [6] "Environment"  "Environment3" "D1"           "D2"           "D3"          
+[11] "D4"           "D5"           "D6"           "D7"           "D8"          
+[16] "D9"           "D10"          "D11"          "D12"          "D13"         
+[21] "D14"          "D15"          "D16"          "D17"          "D18"         
+[26] "D19"          "D20"          "D21"          "D22"          "D23"         
+[31] "D24"         
+```
+
+.pull-down[.tiny[Данные из Zuur et al. 2007]]
+
+---
+
+## Чтобы понять, нужно ли стандартизовать исходные данные, построим боксплот
+
+
+```r
+boxplot(x = turt[8:31])
+```
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+--
+
+- Наверное, лучше стандартизовать
+
+---
+
+## Делаем анализ главных компонент по стандартизованным данным
+
+
+```r
+library(vegan)
+turt_pca &lt;- rda(turt[, 8:31], scale = TRUE)
+```
+
+---
+
+## Сколько компонент достаточно для описания данных?
+
+
+```r
+eig &lt;- eigenvals(turt_pca)[1:5]
+eig*100/sum(eig) # доля объясненной изменчивости
+```
+
+```
+   PC1    PC2    PC3    PC4    PC5 
+86.760  6.936  3.074  1.956  1.273 
+```
+
+```r
+screeplot(turt_pca, bstick = TRUE)
+```
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+--
+
+- Первая компонента объясняет очень много, остальные - почти ничего. Одной компоненты достаточно?
+- Нет! Не все так просто.
+
+---
+
+## Что странного в этой картинке?
+
+
+```r
+biplot(turt_pca, display = "species", scaling = 2)
+```
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/biplot-raw-1.png)&lt;!-- --&gt;
+
+- Как вы думаете, почему у всех переменных большие нагрузки по первой компоненте?
+
+- Что отражает первая компонента?
+
+---
+
+## При анализе сырых морфометрических данных первая компонента отражает размер объектов и, возможно, немножко - их форму
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/biplot-raw-1.png)&lt;!-- --&gt;
+
+---
+
+## Классические способы избавиться от влияния размера:
+
+- использовать одну из исходных переменных как оценку "размера": использовать в PCA остатки от регрессий исходных признаков от "размера"
+- стандартизация исходных данных при помощи деления на величину "размера" для каждого образца (корень из суммы квадратов измерений)
+- сделать двойное центрирование (логарифмированных) исходных данных
+- и т.д. и т.п.
+
+---
+
+## Двойное центрирование
+
+Нам достаточно центрировать строки, т.к. столбцы будут центрированы автоматически в процессе анализа главных компонент.
+
+
+```r
+# Функция, которая может центрировать вектор
 center &lt;- function(x){
   x - mean(x, na.rm = TRUE)
 }
@@ -322,174 +214,232 @@ center &lt;- function(x){
 dbcent &lt;- t(apply(turt[, 8:31], 1, center))
 # получившийся датафрейм пришлось транспонировать,
 # поскольку apply() результаты от каждой строки
-# возвращает в виде столбцов</pre>
+# возвращает в виде столбцов
+```
 
-</article></slide><slide class=""><hgroup><h2>После двойного центрирования большие собственные числа у нескольких компонент</h2></hgroup><article  id="после-двойного-центрирования-большие-собственные-числа-у-нескольких-компонент">
+---
 
-<pre class = 'prettyprint lang-r'>turt_db_pca &lt;- rda(dbcent)
+## После двойного центрирования большие собственные числа у нескольких компонент
+
+
+```r
+turt_db_pca &lt;- rda(dbcent)
 eig_db &lt;- eigenvals(turt_db_pca)[1:5]
-eig_db*100/sum(eig_db)</pre>
+eig_db*100/sum(eig_db)
+```
 
-<pre >##   PC1   PC2   PC3   PC4   PC5 
-## 65.48 23.12  6.36  3.13  1.91</pre>
+```
+   PC1    PC2    PC3    PC4    PC5 
+65.477 23.121  6.362  3.125  1.915 
+```
 
-<pre class = 'prettyprint lang-r'>screeplot(turt_db_pca, bstick = TRUE)</pre>
+```r
+screeplot(turt_db_pca, bstick = TRUE)
+```
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
-</article></slide><slide class=""><hgroup><h2>После двойного центрирования у переменных высокие нагрузки на несколько компонент, влияние размера удалено</h2></hgroup><article  id="после-двойного-центрирования-у-переменных-высокие-нагрузки-на-несколько-компонент-влияние-размера-удалено">
+---
 
-<pre class = 'prettyprint lang-r'>biplot(turt_db_pca, display = &quot;species&quot;, scaling = 2)</pre>
+## После двойного центрирования у переменных высокие нагрузки на несколько компонент, влияние размера удалено
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 
-<p>Интерпретируем как обычно: компонента отражает несколько признаков</p>
+```r
+biplot(turt_db_pca, display = "species", scaling = 2)
+```
 
-</article></slide><slide class=""><hgroup><h2>Ординация черепах по морфометрии черепов (двойное центрирование данных)</h2></hgroup><article  id="ординация-черепах-по-морфометрии-черепов-двойное-центрирование-данных">
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/tradit-pca-1.png" width="960" style="display: block; margin: auto;" /></p>
+Интерпретируем как обычно: компонента отражает несколько признаков
 
-<ul>
-<li>У пресноводных большие D12 и D13, и маленькая D2. У морских наоборот</li>
-<li>Ископаемая черепаха похожа на нынешних морских</li>
-</ul>
+---
 
-</article></slide><slide class=""><hgroup><h2>Код для графика ординации черепах по морфометрии черепов</h2></hgroup><article  id="код-для-графика-ординации-черепах-по-морфометрии-черепов">
+## Ординация черепах по морфометрии черепов (двойное центрирование данных)
 
-<pre class = 'prettyprint lang-r'>op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 0.5, 0.5), cex = 1.3)
-biplot(turt_db_pca, display = &quot;species&quot;, scaling = 2)
+![](08.2_PCA_geometric_morphometrics_files/figure-html/tradit-pca-1.png)&lt;!-- --&gt;
+
+- У пресноводных большие D12 и D13, и маленькая D2. У морских наоборот
+- Ископаемая черепаха похожа на нынешних морских
+
+---
+
+## Код для графика ординации черепах по морфометрии черепов
+
+
+```r
+op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 0.5, 0.5), cex = 1.3)
+biplot(turt_db_pca, display = "species", scaling = 2)
 # цвета для графика факторных координат
-colvec &lt;- c(&quot;orange2&quot;, &quot;limegreen&quot;, &quot;steelblue&quot;, &quot;red3&quot;)
+colvec &lt;- c("orange2", "limegreen", "steelblue", "red3")
 # пустой график
-plot(turt_db_pca, type = &quot;n&quot;, scaling = 1)
+plot(turt_db_pca, type = "n", scaling = 1)
 # точки, раскрашенные по уровням фактора turt$Environment3
-points(turt_db_pca, display = &quot;sites&quot;, scaling = 1, pch = 21, 
+points(turt_db_pca, display = "sites", scaling = 1, pch = 21, 
        col = colvec[turt$Environment3], bg = colvec[turt$Environment3])
 # легенда
-legend(&quot;bottomright&quot;, legend = levels(turt$Environment3), bty = &quot;n&quot;, pch = 21, 
+legend("bottomright", legend = levels(turt$Environment3), bty = "n", pch = 21, 
        col = colvec, pt.bg = colvec)
-par(op)</pre>
+par(op)
+```
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Геометрическая морфометрия</h2></hgroup><article  id="геометрическая-морфометрия">
+---
 
-<h3>Но настоящие джедаи теперь анализируют координаты меток, а не расстояния между ними!</h3>
+class: middle, center, inverse
 
-</article></slide><slide class=""><hgroup><h2>Пример: Форма головы Апалачских саламандр рода <em>Plethodon</em></h2></hgroup><article  id="пример-форма-головы-апалачских-саламандр-рода-plethodon">
+.pull-right[
+Но настоящие джедаи теперь анализируют координаты меток, а не расстояния между ними!
+]
 
-<p><em>Plethodon jordani</em> и <em>P.teyahalee</em> встречаются вместе и раздельно. В совместно обитающих популяциях меняется форма головы обоих видов. В разных группах популяций этот процесс параллельно приводит к одинаковым результатам. По-видимому, одной из причин параллельной эволюции может быть межвидовая конкуренция (Adams, 2004, 2010).</p>
+# Геометрическая морфометрия
 
-<div class="columns-2">
-<img src='images/PlethodoJordaniJordansSalamander-JohnPClare-Flickr.jpg' title='fig:'/><p class='caption'><em>Plethodon jordani</em></p>
 
-<p><em>Plethodon jordani</em> - Jordan’s Salamander by <a href='https://flic.kr/p/dMfNq6' title=''>John P Clare on Flickr</a></p>
 
-<img src='images/PlethodonCfTeyahalee-squamatologist-Flickr.jpg' title='fig:'/><p class='caption'><em>Plethodon</em> cf. <em>teyahalee</em></p>
+---
 
-<p><em>Plethodon</em> cf. <em>teyahalee</em> by <a href='https://flic.kr/p/8m82g6' title=''>squamatologist on Flickr</a></p></div>
+## Пример: Форма головы Апалачских саламандр рода _Plethodon_
 
-</article></slide><slide class=""><hgroup><h2>Морфометрия головы саламандр</h2></hgroup><article  id="морфометрия-головы-саламандр">
+_Plethodon jordani_ и _P.teyahalee_ встречаются вместе и раздельно.
+В совместно обитающих популяциях меняется форма головы обоих видов. В разных группах популяций этот процесс параллельно приводит к одинаковым результатам. По-видимому, одной из причин параллельной эволюции может быть межвидовая конкуренция (Adams, 2004, 2010).
 
-<img src='images/measurements-Adams2004.jpg' title='fig:'/><p class='caption'>Схема измерений</p>
+.pull-left[
 
-<pre class = 'prettyprint lang-r'># install.packages(&quot;geomorph&quot;, dependencies = TRUE)
-library(geomorph)</pre>
+![_Plethodon jordani_](images/PlethodoJordaniJordansSalamander-JohnPClare-Flickr.jpg)
 
-<pre >## Loading required package: RRPP</pre>
+.tiny[_Plethodon jordani_ - Jordan's Salamander by [John P Clare on Flickr](https://flic.kr/p/dMfNq6)]
+]
 
-<pre >## Loading required package: rgl</pre>
+.pull-right[
+![_Plethodon_ cf. _teyahalee_](images/PlethodonCfTeyahalee-squamatologist-Flickr.jpg)
 
-<pre >## This build of rgl does not include OpenGL functions.  Use
-##  rglwidget() to display results, e.g. via options(rgl.printRglwidget = TRUE).</pre>
+.tiny[_Plethodon_ cf. _teyahalee_ by [squamatologist on Flickr](https://flic.kr/p/8m82g6)]
+]
 
-<pre >## Loading required package: Matrix</pre>
+---
 
-<pre class = 'prettyprint lang-r'>data(plethodon)
-str(plethodon, vec.len = 2, give.attr = F)</pre>
+## Морфометрия головы саламандр
 
-<pre >## List of 5
-##  $ land   : num [1:12, 1:2, 1:40] 8.89 9.27 ...
-##  $ links  : num [1:14, 1:2] 4 3 2 1 1 ...
-##  $ species: Factor w/ 2 levels &quot;Jord&quot;,&quot;Teyah&quot;: 1 1 1 1 1 ...
-##  $ site   : Factor w/ 2 levels &quot;Allo&quot;,&quot;Symp&quot;: 2 2 2 2 2 ...
-##  $ outline: num [1:3631, 1:2] 0.399 0.4 ...</pre>
+![Схема измерений](images/measurements-Adams2004.jpg)
 
-<div class="footnote">
-рис. из Adams, 2004, 2010</div>
 
-</article></slide><slide class=""><hgroup><h2>Сырые морфометрические данные еще не выравнены</h2></hgroup><article  id="сырые-морфометрические-данные-еще-не-выравнены">
+```r
+# install.packages("geomorph", dependencies = TRUE)
+library(geomorph)
+data(plethodon)
+str(plethodon, vec.len = 2, give.attr = F)
+```
 
-<p>Все образцы разного размера и разной ориентации в пространстве. На этом графике — два образца для примера.</p>
+```
+List of 5
+ $ land   : num [1:12, 1:2, 1:40] 8.89 9.27 ...
+ $ links  : num [1:14, 1:2] 4 3 2 1 1 ...
+ $ species: Factor w/ 2 levels "Jord","Teyah": 1 1 1 1 1 ...
+ $ site   : Factor w/ 2 levels "Allo","Symp": 2 2 2 2 2 ...
+ $ outline: num [1:3631, 1:2] 0.399 0.4 ...
+```
 
-<pre class = 'prettyprint lang-r'>plotRefToTarget(plethodon$land[, , 1], plethodon$land[, ,10],
-                method = &quot;points&quot;, mag = 1, 
-                links = plethodon$links)</pre>
+.pull-down[.tiny[рис. из Adams, 2004, 2010]]
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+---
 
-</article></slide><slide class=""><hgroup><h2>Если нарисовать не выравненные образцы, получится полная каша. Что делать?</h2></hgroup><article  id="если-нарисовать-не-выравненные-образцы-получится-полная-каша.-что-делать">
+## Сырые морфометрические данные еще не выравнены
 
-<p>Слева - три образца, справа - все. Жирные точки - центроиды соответствующих меток</p>
+Все образцы разного размера и разной ориентации в пространстве. На этом графике --- два образца для примера.
 
-<pre class = 'prettyprint lang-r'>op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 1, 1))
+
+```r
+plotRefToTarget(plethodon$land[, , 1], plethodon$land[, ,10],
+                method = "points", mag = 1, 
+                links = plethodon$links)
+```
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+## Если нарисовать не выравненные образцы, получится полная каша. Что делать?
+
+Слева - три образца, справа - все. Жирные точки - центроиды соответствующих меток
+
+
+```r
+op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 1, 1))
 plotAllSpecimens(plethodon$land[, , 1:3], links=plethodon$links)
 plotAllSpecimens(plethodon$land,links=plethodon$links)
-par(op)</pre>
+par(op)
+```
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
-</article></slide><slide class=""><hgroup><h2>Геометрическая морфометрия</h2></hgroup><article  id="геометрическая-морфометрия-1">
+---
 
-<ol>
-<li>Влияние размера удаляется при помощи обобщенного прокрустова анализа (масштабирование, поворот и сдвиг координат)</li>
-<li>Преобразованные координаты меток используются как признаки объектов (конкретных особей) в анализе главных компонент. Получается морфопространство. Главные компоненты отражают изменения формы.</li>
-</ol>
+## Геометрическая морфометрия
 
-<ul>
-<li>можно получить усредненную форму для любой группы выравненных координат</li>
-<li>можно сравнить форму любой особи со средней формой</li>
-<li>можно проследить изменение формы вдоль осей главных компонент</li>
-</ul>
+1. Влияние размера удаляется при помощи обобщенного прокрустова анализа (масштабирование, поворот и сдвиг координат)
+1. Преобразованные координаты меток используются как признаки объектов (конкретных особей) в анализе главных компонент. Получается морфопространство. Главные компоненты отражают изменения формы.
 
-</article></slide><slide class=""><hgroup><h2>Прокрустов анализ</h2></hgroup><article  id="прокрустов-анализ">
+- можно получить усредненную форму для любой группы выравненных координат
+- можно сравнить форму любой особи со средней формой
+- можно проследить изменение формы вдоль осей главных компонент
 
-<img src='images/Theseus-Procrustes.jpg' title='fig:'/><p class='caption'>Прокрустово ложе</p>
+---
 
-<p><small>Тезей убивает разбойника Прокруста (источник <a href='https://mrpsmythopedia.wikispaces.com/Procrustes' title=''>https://mrpsmythopedia.wikispaces.com/Procrustes</a>)</small></p>
+## Прокрустов анализ
 
-</article></slide><slide class=""><hgroup><h2>Шаг 1. Выравниваем данные при помощи обобщенного прокрустова анализа</h2></hgroup><article  id="шаг-1.-выравниваем-данные-при-помощи-обобщенного-прокрустова-анализа">
+![Прокрустово ложе](images/Theseus-Procrustes.jpg)
 
-<p>Generalized Procrustes Analysis (GPA)</p>
+.small[Тезей убивает разбойника Прокруста (источник https://mrpsmythopedia.wikispaces.com/Procrustes)]
 
-<p>Минимизируем сумму квадратов расстояний между одноименными метками, меняя масштаб, поворачивая и сдвигая координаты. Вот как это выглядит на данных про черепах:</p>
+---
 
-<img src='images/Fig30.8ZuurAED-mod.jpg' title='fig:'/><p class='caption'>Прокрустово преобразование</p>
+## Шаг 1. Выравниваем данные при помощи обобщенного прокрустова анализа
 
-<div class="footnote">
-Рис. 30.8 из Zuur et al. 2007 с изменениями</div>
+Generalized Procrustes Analysis (GPA)
 
-</article></slide><slide class=""><hgroup><h2>Выравниваем головы саламандр</h2></hgroup><article  id="выравниваем-головы-саламандр">
+Минимизируем сумму квадратов расстояний между одноименными метками, меняя масштаб, поворачивая и сдвигая координаты. Вот как это выглядит на данных про черепах:
 
-<pre class = 'prettyprint lang-r'>gpa &lt;- gpagen(plethodon$land, print.progress = FALSE)
-plotAllSpecimens(gpa$coords,links=plethodon$links)</pre>
+![Прокрустово преобразование](images/Fig30.8ZuurAED-mod.jpg)
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+.pull-down[.small[Рис. 30.8 из Zuur et al. 2007 с изменениями]]
 
-</article></slide><slide class=""><hgroup><h2>Усредненная форма</h2></hgroup><article  id="усредненная-форма">
+---
 
-<pre class = 'prettyprint lang-r'>ref &lt;- mshape(gpa$coords) 
-plotRefToTarget(ref, ref, method = &quot;TPS&quot;, links = plethodon$links)</pre>
+## Выравниваем головы саламандр
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 
-</article></slide><slide class=""><hgroup><h2>Можем посмотреть, как отличается любой из образцов от усредненной формы</h2></hgroup><article  id="можем-посмотреть-как-отличается-любой-из-образцов-от-усредненной-формы">
+```r
+gpa &lt;- gpagen(plethodon$land, print.progress = FALSE)
+plotAllSpecimens(gpa$coords,links=plethodon$links)
+```
 
-<p>Изменение формы можно представить графически несколькими способами</p>
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/comparis-1.png" width="960" style="display: block; margin: auto;" /></p>
+---
 
-</article></slide><slide class=""><hgroup><h2>Код для графиков сравнения образцов с усредненной формой</h2></hgroup><article  id="код-для-графиков-сравнения-образцов-с-усредненной-формой">
+## Усредненная форма
 
-<pre class = 'prettyprint lang-r'># матрица, в которой хранится разметка общего графика
+
+```r
+ref &lt;- mshape(gpa$coords) 
+plotRefToTarget(ref, ref, method = "TPS", links = plethodon$links)
+```
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+
+## Можем посмотреть, как отличается любой из образцов от усредненной формы
+
+Изменение формы можно представить графически несколькими способами
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/comparis-1.png)&lt;!-- --&gt;
+
+---
+
+## Код для графиков сравнения образцов с усредненной формой
+
+
+```r
+# матрица, в которой хранится разметка общего графика
 m &lt;- matrix(data = c(1, 2,
                      3, 3),
             nrow = 2, ncol = 2, byrow = TRUE)
@@ -500,67 +450,96 @@ l &lt;- layout(m, heights = c(1, 1), widths = c(1, 1))
 op &lt;- par( mar = c(0, 0, 0, 0))
 # 1) изменение конфигурации обозначено векторами
 plotRefToTarget(ref, gpa$coords[, , 11],
-                method = &quot;vector&quot;, mag = 1,
+                method = "vector", mag = 1,
                 links = plethodon$links)
 # 2) формы обозначены точками
 plotRefToTarget(ref, gpa$coords[, , 11],
-                method = &quot;points&quot;, mag = 1,
+                method = "points", mag = 1,
                 links = plethodon$links)
 # 3) сплайн
 plotRefToTarget(ref, gpa$coords[, , 11],
-                method = &quot;TPS&quot;, mag = 1,
+                method = "TPS", mag = 1,
                 links = plethodon$links)
-par(op)</pre>
+par(op)
+```
 
-</article></slide><slide class=""><hgroup><h2>Шаг 2. Создаем морфопространство</h2></hgroup><article  id="шаг-2.-создаем-морфопространство">
+---
 
-<p><strong>Анализ главных компонент по координатам меток для выравненных образцов</strong>. Главные компоненты отражают изменения формы.</p>
+## Шаг 2. Создаем морфопространство
 
-<pre class = 'prettyprint lang-r'>ord &lt;- gm.prcomp(gpa$coords)
-plot(ord, main = &quot;PCA&quot;)</pre>
+__Анализ главных компонент по координатам меток для выравненных образцов__. Главные компоненты отражают изменения формы.
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
 
-</article></slide><slide class=""><hgroup><h2>Можно раскрасить по группам</h2></hgroup><article  id="можно-раскрасить-по-группам">
+```r
+ord &lt;- gm.prcomp(gpa$coords)
+plot(ord, main = "PCA")
+```
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/pca-p-1.png" width="960" style="display: block; margin: auto;" /></p>
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 
-</article></slide><slide class=""><hgroup><h2>Код для графика ординации и для легенды</h2></hgroup><article  id="код-для-графика-ординации-и-для-легенды">
+---
 
-<pre class = 'prettyprint lang-r'>op &lt;- par(mar = c(4, 4, 1, 1))
-gp &lt;- as.factor(paste(plethodon$species, plethodon$site)) # группа должна быть фактором
+## Можно раскрасить по группам
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/pca-p-1.png)&lt;!-- --&gt;
+
+---
+
+## Код для графика ординации и для легенды
+
+
+```r
+op &lt;- par(mar = c(4, 4, 1, 1), cex = 1.5)
+# группа должна быть фактором
+gp &lt;- as.factor(paste(plethodon$species, plethodon$site)) 
+
 # задаем соответствие цветов уровням фактора
-colvec &lt;- c(&quot;Jord Allo&quot; = &quot;yellow2&quot;, 
-            &quot;Jord Symp&quot; = &quot;orange&quot;, 
-            &quot;Teyah Allo&quot; = &quot;green4&quot;, 
-            &quot;Teyah Symp&quot; = &quot;green1&quot;)
+colvec &lt;- c("Jord Allo" = "yellow2", 
+            "Jord Symp" = "orange", 
+            "Teyah Allo" = "green4", 
+            "Teyah Symp" = "green1")
 # вектор цветов в порядке заданном фактором gp
 colvec &lt;- colvec[match(gp, names(colvec))]
 # график
-plot(ord, bg = colvec, pch = 21, col = &quot;grey20&quot;)
+plot(ord, bg = colvec, pch = 21, col = "grey20")
 # легенда
-legend(&quot;topright&quot;, legend = levels(gp), 
-                   bty = &quot;n&quot;, pch = 21, 
-                   col = &quot;grey20&quot;, 
+legend("topright", legend = levels(gp), 
+                   bty = "n", pch = 21, 
+                   col = "grey20", 
                    pt.bg = levels(as.factor(colvec)))
-par(op)</pre>
+par(op)
+```
 
-</article></slide><slide class=""><hgroup><h2>Доля объясненной изменчивости и факторные координаты</h2></hgroup><article  id="доля-объясненной-изменчивости-и-факторные-координаты">
+---
 
-<pre class = 'prettyprint lang-r'>expl &lt;- round(ord$d[1:5]/sum(ord$d) * 100, 1) # Доля изменчивости объясненной 1-5 компонентами
-head(ord$x[, 1:5]) # Факторные координаты по 1-5 компонентам</pre>
+## Доля объясненной изменчивости и факторные координаты
 
-<pre >##       Comp1  Comp2     Comp3    Comp4    Comp5
-## 1 -0.036993 0.0512 -0.001697 -0.00313 -0.01094
-## 2 -0.000749 0.0594  0.000137 -0.00277 -0.00812
-## 3  0.005600 0.0742 -0.005261 -0.00503 -0.00275
-## 4 -0.013481 0.0646 -0.045844 -0.00789  0.00982
-## 5 -0.033470 0.0686  0.013629  0.00736  0.02235
-## 6 -0.005214 0.0616 -0.029933 -0.00575 -0.02406</pre>
 
-</article></slide><slide class=""><hgroup><h2>Чтобы легко рисовать изменения формы вдоль главной компоненты нам понадобится функция</h2></hgroup><article  class="smaller" id="чтобы-легко-рисовать-изменения-формы-вдоль-главной-компоненты-нам-понадобится-функция">
+```r
+# Доля изменчивости объясненной 1-5 компонентами
+expl &lt;- round(ord$d[1:5]/sum(ord$d) * 100, 1) 
 
-<pre class = 'prettyprint lang-r'>plot_shape_change &lt;- function(ord, ref_shape, PC,
+# Факторные координаты по 1-5 компонентам
+head(ord$x[, 1:5]) 
+```
+
+```
+       Comp1   Comp2      Comp3     Comp4     Comp5
+1 -0.0369931 0.05118 -0.0016972 -0.003129 -0.010936
+2 -0.0007494 0.05942  0.0001372 -0.002769 -0.008118
+3  0.0056005 0.07420 -0.0052612 -0.005035 -0.002747
+4 -0.0134808 0.06464 -0.0458436 -0.007887  0.009817
+5 -0.0334696 0.06864  0.0136292  0.007359  0.022347
+6 -0.0052145 0.06163 -0.0299333 -0.005753 -0.024060
+```
+
+---
+
+## Чтобы легко рисовать изменения формы вдоль главной компоненты нам понадобится функция
+
+
+```r
+plot_shape_change &lt;- function(ord, ref_shape, PC,
                               horiz = TRUE,
                               gridPars = NULL, ...){
   if(horiz){
@@ -578,157 +557,308 @@ head(ord$x[, 1:5]) # Факторные координаты по 1-5 компо
                      gridPars = gridPars, ...)
      par(op)
     }
-}</pre>
+}
+```
 
-</article></slide><slide class=""><hgroup><h2>Изменение формы вдоль главных компонент относительно средней формы</h2></hgroup><article  class="smaller" id="изменение-формы-вдоль-главных-компонент-относительно-средней-формы">
+---
 
-<pre class = 'prettyprint lang-r'>plot_shape_change(ord, ref_shape = gpa$consensus, PC = 1, links = plethodon$links, method = &quot;TPS&quot;) </pre>
+## Изменение формы вдоль главных компонент относительно средней формы
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 
-<pre class = 'prettyprint lang-r'>plot_shape_change(ord, ref_shape = gpa$consensus, PC = 2, links = plethodon$links, method = &quot;TPS&quot;, horiz = FALSE) </pre>
+```r
+plot_shape_change(ord, ref_shape = gpa$consensus, PC = 1, 
+                  links = plethodon$links, method = "TPS") 
+```
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-17-1.png" width="288" style="display: block; margin: auto;" /></p>
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
-</article></slide><slide class=""><hgroup><h2>Можно нарисовать одновременно изменение формы вдоль обеих компонент и ординацию</h2></hgroup><article  id="можно-нарисовать-одновременно-изменение-формы-вдоль-обеих-компонент-и-ординацию">
 
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/forms-pca-p-1.png" width="960" style="display: block; margin: auto;" /></p>
+```r
+plot_shape_change(ord, ref_shape = gpa$consensus, PC = 2, 
+                  links = plethodon$links, method = "TPS", horiz = FALSE) 
+```
 
-</article></slide><slide class=""><hgroup><h2>Код для графика</h2></hgroup><article  id="код-для-графика">
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
-<pre class = 'prettyprint lang-r'>my_gridPar &lt;- gridPar(tar.pt.size = 0.6, grid.lwd = 0.7)
+---
+
+## Можно нарисовать одновременно изменение формы вдоль обеих компонент и ординацию
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/forms-pca-p-1.png)&lt;!-- --&gt;
+
+
+---
+
+## Код для графика
+
+
+```r
+my_gridPar &lt;- gridPar(tar.pt.size = 0.6, grid.lwd = 0.7)
 library(cowplot)
 gg_pca &lt;- plot_grid(
+  # Изменение формы вдоль PC2
   ~ plot_shape_change(ord, ref_shape = gpa$consensus, PC = 2,
                       horiz = FALSE, links = plethodon$links,
-                      method = &quot;TPS&quot;, gridPars = my_gridPar),
-  ~ {plot(ord, bg = colvec, pch = 21, col = &quot;grey20&quot;)
-    legend(&quot;topright&quot;, legend = levels(gp),  bty = &quot;n&quot;, 
-           pch = 21, col = &quot;grey20&quot;, 
+                      method = "TPS", gridPars = my_gridPar),
+  # Ординация
+  ~ {plot(ord, bg = colvec, pch = 21, col = "grey20", cex = 1.5)
+    legend("topright", legend = levels(gp),  bty = "n", 
+           pch = 21, col = "grey20", 
            pt.bg = levels(as.factor(colvec)))},
+  # пустой график
   NULL,
+  # Изменение формы вдоль PC1
   ~ plot_shape_change(ord, ref_shape = gpa$consensus, PC = 1,
                       links = plethodon$links, 
-                      method = &quot;TPS&quot;, gridPars = my_gridPar),
+                      method = "TPS", gridPars = my_gridPar),
+  # Параметры размещения
   ncol = 2, rel_heights = c(5, 1), rel_widths = c(1, 4)
 )
 
-gg_pca</pre>
+gg_pca
+```
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Эволюционные изменения формы</h2></hgroup><article  id="эволюционные-изменения-формы">
+---
 
-</article></slide><slide class=""><hgroup><h2>Фило-морфо пространство</h2></hgroup><article  id="фило-морфо-пространство">
-
-<p>Если у вас есть данные о средних формах для каждого вида и данные о филогении (из любого источника), то можно изобразить эволюционные изменения формы</p>
-
-<p>Этапы:</p>
-
-<ol>
-<li>Выравнивание средних форм для таксонов при помощи обобщенного прокрустова анализа</li>
-<li>Ординация таксонов при помощи анализа главных компонент</li>
-<li>Поиск анцестральных состояний количественных признаков (форм) методом максимального правдоподобия</li>
-<li>Наложение филогенетического дерева и анцестральных форм на график ординации</li>
-</ol>
-
-</article></slide><slide class=""><hgroup><h2>Фило-морфопространство саламандр рода Plethodon</h2></hgroup><article  id="фило-морфопространство-саламандр-рода-plethodon">
-
-<p>P. serratus, P. cinereus, P. shenandoah, P. hoffmani, P. virginia, P. nettingi, P. hubrichti, P. electromorphus, P. richmondi</p>
-
-<pre class = 'prettyprint lang-r'>data(plethspecies)
-str(plethspecies, vec.len = 2, give.attr = F)</pre>
-
-<pre >## List of 2
-##  $ land: num [1:11, 1:2, 1:9] 0.217 0.259 ...
-##  $ phy :List of 4
-##   ..$ edge       : int [1:16, 1:2] 10 10 11 12 12 ...
-##   ..$ Nnode      : int 8
-##   ..$ tip.label  : chr [1:9] &quot;P_serratus&quot; &quot;P_cinereus&quot; ...
-##   ..$ edge.length: num [1:16] 15.17 3.84 ...</pre>
-
-</article></slide><slide class=""><hgroup><h2>Выравниваем средние формы для видов</h2></hgroup><article  id="выравниваем-средние-формы-для-видов">
-
-<pre class = 'prettyprint lang-r'>species_gpa &lt;- gpagen(plethspecies$land) #GPA-alignment</pre>
-
-<pre >## 
-## Performing GPA
-## 
-  |                                                                  
-  |                                                            |   0%
-  |                                                                  
-  |===============                                             |  25%
-  |                                                                  
-  |==============================                              |  50%
-  |                                                                  
-  |============================================================| 100%
-## 
-## Making projections... Finished!</pre>
-
-</article></slide><slide class=""><hgroup><h2>Наложение филогенетического дерева и анцестральных форм на график PCA ординации</h2></hgroup><article  id="наложение-филогенетического-дерева-и-анцестральных-форм-на-график-pca-ординации">
-
-<p>Филоморфопространство</p>
-
-<pre class = 'prettyprint lang-r'>pca_with_phylo &lt;- gm.prcomp(species_gpa$coords, phy = plethspecies$phy)
-plot(pca_with_phylo, phylo = TRUE)</pre>
-
-<p><img src="08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-
-</article></slide><slide class=""><hgroup><h2>Take-home messages</h2></hgroup><article  id="take-home-messages">
-
-<ul>
-<li>Классический подход к морфометрии
-
-<ul>
-<li>анализируют расстояния между метками</li>
-<li>для корректного анализа необходимо удалить влияние размера и оставить форму, но сделать это корректно почти невозможно</li>
-</ul></li>
-<li>Геометрическая морфометрия
-
-<ul>
-<li>анализируют координаты меток</li>
-<li>различные конфигурации выравнивают при помощи обобщенного прокрустова анализа</li>
-<li>преобразованные координаты точек используют в анализе главных компонент</li>
-<li>чтобы визуализировать эволюцию форм, можно наложить филогенетическое древо на ординацию</li>
-</ul></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Дополнительные ресурсы</h2></hgroup><article  id="дополнительные-ресурсы">
-
-<ul>
-<li>Bookstein, F.L., 2003. Morphometric Tools for Landmark Data Geometry and Biology. Cambridge University Press.</li>
-<li>Claude, J., 2008. Morphometrics With R. Springer.</li>
-<li>GEOL G562 - Geometric Morphometrics [WWW Document], n.d. URL <a href='http://www.indiana.edu/~g562/PBDB2013/' title=''>http://www.indiana.edu/~g562/PBDB2013/</a> (accessed 4.1.15).</li>
-<li>Zelditch, M., Swiderski, D.L., Sheets, D.H., Fink, W.L., 2004. Geometric Morphometrics for Biologists. Academic Press.</li>
-<li>Zuur, A.F., Ieno, E.N., Smith, G.M., 2007. Analysing ecological data. Springer.</li>
-</ul></article></slide>
+class: middle, center, inverse
 
 
-  <slide class="backdrop"></slide>
+# Эволюционные изменения формы
 
-</slides>
+---
 
+## Фило-морфо пространство
+
+Если у вас есть данные о средних формах для каждого вида и данные о филогении (из любого источника), то можно изобразить эволюционные изменения формы
+
+Этапы:
+
+1. Выравнивание средних форм для таксонов при помощи обобщенного прокрустова анализа
+1. Ординация таксонов при помощи анализа главных компонент
+1. Поиск анцестральных состояний количественных признаков (форм) методом максимального правдоподобия
+1. Наложение филогенетического дерева и анцестральных форм на график ординации
+
+---
+
+## Фило-морфопространство саламандр рода Plethodon
+
+P. serratus, P. cinereus, P. shenandoah, P. hoffmani, P. virginia, P. nettingi, P. hubrichti, P. electromorphus, P. richmondi
+
+
+```r
+data(plethspecies)
+str(plethspecies, vec.len = 2, give.attr = F)
+```
+
+```
+List of 2
+ $ land: num [1:11, 1:2, 1:9] 0.217 0.259 ...
+ $ phy :List of 4
+  ..$ edge       : int [1:16, 1:2] 10 10 11 12 12 ...
+  ..$ Nnode      : int 8
+  ..$ tip.label  : chr [1:9] "P_serratus" "P_cinereus" ...
+  ..$ edge.length: num [1:16] 15.17 3.84 ...
+```
+
+---
+
+## Выравниваем средние формы для видов
+
+
+```r
+species_gpa &lt;- gpagen(plethspecies$land) #GPA-alignment
+```
+
+```
+
+Performing GPA
+
+  |                                                                                   
+  |                                                                             |   0%
+  |                                                                                   
+  |===================                                                          |  25%
+  |                                                                                   
+  |======================================                                       |  50%
+  |                                                                                   
+  |=============================================================================| 100%
+
+Making projections... Finished!
+```
+
+---
+
+## Наложение филогенетического дерева и анцестральных форм на график PCA ординации
+
+Филоморфопространство
+
+
+```r
+pca_with_phylo &lt;- gm.prcomp(species_gpa$coords, phy = plethspecies$phy)
+plot(pca_with_phylo, phylo = TRUE)
+```
+
+![](08.2_PCA_geometric_morphometrics_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+
+## Take-home messages
+
+- Классический подход к морфометрии
+    - анализируют расстояния между метками
+    - для корректного анализа необходимо удалить влияние размера и оставить форму, но сделать это корректно почти невозможно
+- Геометрическая морфометрия
+    - анализируют координаты меток
+    - различные конфигурации выравнивают при помощи обобщенного прокрустова анализа
+    - преобразованные координаты точек используют в анализе главных компонент
+    - чтобы визуализировать эволюцию форм, можно наложить филогенетическое древо на ординацию
+
+---
+
+## Дополнительные ресурсы
+
+- Bookstein, F.L., 2003. Morphometric Tools for Landmark Data Geometry and Biology. Cambridge University Press.
+- Claude, J., 2008. Morphometrics With R. Springer.
+- GEOL G562 - Geometric Morphometrics [WWW Document], n.d. URL http://www.indiana.edu/~g562/PBDB2013/ (accessed 4.1.15).
+- Zelditch, M., Swiderski, D.L., Sheets, D.H., Fink, W.L., 2004. Geometric Morphometrics for Biologists. Academic Press.
+- Zuur, A.F., Ieno, E.N., Smith, G.M., 2007. Analysing ecological data. Springer.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "vs",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- https://github.com/fnaufel/xaringan-smartify-->
+<script type="text/javascript">
+  smartify();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
 </script>
-
-<!-- map slide visiblity events into shiny -->
-<script>
-  (function() {
-    if (window.jQuery) {
-       window.jQuery(document).on('slideleave', function(e) {
-         window.jQuery(e.target).trigger('hidden');
-      });
-       window.jQuery(document).on('slideenter', function(e) {
-         window.jQuery(e.target).trigger('shown');
-      });
-    }
-  })();
-</script>
-
-</body>
+  </body>
 </html>

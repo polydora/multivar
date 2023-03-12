@@ -1,25 +1,42 @@
 ---
 title: "Анализ главных компонент"
 subtitle: "Анализ и визуализация многомерных данных с использованием R"
-author: Марина Варфоломеева, Вадим Хайтов
-presenters: [{
-  name: 'Марина Варфоломеева',
-  company: 'Каф. Зоологии беспозвоночных, СПбГУ',
-  }]
+author: 
+  - Марина Варфоломеева
+  - Вадим Хайтов
+company: 'Каф. Зоологии беспозвоночных, СПбГУ'
 output:
- ioslides_presentation:
-  widescreen: true
-  css: assets/my_styles.css
-  logo: assets/Linmod_logo.png
+  xaringan::moon_reader:
+    self-contained: true
+    lib_dir: libs
+    css: [default, tamu-fonts, ninjutsu, "assets/xaringan-themer.css", "assets/xaringan.css"]
+    df_print: default
+    nature:
+      highlightStyle: vs
+      highlightLines: true
+      countIncrementalSlides: false
+      titleSlideClass: [middle, left, inverse]
+      beforeInit: "assets/macros.js"
+    includes:
+      in_header: "assets/xaringan_in_header.html"
+      after_body: "assets/xaringan_after_body.html"
 ---
 
-```{r setup, include = FALSE, cache = FALSE, purl = FALSE}
-# output options
-options(width = 70, scipen = 6, digits = 3)
-library(knitr)
-# chunk default options
-opts_chunk$set(fig.align='center', tidy = FALSE, fig.width = 7, fig.height = 3, warning = FALSE)
-library(dplyr)
+```{r setup, include = FALSE, cache = FALSE, purl = FALSE, fig.showtext = TRUE}
+source("assets/xaringan_setup.R")
+library(xaringanExtra)
+use_tile_view()
+use_scribble()
+use_search(show_icon = FALSE)
+use_progress_bar(color = "#6d2b5e", location = "bottom", height = "10px")
+use_freezeframe()
+# use_webcam()
+# use_panelset()
+# use_extra_styles(hover_code_line = TRUE)
+
+# http://tachyons.io/docs/
+# https://roperzh.github.io/tachyons-cheatsheet/
+use_tachyons()
 ```
 
 ## Вы сможете
@@ -31,7 +48,13 @@ library(dplyr)
 - Строить ординацию объектов в пространстве главных компонент
 - Создавать комплексные переменные и использовать их в других видах анализов
 
+---
+
+class: middle, center, inverse
+
 # Постановка задачи для анализа главных компонент
+
+---
 
 ## Зачем нужен анализ главных компонент?
 
@@ -42,6 +65,8 @@ library(dplyr)
 Migration by Don McCullough
 on [Flickr](https://flic.kr/p/fEFhCj)
 
+---
+
 ## Не все проекции несут важную информацию
 
 ![](./images/BlackShadows-FerranJorda-Flickr.jpg)
@@ -49,11 +74,15 @@ on [Flickr](https://flic.kr/p/fEFhCj)
 black shadows for a white horses / les negres ombres dels cavalls blancs by  Ferran Jordà
 on [Flickr](https://flic.kr/p/9XJxiL)
 
+---
+
 ## Можно найти оптимальную проекцию, чтобы сохранить максимум информации в минимуме измерений
 
 ![](./images/CatsShadow-MarinaDelCastell-Flickr.jpg)
 
 Cat's shadow by Marina del Castell on [Flickr](https://flic.kr/p/ebe5UF)
+
+---
 
 ## Анализ главных компонент (Principal Component Analysis, PCA)
 
@@ -63,23 +92,31 @@ Cat's shadow by Marina del Castell on [Flickr](https://flic.kr/p/ebe5UF)
 
 - Снижение размерности многомерных данных (dimension reduction) и создание синтетических взаимонезависимых признаков для других анализов (например, для регрессии, дискриминантного анализа)
 
+---
+
 ## Пример: Размеры медуз
 
 Данные о размерах медуз _Catostylus mosaicus_ (Lunn & McNeil 1991). Медузы собраны в реке Хоксбери (Новый Южный Уэльс, Австралия): часть --- на острове Дангар, другая --- в заливе Саламандер.
 
-<div class="columns-2">
-
+.pull-left[
 <img src="images/Blubberjellies-KirstiScott-Flickr.jpg" height=300>
 
-Blubber jellies! by  Kirsti Scott
-on [Flickr](https://flic.kr/p/nWikVp)
+.tiny[Blubber jellies! by  Kirsti Scott
+on [Flickr](https://flic.kr/p/nWikVp)]
+]
+
+.pull-right[
 
 ```{r, echo = FALSE, purl = FALSE}
 jelly <- read.delim("data/jellyfish.csv")
-head(jelly, 10)
+jelly %>%
+  kable("html") %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "500px")
 ```
+]
 
-</div>
+---
 
 ## Задача анализа главных компонент
 
@@ -91,9 +128,9 @@ head(jelly, 10)
 
 Интуитивно, мы можем добиться этого, если проведем одну ось вдоль направления, в котором максимально вытянуто облако исходных данных. Вторую ось проведем перпендикулярно первой (и они будут независимы).
 
-```{r echo = FALSE, purl = FALSE, message=FALSE}
+```{r echo = FALSE, purl = FALSE, message=FALSE, opts.label='XLxS'}
 library(ggplot2)
-theme_set(theme_bw() + theme(legend.key = element_blank()))
+theme_set(theme_bw(base_size = 14))
 update_geom_defaults("point", list(shape = 19))
 
 X_raw <- jelly[, 2:3]
@@ -130,7 +167,7 @@ Lambda <- E$values       # Собственные числа
 library(cowplot)
 plot_grid(gg + ggtitle("До"),
           gg_rotated + ggtitle("После"),
-          align = "h")
+          align = "h", rel_widths = c(2, 3))
 
 # # собственные векторы
 dimnames(U) <- list(colnames(X),paste0("PC", 1:ncol(X)))
@@ -140,26 +177,32 @@ Explained <- Lambda/sum(Lambda)       # Доля объясненной изме
 Y <- X %*% U # Координаты точек в новом пространстве
 ```
 
+---
+
 ## Вспомним, как устроен PCA.
 
 ![](images/PCA.png)
 
-## Результаты работы PCA  {.columns-2 .smaller}
+---
+
+## Результаты работы PCA
+
+.pull-left[
 
 - __Собственные векторы__ (__факторные нагрузки__)
   - перпендикулярны друг другу (ортогональны, независимы) 
   - задают __главные компоненты__ --- направления новых осей
   - линейные комбинации исходных признаков
   - упорядочены в порядке убывания дисперсии
+
 - __Собственные числа__
   - показывают дисперсию вдоль главных компонент
   - упорядочены в порядке убывания дисперсии
   - используются для вычисления доли общей изменчивости, связанной с каждой из главных компонент
-- __Факторные координаты__
-  - координаты объектов в пространстве главных компонент
 
-<br/>
+]
 
+.pull-right[
 ```{r echo=FALSE, fig.width=5, fig.height=4.5, message=FALSE}
 plot_grid(gg + ggtitle("До"),
           gg_rotated + ggtitle("После") + labs(x = "PC1", y = "PC2"),
@@ -167,18 +210,12 @@ plot_grid(gg + ggtitle("До"),
           align = "hv", axis = "b")
 ```
 
-```{r echo=FALSE, fig.width=9, message=FALSE}
-# plot_grid(gg + ggtitle("До"),
-#           gg_rotated + ggtitle("После") +
-#   aes(colour = jelly$location) +
-#   scale_color_brewer("Location", palette = "Set1") +
-#   labs(
-#        x = paste0("PC1, ", round(Explained[1] * 100, 1), "%"),
-#        y = paste0("PC2, ", round(Explained[2] * 100, 1), "%")),
-#   rel_widths = c(1, 1.3),
-#           align = "hv", axis = "l")
-```
+- __Факторные координаты__
+  - координаты объектов в пространстве главных компонент
 
+]
+
+---
 
 ## Результаты работы PCA
 
@@ -199,7 +236,13 @@ gg_rotated +
 - PC1 --- "размер медузы" --- больше всего изменчивости
 - PC2 --- остаточная изменчивость
 
+---
+
+class: middle, center, inverse
+
 # Действительно многомерные данные
+
+---
 
 ## Пример: Потребление белков в странах Европы с разными видами продуктов питания
 
@@ -209,8 +252,9 @@ gg_rotated +
 
 <div class = "footnote">Данные из Weber, 1973</div>
 
+---
 
-## Открываем данные {.smaller}
+## Открываем данные
 
 ```{r R.options=list(width = 100)}
 protein <- read.table(file="data/protein.csv", sep="\t", dec=".", header=TRUE)
@@ -221,36 +265,55 @@ head(protein)
 
 <div class = "footnote">Данные из Weber, 1973</div>
 
+---
+
 ## Делаем PCA
 
-```{r pca-owl, message=FALSE, fig.width=5, fig.height=3, eval=TRUE, echo=-c(3, 5), fig.align='left'}
+```{r pca-owl, message=FALSE, opts.label='LxM', eval=TRUE, echo=-c(3, 5), fig.align='left'}
 library(vegan)
 prot_pca <- rda(protein[, -c(1, 2)], scale = TRUE)
-op <- par(mar = c(5, 4, 0, 2) + 0.1)
+op <- par(mar = c(5, 4, 0, 2) + 0.1, cex = 1.5)
 biplot(prot_pca)
 par(op)
 ```
 
+---
+
 ## Делаем PCA
 
-```{r pca-owl, message=FALSE, fig.width=5, fig.height=4, eval=FALSE, echo=-c(3, 5), purl=FALSE}
+```{r pca-owl, message=FALSE, opts.label='MxM', eval=FALSE, echo=-c(3, 5), purl=FALSE}
 ```
 
-<div class="columns-2">
+.pull-left[
 
-```{r pca-owl, message=FALSE, fig.width=5, fig.height=5, eval=TRUE, echo=FALSE, purl=FALSE}
+```{r pca-owl, message=FALSE, opts.label='MxM', eval=TRUE, echo=FALSE, purl=FALSE}
 ```
+]
+.pull-right[
 
 ![](images/how-to-owl.jpg)
-</div>
+
+]
+
+---
 
 ## Разбираемся с результатами PCA
 
-```{r message=FALSE}
+.scroll-box-26[
+
+```{r pca-res, message=FALSE}
 summary(prot_pca)
 ```
 
+]
+
+---
+
+class: middle, center, inverse
+
 # 1. Сколько компонент нужно оставить?
+
+---
 
 ## Собственные числа показывают вклады главных компонент в общую изменчивость
 
@@ -268,6 +331,8 @@ Cumulative Proportion 0.4452 0.6268 0.7521 0.8582 0.90976 0.94589 ...
 eigenvals(prot_pca) # собственные числа
 ```
 
+---
+
 ## Сколько компонент нужно оставить, если мы хотим редуцировать данные?
 
 - Эмпирические правила (выберите любое, но одно)
@@ -283,13 +348,21 @@ eigenvals(prot_pca) # собственные числа
 bstick(prot_pca) # ожидаемое по Broken Stick Model
 ```
 
+---
+
 ## График собственных чисел
 
 ```{r}
 screeplot(prot_pca, type = "lines", bstick = TRUE) # график собственных чисел
 ```
 
+---
+
+class: middle, center, inverse
+
 # 2. Графики факторных нагрузок и ординации
+
+---
 
 ## Параметр `scaling`
 
@@ -306,20 +379,25 @@ df <- data.frame(
 
 colnames(df) <- c("scaling", "Название графика", "Масштаб", "Расстояния между объектами", "Углы между векторами")
 
-kable(df)
+df %>%
+  kable("html") %>%
+  kable_styling()
 ```
 
+---
 
 ## Графики
 
-```{r, fig.width=7, fig.height=5}
-op <- par(mfrow = c(1, 2))
+```{r, opts.label='XLxL', fig.show='hold'}
+op <- par(mfrow = c(1, 2), cex = 1.5)
 # График факторных нагрузок
 biplot(prot_pca, display = "species", scaling = "species")
 # График факторных координат
 biplot(prot_pca, display = "sites")
 par(op)
 ```
+
+---
 
 ## Те же самые графики можно построить в ggplot2
 
@@ -337,7 +415,7 @@ ar <- arrow(length = unit(0.25, "cm"))
 ## График нагрузок в ggplot
 p_load <- ggplot(df_load) + 
   geom_text(aes(x = PC1, y = PC2, label = rownames(df_load)), 
-            size = 3, vjust = df_load$vjust, hjust = df_load$hjust) + 
+            size = 6, vjust = df_load$vjust, hjust = df_load$hjust) + 
   geom_segment(aes(x = 0, y = 0, xend = PC1, yend = PC2), 
                colour = "grey40", arrow = ar) + 
   coord_equal(xlim = c(-2, 2), ylim = c(-2, 2))
@@ -349,46 +427,54 @@ df_scores <- data.frame(protein[, 1:2],
   scores(prot_pca, display = "sites", choices = c(1, 2, 3), scaling = "sites"))
 
 p_scores <- ggplot(df_scores, aes(x = PC1, y = PC2, colour = region)) + 
-  geom_text(aes(label = country)) +
+  geom_text(aes(label = country), size = 6) +
   coord_equal(xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2))
 ```
 
-```{r, warning=FALSE, fig.width=10, echo=FALSE}
+```{r, ord-plot-grid, warning=FALSE, opts.label='XLxL', echo=FALSE}
 plot_grid(p_load, p_scores, align = "h",
-          rel_widths = c(0.36, 0.64))
+          rel_widths = c(0.5, 0.68))
 ```
 
-## Исходный код графика нагрузок
+---
+
+## Исходный код графика
 
 ```{r load-p, eval=FALSE, purl = FALSE}
 ```
 
-## Исходный код графика ординации
+--
 
 ```{r ord-p, eval=FALSE, purl = FALSE}
 ```
 
+---
+
+class: middle, center, inverse
+
 # 3. Интерпретация компонент
 
-## Интерпретация компонент {.smaller}
+---
 
-<div class="columns-2">
+## Интерпретация компонент
+
+.pull-left-55[
 
 Факторные нагрузки оценивают вклады переменных в изменчивость по главной компоненте
 
-- Модуль значения нагрузки --- величина вклада 
-- Знак значения нагрузки --- направление вклада
+- Модуль нагрузки --- величина вклада 
+- Знак нагрузки --- направление вклада
 
 ```{r}
 scores(prot_pca, display = "species", 
        choices = c(1, 2, 3), scaling = 0)
 ```
 
-> - Т.е. первую компоненту можно назвать "Мясо -- злаки и орехи"
+]
 
-<br/><br/>
+.pull-right-45[
 
-### Первая главная компонента:
+__Первая главная компонента__:
 
 Высокие __положительные нагрузки по первой главной компоненте__ у переменных `cereals` и `nuts`. Значит, чем больше значение PC1, тем больше потребление этих продуктов.
 
@@ -398,28 +484,33 @@ scores(prot_pca, display = "species",
 p_load
 ```
 
+]
 
-</div>
+--
 
-## Интерпретация компонент  {.smaller}
+- Т.е. первую компоненту можно назвать "Мясо -- злаки и орехи"
 
-<div class="columns-2">
+---
+
+## Интерпретация компонент
+
+
+.pull-left-55[
 
 Факторные нагрузки оценивают вклады переменных в изменчивость по главной компоненте
 
-- Модуль значения нагрузки --- величина вклада 
-- Знак значения нагрузки --- направление вклада
+- Модуль нагрузки --- величина вклада 
+- Знак нагрузки --- направление вклада
 
 ```{r}
 scores(prot_pca, display = "species", 
        choices = c(1, 2, 3), scaling = 0)
 ```
 
-> - Т.е. вторую компоненту можно назвать "Рыба и овощи"
+]
 
-<br/><br/>
-
-### Вторая главная компонента:
+.pull-right-45[
+__Вторая главная компонента__:
 
 Высокие __положительные нагрузки по второй главной компоненте__ у переменных `fish`, `frveg`. Значит, чем больше значение PC2, тем больше потребление рыбы, овощей.
 
@@ -428,16 +519,22 @@ scores(prot_pca, display = "species",
 ```{r echo=FALSE, purl=FALSE}
 p_load
 ```
+]
 
-</div>
+--
+
+- Т.е. вторую компоненту можно назвать "Рыба и овощи"
 
 
+---
+
+class: middle, center, inverse
 
 # PCA и другие методы
 
-##  {.smaller}
+---
 
-<div class="columns-2">
+.pull-left-45[
 
 ### PCA
 
@@ -449,20 +546,22 @@ p_load
   - интерпретировать связи между переменными
 - Главные компоненты --- линейные комбинации переменных, задающие направления максимального варьирования исходных данных. 
 
-<br/>
+]
+
+.pull-right-55[
 
 ### Линейная регрессия
 
 - Метод обучения "с учителем" (supervised learninig)
-- Переменные делятся на зависимые (один или несколько откликов) и независимые (предикторы)
+- Переменные делятся на зависимые (отклики) и независимые (предикторы)
 - Задачи:
   - описать зависимость значений отклика от предикторов
   - предсказать значения отклика при известных значениях предикторов
-- Линия регрессии --- направление, вдоль которого минимален разброс значений зависимой переменной (сумма квадратов остатков).
+- Линия регрессии --- направление минимальноо разброса значений зависимой переменной (сумма квадратов остатков).
 
-</div>
 
-```{r echo=FALSE, purl=FALSE, fig.width=5, fig.height=3}
+```{r echo=FALSE, purl=FALSE, opts.label='MxXS'}
+library(dplyr)
 set.seed(392987)
 dat <- data.frame(x = 1:100) %>% 
   mutate(y = 15 + 0.8 * x + rnorm(100, 0, 20),
@@ -484,14 +583,15 @@ dat %>%
   
   guides(colour = guide_legend(override.aes = list(linetype = c(1, 1, 1)))) +
   scale_colour_manual(values = c("PC1" = "#E41A1C", "lm(y~x)" = "#377EB8", "lm(x~y)" = "#4DAF4A"), breaks = c("PC1", "lm(y~x)", "lm(x~y)")) +
-  coord_fixed() +
+  # coord_fixed() +
   labs(colour = "")
 ```
 
+]
 
-##  
+---
 
-<div class="columns-2">
+.pull-left[
 
 ### PCA
 
@@ -500,7 +600,9 @@ dat %>%
 - Расстояния между объектами на любой ординации PCA соответствуют их евклидовым расстояниям в пространстве главных компонент.
 
 - Исходные признаки --- количественные переменные, связанные друг с другом линейно. Для описания различий между такими объектами подходит евклидово расстояние.
+]
 
+.pull-right[
 
 ### nMDS
 
@@ -510,26 +612,31 @@ dat %>%
 <br/><br/>
 
 - Исходные признаки могут быть любыми, т.к. может быть использована любая мера различий между объектами.
+]
 
-</div>
+---
 
-## Результаты PCA и nMDS будут похожи, если для nMDS-ординации использовано евклидово расстояние {.smaller}
+## Результаты PCA и nMDS будут похожи, если для nMDS-ординации использовано евклидово расстояние
 
-```{r echo=FALSE, message=FALSE, fig.width = 7, fig.height=4, purl = FALSE, fig.align='center'}
+```{r echo=FALSE, message=FALSE, opts.label='XLxL', purl = FALSE, fig.align='center'}
 ord_nmds <- metaMDS(scale(protein[, 3:ncol(protein)]),
                     distance = "euclidean",
                     trace = 0, autotransform = FALSE)
 nMDS <- ggplot(as.data.frame(ord_nmds$points), aes(x=MDS1, y=MDS2)) + 
-  geom_text(aes(color = protein$region, label = protein$country)) + 
+  geom_text(aes(color = protein$region, label = protein$country), size = 6) + 
   coord_equal()
 plot_grid(p_scores + guides(color=FALSE) + ggtitle("PCA"),
   nMDS + guides(color=FALSE) + ggtitle("nMDS"),
   align = "h")
 ```
 
+---
 
+class: middle, center, inverse
 
 # Создание составных переменных при помощи PCA
+
+---
 
 ## Создание составных переменных
 
@@ -551,6 +658,8 @@ head(scores(prot_pca, display = "sites",
        choices = c(1, 2, 3), scaling = "sites"))
 ```
 
+---
+
 ## При помощи дисперсионного анализа можно проверить, различается ли значение первой главной компоненты ("Мясо -- злаки и орехи") между разными регионами Европы
 
 ```{r}
@@ -562,6 +671,8 @@ anova(mod)
 ```
 
 > - Регионы Европы различаются по потреблению мяса, злаков и орехов
+
+---
 
 ## Проверка условий применимости дисперсионного анализа
 
@@ -577,6 +688,7 @@ plot_grid(res_p, norm_p, ncol = 2, rel_widths = c(0.55, 0.45))
 
 > - Условия применимости дисперсионного анализа выполняются
 
+---
 
 ## График значений первой компоненты по регионам
 
@@ -587,6 +699,7 @@ ggplot(df, aes(x = region, y = PC1, colour = region)) +
   theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust = 1)) 
 ```
 
+---
 
 ## Пост-хок тест
 
@@ -594,6 +707,7 @@ ggplot(df, aes(x = region, y = PC1, colour = region)) +
 TukeyHSD(aov(mod))
 ```
 
+---
 
 ## Take-home messages
 
@@ -607,7 +721,7 @@ TukeyHSD(aov(mod))
     - Факторные нагрузки --- корреляции исходных переменных с компонентами --- используются для интерпретации
     - Значения факторов --- новые координаты объектов в пространстве уменьшенной размерности
 
-
+---
 
 ## Что почитать
 
