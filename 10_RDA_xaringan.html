@@ -105,7 +105,7 @@ class: middle, center, inverse
 Частоты разных аллелей фосфоглюкоизомеразы и данные о факторах среды для 16 колоний бабочек _Euphydryas editha_ в Калифорнии и Орегоне (данные McKechnie et al., 1975)
 
 .pull-left[.
-![](10_RDA_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
 ![Butterfly](https://i.pinimg.com/564x/b0/de/23/b0de23a87cd61ad02ae184734c50e750.jpg)
@@ -234,8 +234,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление канонических осей 
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-24b19ceb0611452249ec" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-24b19ceb0611452249ec">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ce3c170fd0fdd6ca61d5" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-ce3c170fd0fdd6ca61d5">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[1. Множественная линейная регрессия `\(\mathbf{Y}_{np}\)` от `\(\mathbf{X}_{nm}\)`. Получаем матрицу предсказанных значений: `\(\mathbf{\hat Y} = \mathbf{X}[\mathbf{X}'\mathbf{X}]^{-1}\mathbf{X}'\mathbf{Y}\)` 
@@ -255,8 +255,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление неканонических осей
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7c47bbbcf6d7b14c6450" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-7c47bbbcf6d7b14c6450">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-861c6a36c8429f8d1f50" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-861c6a36c8429f8d1f50">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -407,7 +407,7 @@ summary(gen)
 pairs(env_geo)
 ```
 
-![](10_RDA_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -741,7 +741,7 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance    F Pr(&gt;F)   
-Model     3      372 4.15 0.0069 **
+Model     3      372 4.15 0.0077 **
 Residual 12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -770,9 +770,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
               Df Variance    F Pr(&gt;F)   
-Altitude       1      279 9.37 0.0022 **
-Precipitation  1       72 2.43 0.1041   
-Temp_Max       1       20 0.67 0.5101   
+Altitude       1      279 9.37 0.0018 **
+Precipitation  1       72 2.43 0.1033   
+Temp_Max       1       20 0.67 0.5143   
 Residual      12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -831,8 +831,8 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance     F Pr(&gt;F)   
-RDA1      1      352 11.82 0.0054 **
-RDA2      1       18  0.62 0.8410   
+RDA1      1      352 11.82 0.0044 **
+RDA2      1       18  0.62 0.8557   
 RDA3      1        1  0.03 0.9977   
 Residual 12      358                
 ---
@@ -906,22 +906,22 @@ m &lt;- ordistep(m0, scope = formula(m1), permutations = 9999)
 Start: gen ~ 1 
 
                 Df AIC    F Pr(&gt;F)   
-+ Altitude       1 101 8.69 0.0017 **
-+ Temp_Max       1 101 8.12 0.0036 **
-+ Precipitation  1 102 7.30 0.0043 **
++ Altitude       1 101 8.69 0.0022 **
++ Precipitation  1 102 7.30 0.0041 **
++ Temp_Max       1 101 8.12 0.0043 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Step: gen ~ Altitude 
 
            Df AIC    F Pr(&gt;F)   
-- Altitude  1 106 8.69 0.0018 **
+- Altitude  1 106 8.69 0.0022 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
                 Df   AIC    F Pr(&gt;F)  
-+ Precipitation  1  99.9 2.49   0.09 .
-+ Temp_Max       1 102.0 0.64   0.55  
++ Precipitation  1  99.9 2.49  0.089 .
++ Temp_Max       1 102.0 0.64  0.552  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -937,7 +937,7 @@ m$anova
 
 ```
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0017 **
++ Altitude  1 101 8.69 0.0022 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -967,7 +967,7 @@ Call: gen ~ 1
 &lt;none&gt;               0.0000
 
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0025 **
++ Altitude  1 101 8.69 0.0021 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -994,7 +994,7 @@ m_radj$anova
 
 ```
                 R2.adj Df AIC    F Pr(&gt;F)   
-+ Altitude       0.339  1 101 8.69 0.0025 **
++ Altitude       0.339  1 101 8.69 0.0021 **
 &lt;All variables&gt;  0.387                      
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1035,7 +1035,7 @@ class: middle, center, inverse
 plot(bf_rda, scaling = 2)
 ```
 
-![](10_RDA_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
 - Векторы --- независимые переменные, факторы среды
@@ -1057,7 +1057,7 @@ plot(bf_rda, scaling = 2)
 plot(bf_rda, scaling = 2)
 ```
 
-![](10_RDA_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 - Вдоль первой оси изменяется температура, высота и осадки
 - Вдоль второй оси --- немного меняется уровень осадков
@@ -1072,7 +1072,7 @@ plot(bf_rda, scaling = 2)
 plot(bf_rda, scaling = 1)
 ```
 
-![](10_RDA_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right-66[
@@ -1101,7 +1101,7 @@ plot(bf_rda, scaling = 1)
 plot(bf_rda, scaling = 1)
 ```
 
-![](10_RDA_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
 - Генетическая структура в LO и UO похожа, но не похожа на остальные места
@@ -1136,8 +1136,8 @@ class: middle, center, inverse
 
 ### Алгоритм
 
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6459947b73827364c9bf" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-6459947b73827364c9bf">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2fcc67112ed108583272" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-2fcc67112ed108583272">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1209,7 +1209,7 @@ plot(bf_prda_1, main = "Correlation triplot", scaling = 2)
 plot(bf_prda_1, main = "Distance triplot", scaling = 1)
 ```
 
-![](10_RDA_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 
 ```r
 par(op)
@@ -1234,7 +1234,7 @@ class: middle, center, inverse
 ## Общую инерцию делим на части
 
 .center[
-![](10_RDA_files/figure-html/varparts-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/varparts-1.png)&lt;!-- --&gt;
 ]
 
 | Компонент инерции | Что описывает? | Инерция |
@@ -1249,7 +1249,7 @@ class: middle, center, inverse
 ## Подбираем модели RDA, нужные для поиска компонентов инерции
 
 .center[
-![](10_RDA_files/figure-html/varparts-1.png)&lt;!-- --&gt;
+![](10_RDA_xaringan_files/figure-html/varparts-1.png)&lt;!-- --&gt;
 ]
 
 Нам нужна __полная модель RDA: генетика от среды и географического положения__ (чтобы найти a + b + c)
