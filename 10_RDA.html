@@ -71,7 +71,6 @@ class: middle, left, inverse, title-slide
 
 
 
----
 
 ## Анализ избыточности (Redundancy analysis, RDA)
 
@@ -193,7 +192,7 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 
 2. Расчёт предсказанных значений.
 
-Во множественной линейной регресси считается как:
+Во множественной линейной регрессии считается как:
 
 `$$\hat{y} = \mathbf{X}\mathbf{b} = \mathbf{X}(\mathbf{X}'\mathbf{X})^{-1}(\mathbf{X}'\mathbf{y})$$`
 --
@@ -234,8 +233,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление канонических осей 
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-24b19ceb0611452249ec" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-24b19ceb0611452249ec">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5d32bb40daaf0f32f0f0" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-5d32bb40daaf0f32f0f0">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[1. Множественная линейная регрессия `\(\mathbf{Y}_{np}\)` от `\(\mathbf{X}_{nm}\)`. Получаем матрицу предсказанных значений: `\(\mathbf{\hat Y} = \mathbf{X}[\mathbf{X}'\mathbf{X}]^{-1}\mathbf{X}'\mathbf{Y}\)` 
@@ -255,8 +254,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление неканонических осей
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7c47bbbcf6d7b14c6450" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-7c47bbbcf6d7b14c6450">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bb4a489577bcba2247ee" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-bb4a489577bcba2247ee">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -269,7 +268,11 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 
 ---
 
+class: middle, center, inverse
+
 # Подготовка данных к RDA
+
+---
 
 ## Рассмотрение исходных данных
 
@@ -288,55 +291,6 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 library(ade4)
 data(butterfly)
 str(butterfly)
-```
-
-```
-List of 5
- $ xy     :'data.frame':	16 obs. of  2 variables:
-  ..$ x: num [1:16] 41 57 56 57 58 67 73 165 167 77 ...
-  ..$ y: num [1:16] 238 134 131 127 124 126 121 23 18 127 ...
- $ envir  :'data.frame':	16 obs. of  4 variables:
-  ..$ Altitude     : num [1:16] 500 800 570 550 550 380 930 650 600 1500 ...
-  ..$ Precipitation: num [1:16] 43 20 28 28 28 15 21 10 10 19 ...
-  ..$ Temp_Max     : num [1:16] 98 92 98 98 98 99 99 101 101 99 ...
-  ..$ Temp_Min     : num [1:16] 17 32 26 26 26 28 28 27 27 23 ...
- $ genet  :'data.frame':	16 obs. of  6 variables:
-  ..$ 0.4 : num [1:16] 0 0 0 0 0 0 0 10 14 0 ...
-  ..$ 0.6 : num [1:16] 3 16 6 4 1 2 0 21 26 1 ...
-  ..$ 0.8 : num [1:16] 22 20 28 19 8 19 15 40 32 6 ...
-  ..$ 1   : num [1:16] 57 38 46 47 50 44 50 25 28 80 ...
-  ..$ 1.16: num [1:16] 17 13 17 27 35 32 27 4 0 12 ...
-  ..$ 1.3 : num [1:16] 1 13 3 3 6 3 8 0 0 1 ...
- $ contour:'data.frame':	59 obs. of  4 variables:
-  ..$ x1: num [1:59] 29 103 102 159 211 ...
-  ..$ y1: num [1:59] 234.1 232.6 164.1 113.3 61.9 ...
-  ..$ x2: num [1:59] 103 102 159 211 210 ...
-  ..$ y2: num [1:59] 232.6 164.1 113.3 61.9 54.8 ...
- $ Spatial:Formal class 'SpatialPolygons' [package "sp"] with 4 slots
-  .. ..@ polygons   :List of 1
-  .. .. ..$ :Formal class 'Polygons' [package "sp"] with 5 slots
-  .. .. .. .. ..@ Polygons :List of 1
-  .. .. .. .. .. ..$ :Formal class 'Polygon' [package "sp"] with 5 slots
-  .. .. .. .. .. .. .. ..@ labpt  : num [1:2] 110 122
-  .. .. .. .. .. .. .. ..@ area   : num 17741
-  .. .. .. .. .. .. .. ..@ hole   : logi FALSE
-  .. .. .. .. .. .. .. ..@ ringDir: int 1
-  .. .. .. .. .. .. .. ..@ coords : num [1:60, 1:2] 29 103 102 159 211 ...
-  .. .. .. .. .. .. .. .. ..- attr(*, "dimnames")=List of 2
-  .. .. .. .. .. .. .. .. .. ..$ : NULL
-  .. .. .. .. .. .. .. .. .. ..$ : chr [1:2] "x1" "y1"
-  .. .. .. .. ..@ plotOrder: int 1
-  .. .. .. .. ..@ labpt    : num [1:2] 110 122
-  .. .. .. .. ..@ ID       : chr "contour"
-  .. .. .. .. ..@ area     : num 17741
-  .. ..@ plotOrder  : int 1
-  .. ..@ bbox       : num [1:2, 1:2] 23.3 13.5 211.2 234.1
-  .. .. ..- attr(*, "dimnames")=List of 2
-  .. .. .. ..$ : chr [1:2] "x" "y"
-  .. .. .. ..$ : chr [1:2] "min" "max"
-  .. ..@ proj4string:Formal class 'CRS' [package "sp"] with 1 slot
-  .. .. .. ..@ projargs: chr NA
-  .. ..$ comment: chr "FALSE"
 ```
 
 ---
@@ -572,7 +526,9 @@ Unconstrained   357.9      0.491
 ```
 
 Total --- для всех осей, общая изменчивость исходной матрицы откликов (генетичкой структуры в разных сайтах);
+
 Constrained --- для осей, которые являются комбинациями предикторов (изменчивость объясненная средой);
+
 Unconstrained --- необъясненная предикторами изменчивость.
 
 ---
@@ -657,6 +613,116 @@ spenvcor(bf_rda)
 Будьте осторожны с интерпретацией! Возможна ситуация, когда корреляция между откликами и предикторами будет сильной, а соответствующие канонические оси будут объяснять ничтожную долю изменчивости. 
 
 ---
+
+class: middle, center, inverse
+
+# Визуализация ординации
+
+---
+
+## Визуализация ординации
+
+- Какие предикторы важнее всего?
+- Какими факторами определяется значение зависимых переменных?
+
+### Биплоты:
+  - отклики + предикторы
+  - объекты + предикторы 
+  
+### Триплоты:
+  - переменные-отклики ("species"),
+  - объекты ("sites")
+  - переменные-предикторы (непрерывные в виде векторов, дискретные в виде центроидов)
+
+---
+
+## Триплот корреляций (scaling = 2): Какие переменные среды сильнее всего определяют сходство объектов?
+
+.pull-left[
+
+
+
+
+```r
+plot(bf_rda, scaling = 2)
+```
+
+![](10_RDA_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+]
+.pull-right[
+- Векторы --- независимые переменные, факторы среды
+- Надписи --- объекты (сайты, особи, популяции и пр.)
+- Красные надписи ---- зависимые переменные
+
+- Косинусы углов между векторами --- корреляции между соотв. переменными
+- Расстояния между объектами не имеют конкретного смысла
+- Проекция объекта на линию-вектор --- значение переменной для данного объекта
+]
+
+---
+
+## Пример интерпретации триплота корреляций
+
+
+
+```r
+plot(bf_rda, scaling = 2)
+```
+
+![](10_RDA_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+- Вдоль первой оси изменяется температура, высота и осадки
+- Вдоль второй оси --- немного меняется уровень осадков
+
+---
+
+## Триплот расстояний (scaling = 1): Насколько похожи друг на друга объекты? 
+
+.pull-left-33[
+
+```r
+plot(bf_rda, scaling = 1)
+```
+
+![](10_RDA_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+]
+
+.pull-right-66[
+Надписи --- объекты (сайты, особи, популяции и пр.).
+
+Красные надписи --- зависимые переменные.
+
+Векторы --- независимые переменные, факторы среды.
+
+Расстояния между точками --- расстояния между наблюдениями.
+
+Косинусы углов между векторами предикторов и откликов --- корреляции между соотв. переменными, другие углы не имеют смысла.
+
+Проекция объекта на линию-вектор отражает примерное относительное положение данного объекта вдоль соответствующей переменной (но не значение).
+
+Отношения между дискретными и непрерывными предикторами не интерпретируются.
+]
+
+---
+
+## Пример интерпретации триплота расстояний 
+
+.pull-left[
+
+```r
+plot(bf_rda, scaling = 1)
+```
+
+![](10_RDA_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+]
+.pull-right[
+- Генетическая структура в LO и UO похожа, но не похожа на остальные места
+- GL и GH --- более высокогорные сайты, чем LO и UO 
+]
+
+
+
+---
  
 class: middle, center, inverse
 
@@ -681,6 +747,8 @@ class: middle, center, inverse
 `\(\mathbf{R^2}\)` измеряет силу связи между `\(\mathbf{Y}\)` и `\(\mathbf{X}\)`. `\(\mathbf{R^2_{adj}}\)` делает то же самое, но учитывает число переменных в матрице предикторов `\(\mathbf{X}\)`. 
 
 `$$\mathbf{R^2_{adj}} = 1 - (1 - \frac{\mathbf{SS(\hat{Y})}}{\mathbf{SS (Y)}}) \frac{n - 1}{n - m - 1}$$`
+`\(n\)` --- число наблюдений, `\(m\)` --- ранг канонических осей (число предикторов).
+
 
 ---
 
@@ -690,19 +758,18 @@ class: middle, center, inverse
 
 `$$\mathbf{pseudoF} = \frac{\mathbf{R^2_{adj}} \mathbf{m}}{\mathbf{(1 - R^2_{adj})(n-m-1)}}$$`
 
-`\(p\)` --- ранг канонических осей, `\(n\)` --- число наблюдений.
+`\(n\)` --- число наблюдений, `\(m\)` --- ранг канонических осей (число предикторов).
 
 Это же уравнение может быть переписано с использованием значений инерции.
 
 --
 
-`$$\mathbf{pseudoF = \frac {\Lambda_{c} / p} {\Lambda_{r}/(n - p - 1)}}$$`
+`$$\mathbf{pseudoF = \frac {\Lambda_{c} / m} {\Lambda_{r}/(n - m - 1)}}$$`
 
 `\(\Lambda_{c}\)` --- инерция канонических осей;
 
 `\(\Lambda_{r}\)` --- остаточная инерция.  
 
---
 
 Псевдо-F статистика не следует F-распределению как в ANOVA. Чтобы оценить распределение, нужны пермутации.
 
@@ -741,7 +808,7 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance    F Pr(&gt;F)   
-Model     3      372 4.15 0.0069 **
+Model     3      372 4.15 0.0061 **
 Residual 12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -770,9 +837,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
               Df Variance    F Pr(&gt;F)   
-Altitude       1      279 9.37 0.0022 **
-Precipitation  1       72 2.43 0.1041   
-Temp_Max       1       20 0.67 0.5101   
+Altitude       1      279 9.37 0.0012 **
+Precipitation  1       72 2.43 0.1070   
+Temp_Max       1       20 0.67 0.5186   
 Residual      12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -801,9 +868,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
               Df Variance    F Pr(&gt;F)
-Altitude       1       12 0.41   0.67
+Altitude       1       12 0.41   0.68
 Precipitation  1       71 2.39   0.10
-Temp_Max       1       20 0.67   0.52
+Temp_Max       1       20 0.67   0.51
 Residual      12      358            
 ```
 
@@ -831,9 +898,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance     F Pr(&gt;F)   
-RDA1      1      352 11.82 0.0054 **
-RDA2      1       18  0.62 0.8410   
-RDA3      1        1  0.03 0.9977   
+RDA1      1      352 11.82 0.0059 **
+RDA2      1       18  0.62 0.8552   
+RDA3      1        1  0.03 0.9979   
 Residual 12      358                
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -906,22 +973,22 @@ m &lt;- ordistep(m0, scope = formula(m1), permutations = 9999)
 Start: gen ~ 1 
 
                 Df AIC    F Pr(&gt;F)   
-+ Altitude       1 101 8.69 0.0017 **
-+ Temp_Max       1 101 8.12 0.0036 **
-+ Precipitation  1 102 7.30 0.0043 **
++ Altitude       1 101 8.69 0.0019 **
++ Temp_Max       1 101 8.12 0.0035 **
++ Precipitation  1 102 7.30 0.0051 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Step: gen ~ Altitude 
 
            Df AIC    F Pr(&gt;F)   
-- Altitude  1 106 8.69 0.0018 **
+- Altitude  1 106 8.69 0.0017 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
                 Df   AIC    F Pr(&gt;F)  
-+ Precipitation  1  99.9 2.49   0.09 .
-+ Temp_Max       1 102.0 0.64   0.55  
++ Precipitation  1  99.9 2.49  0.091 .
++ Temp_Max       1 102.0 0.64  0.547  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -937,7 +1004,7 @@ m$anova
 
 ```
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0017 **
++ Altitude  1 101 8.69 0.0019 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -967,7 +1034,7 @@ Call: gen ~ 1
 &lt;none&gt;               0.0000
 
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0025 **
++ Altitude  1 101 8.69 0.0024 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -994,121 +1061,11 @@ m_radj$anova
 
 ```
                 R2.adj Df AIC    F Pr(&gt;F)   
-+ Altitude       0.339  1 101 8.69 0.0025 **
++ Altitude       0.339  1 101 8.69 0.0024 **
 &lt;All variables&gt;  0.387                      
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
-
----
-
-class: middle, center, inverse
-
-# Визуализация ординации
-
----
-
-## Визуализация ординации
-
-- Какие предикторы важнее всего?
-- Какими факторами определяется значение зависимых переменных?
-
-### Биплоты:
-  - отклики + предикторы
-  - объекты + предикторы 
-  
-### Триплоты:
-  - переменные-отклики ("species"),
-  - объекты ("sites")
-  - переменные-предикторы (непрерывные в виде векторов, дискретные в виде центроидов)
-
----
-
-## Триплот корреляций (scaling = 2): Какие переменные среды сильнее всего определяют сходство объектов?
-
-.pull-left[
-
-
-
-
-```r
-plot(bf_rda, scaling = 2)
-```
-
-![](10_RDA_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
-]
-.pull-right[
-- Векторы --- независимые переменные, факторы среды
-- Надписи --- объекты (сайты, особи, популяции и пр.)
-- Красные надписи ---- зависимые переменные
-
-- Косинусы углов между векторами --- корреляции между соотв. переменными
-- Расстояния между объектами не имеют конкретного смысла
-- Проекция объекта на линию-вектор --- значение переменной для данного объекта
-]
-
----
-
-## Пример интерпретации триплота корреляций
-
-
-
-```r
-plot(bf_rda, scaling = 2)
-```
-
-![](10_RDA_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
-
-- Вдоль первой оси изменяется температура, высота и осадки
-- Вдоль второй оси --- немного меняется уровень осадков
-
----
-
-## Триплот расстояний (scaling = 1): Насколько похожи друг на друга объекты? 
-
-.pull-left-33[
-
-```r
-plot(bf_rda, scaling = 1)
-```
-
-![](10_RDA_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
-]
-
-.pull-right-66[
-Надписи --- объекты (сайты, особи, популяции и пр.).
-
-Красные надписи --- зависимые переменные.
-
-Векторы --- независимые переменные, факторы среды.
-
-Расстояния между точками --- расстояния между наблюдениями.
-
-Косинусы углов между векторами предикторов и откликов --- корреляции между соотв. переменными, другие углы не имеют смысла.
-
-Проекция объекта на линию-вектор отражает примерное относительное положение данного объекта вдоль соответствующей переменной (но не значение).
-
-Отношения между дискретными и непрерывными предикторами не интерпретируются.
-]
-
----
-
-## Пример интерпретации триплота расстояний 
-
-.pull-left[
-
-```r
-plot(bf_rda, scaling = 1)
-```
-
-![](10_RDA_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
-]
-.pull-right[
-- Генетическая структура в LO и UO похожа, но не похожа на остальные места
-- GL и GH --- более высокогорные сайты, чем LO и UO 
-]
-
-
 
 ---
 
@@ -1136,8 +1093,8 @@ class: middle, center, inverse
 
 ### Алгоритм
 
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6459947b73827364c9bf" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-6459947b73827364c9bf">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f488fb8be3e6bbae7065" style="width:648px;height:360px;"></div>
+<script type="application/json" data-for="htmlwidget-f488fb8be3e6bbae7065">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1189,9 +1146,9 @@ Permutation: free
 Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Condition(x + y), data = env_geo)
-         Df Variance    F Pr(&gt;F)    
-Model     1      213 9.94 0.0009 ***
-Residual 12      257                
+         Df Variance    F Pr(&gt;F)   
+Model     1      213 9.94 0.0014 **
+Residual 12      257               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```

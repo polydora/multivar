@@ -83,14 +83,48 @@ m <- ordistep(m0, scope = formula(m1), permutations = 99999)
 
 m$anova
 
+m_radj <- ordiR2step(m0, scope = formula(m1), permutations = 9999)
+
+m_radj$anova
+
 
 # # Частный анализ избыточности ##################
+
+
+###### pRDA в виде функции
+pRDA <- function(Y, X = NULL, W = NULL, scale.Y = FALSE)
+{
+  Y <- scale(as.matrix(Y), center = TRUE, scale = scale.Y)
+  if (!is.null(W)) {
+    # При наличии ковариат W
+    W <- scale(as.matrix(W), center = TRUE, scale = FALSE)
+    Y <- qr.resid(qr(W), Y)
+  }
+  if (!is.null(X)) {
+    # При начилии матрицы X
+    X <- scale(as.matrix(X), center = TRUE, scale = FALSE)
+    X <- cbind(X, W)
+    Q <- qr(X)
+    RDA <- svd(qr.fitted(Q, Y))
+    RDA$w <- Y %*% RDA$v %*% diag(1/RDA$d)
+    Y <- qr.resid(Q, Y)
+  } else {
+    # Если нет ни X, ни W
+    RDA <- NULL
+  }
+  RES <- svd(Y)
+  # Анализ главныз компонент по остаткам
+  list(RDA = RDA, RES = RES)
+}
+
+######################################
+
 
 # ## Делаем частный RDA: зависимость генетической структуры от среды с учетом географического положения
 bf_prda_1 <- rda(gen ~ Altitude + Condition(x + y), data = env_geo)
 anova(bf_prda_1, permutations = 99999) ## Пермутационный тест
 
-plot(bf_prda_1, main = "Partial RDA", scaling = 1)
+plot(bf_prda_1, main = "Partial RDA", scaling = )
 
 
 # # Компоненты объясненной инерции ###############
@@ -110,13 +144,4 @@ bf_rda_full <- rda(gen ~ x + y + Altitude, data = env_geo)
 # - а если выразить все (a, b, c) в процентах?
 # В процентах от чего???
 
-
-# # Задание для самостоятельной работы:
-# Проанализируйте данные:
-# - Зообентос рек Тасмании --- Grazing_Magierowski_et_al_2015.xls
-
-
-# 1) полный RDA, значимость модели, предикторов, осей
-# 2) оптимальная модель RDA
-# 3) частный RDA среда + география
 
