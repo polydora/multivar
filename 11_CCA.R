@@ -24,7 +24,7 @@ update_geom_defaults("point", list(shape = 19))
 p <- ggplot(mite.xy, aes(x = x, y = y)) + geom_point()
 p + coord_fixed() + th
 
-#Функция для рсования градиентов
+#Функция для рисования градиентов
 
 gginterp <- function(x, y, envir, nx, ny){
   # функция интерполирует значения переменных среды
@@ -170,7 +170,7 @@ betas <- solve(t(X) %*% diag(p_i) %*% X) %*% (t(X) %*% diag(p_i)^(1/2) %*% Q)
 
 
 
-#Матрица предсказанных значенй
+#Матрица предсказанных значений
 Q_pred <- diag(p_i)^(1/2) %*% X %*% betas
 
 U_pred <- svd(Q_pred)$u
@@ -213,7 +213,11 @@ constr_CA_samples <- diag(p_i^(-1/2))%*% U_pred
 
 
 
-ggplot(as.data.frame(constr_CA_samples), aes(x=V1, y=V2)) +   geom_text(label = rownames(mite)) + labs(x = "CCA1", y = "CCA2") + theme_bw() + geom_hline(yintercept = 0, linetype = 2) + geom_vline(xintercept = 0, linetype = 2) + ggtitle("Результаты, полученные вручную")
+ggplot(as.data.frame(constr_CA_samples), aes(x=V1, y=V2)) +
+  geom_text(label = rownames(mite)) +
+  labs(x = "CCA1", y = "CCA2") +
+  theme_bw() + geom_hline(yintercept = 0, linetype = 2) + geom_vline(xintercept = 0, linetype = 2) +
+  ggtitle("Результаты, полученные вручную")
 
 
 
