@@ -233,8 +233,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление канонических осей 
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5d32bb40daaf0f32f0f0" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-5d32bb40daaf0f32f0f0">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e711c1d76d7e030f235f" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-e711c1d76d7e030f235f">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[1. Множественная линейная регрессия `\(\mathbf{Y}_{np}\)` от `\(\mathbf{X}_{nm}\)`. Получаем матрицу предсказанных значений: `\(\mathbf{\hat Y} = \mathbf{X}[\mathbf{X}'\mathbf{X}]^{-1}\mathbf{X}'\mathbf{Y}\)` 
@@ -254,8 +254,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление неканонических осей
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bb4a489577bcba2247ee" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-bb4a489577bcba2247ee">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-96d308b1576c8f6a8b48" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-96d308b1576c8f6a8b48">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -723,7 +723,7 @@ plot(bf_rda, scaling = 1)
 
 
 ---
- 
+
 class: middle, center, inverse
 
 # Проверка значимости ординации
@@ -808,7 +808,7 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance    F Pr(&gt;F)   
-Model     3      372 4.15 0.0061 **
+Model     3      372 4.15 0.0088 **
 Residual 12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -837,9 +837,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
               Df Variance    F Pr(&gt;F)   
-Altitude       1      279 9.37 0.0012 **
-Precipitation  1       72 2.43 0.1070   
-Temp_Max       1       20 0.67 0.5186   
+Altitude       1      279 9.37 0.0019 **
+Precipitation  1       72 2.43 0.1089   
+Temp_Max       1       20 0.67 0.5119   
 Residual      12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -868,9 +868,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
               Df Variance    F Pr(&gt;F)
-Altitude       1       12 0.41   0.68
-Precipitation  1       71 2.39   0.10
-Temp_Max       1       20 0.67   0.51
+Altitude       1       12 0.41   0.69
+Precipitation  1       71 2.39   0.11
+Temp_Max       1       20 0.67   0.52
 Residual      12      358            
 ```
 
@@ -898,9 +898,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance     F Pr(&gt;F)   
-RDA1      1      352 11.82 0.0059 **
-RDA2      1       18  0.62 0.8552   
-RDA3      1        1  0.03 0.9979   
+RDA1      1      352 11.82 0.0047 **
+RDA2      1       18  0.62 0.8584   
+RDA3      1        1  0.03 0.9972   
 Residual 12      358                
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -973,9 +973,9 @@ m &lt;- ordistep(m0, scope = formula(m1), permutations = 9999)
 Start: gen ~ 1 
 
                 Df AIC    F Pr(&gt;F)   
-+ Altitude       1 101 8.69 0.0019 **
-+ Temp_Max       1 101 8.12 0.0035 **
-+ Precipitation  1 102 7.30 0.0051 **
++ Altitude       1 101 8.69 0.0022 **
++ Temp_Max       1 101 8.12 0.0024 **
++ Precipitation  1 102 7.30 0.0044 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -987,8 +987,8 @@ Step: gen ~ Altitude
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
                 Df   AIC    F Pr(&gt;F)  
-+ Precipitation  1  99.9 2.49  0.091 .
-+ Temp_Max       1 102.0 0.64  0.547  
++ Precipitation  1  99.9 2.49  0.089 .
++ Temp_Max       1 102.0 0.64  0.550  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -1004,7 +1004,7 @@ m$anova
 
 ```
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0019 **
++ Altitude  1 101 8.69 0.0022 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -1034,7 +1034,7 @@ Call: gen ~ 1
 &lt;none&gt;               0.0000
 
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0024 **
++ Altitude  1 101 8.69 0.0017 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1061,7 +1061,7 @@ m_radj$anova
 
 ```
                 R2.adj Df AIC    F Pr(&gt;F)   
-+ Altitude       0.339  1 101 8.69 0.0024 **
++ Altitude       0.339  1 101 8.69 0.0017 **
 &lt;All variables&gt;  0.387                      
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1093,8 +1093,8 @@ class: middle, center, inverse
 
 ### Алгоритм
 
-<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f488fb8be3e6bbae7065" style="width:648px;height:360px;"></div>
-<script type="application/json" data-for="htmlwidget-f488fb8be3e6bbae7065">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-df23e15c19c7fb584e07" style="width:648px;height:360px;"></div>
+<script type="application/json" data-for="htmlwidget-df23e15c19c7fb584e07">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1146,9 +1146,9 @@ Permutation: free
 Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Condition(x + y), data = env_geo)
-         Df Variance    F Pr(&gt;F)   
-Model     1      213 9.94 0.0014 **
-Residual 12      257               
+         Df Variance    F Pr(&gt;F)    
+Model     1      213 9.94  0.001 ***
+Residual 12      257                
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```

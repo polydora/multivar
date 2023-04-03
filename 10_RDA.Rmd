@@ -546,7 +546,7 @@ par(op)
 ```
 
 ---
- 
+
 class: middle, center, inverse
 
 # Проверка значимости ординации
