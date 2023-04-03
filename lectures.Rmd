@@ -232,7 +232,7 @@ install.packages("ade4")
 ## 10. Анализ избыточности (Redundancy analysis, RDA) и Канонический корреспондентный анализ (Canonical Correspondence Analysis, CCA)
 
 ### 10.1 Анализ избыточности
-<!-- - Презентация [html](10_RDA.html) -->
+- Презентация [html](10_RDA.html)
 - [код R](10_RDA.R)
 - Данные butterfly{ade4}
     - [butterfly_envir.csv](data/butterfly_envir.csv)
@@ -264,7 +264,7 @@ install.packages("reshape2")
 ```
 
 
-<!-- - Презентация [html](11_CCA.html) -->
+- Презентация [html](11_CCA.html)
 - [код R](11_CCA.R)
 
 
