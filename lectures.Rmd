@@ -321,8 +321,8 @@ install.packages("reshape2")
 install.packages("DAAG")
 ```
 
-<!-- + possum{DAAG} -->
-<!-- + possumsites{DAAG} -->
++ possum{DAAG}
++ possumsites{DAAG}
 
 
 
