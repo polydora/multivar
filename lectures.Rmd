@@ -328,7 +328,7 @@ install.packages("DAAG")
 
 ## 12. Анализ избыточности, основанный на расстояниях (distance-based Redundancy Analysis, dbRDA)
 
-<!-- - Презентация [html](12_dbRDA.html) -->
+- Презентация [html](12_dbRDA.html)
 - [код R](12_dbRDA.R)
 - Данные
   - `varespec{vegan}`
