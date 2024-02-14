@@ -1,6 +1,6 @@
 # title: "Неметрическое многомерное шкалирование, envfit, ordisurf"
 # subtitle: "Анализ и визуализация многомерных данных с использованием R"
-# author: Марина Варфоломеева, Вадим Хайтов
+# author: Марина Варфоломеева, Вадим Хайтов, Анастасия Лянгузова
 
 # Загрузка пакетов ###############################
 
@@ -102,6 +102,11 @@ stressplot(spb_ord)
 # ## Стресс --- мера качества ординации
 spb_ord$stress
 
+# Оценка стресса пермутационным методом
+oeco_res <- oecosimu(D, metaMDS, "quasiswap_count", 1000,
+                     statistic = "stress")
+hist(oeco_res$oecosimu$simulated)
+abline(v = spb_ord$stress, col = "red")
 
 # # Пример: Симбионты мидий #######################################
 
@@ -272,13 +277,13 @@ ord_mus_ef
 
 # ## ggplot2 версия графика `envfit()` {.smaller}
 gg_ord_mus +
-  geom_segment(data = ord_mus_ef[ord_mus_ef$Type == "Vector", ],
+  geom_segment(data = ord_mus_ef[ord_mus_ef$type == "Vector", ],
                aes(x = 0, xend = NMDS1, y = 0, yend = NMDS2),
                arrow = arrow(length = unit(0.25, "cm"))) +
-  geom_text(data = ord_mus_ef[ord_mus_ef$Type == "Vector", ],
-            aes(x = NMDS1, y = NMDS2, label = Label, hjust = 1.1, vjust = 1)) +
-  geom_text(data = ord_mus_ef[ord_mus_ef$Type == "Centroid", ],
-            aes(x = NMDS1, y = NMDS2, label = Label, hjust = 1.1, vjust = 1))
+  geom_text(data = ord_mus_ef[ord_mus_ef$type == "Vector", ],
+            aes(x = NMDS1, y = NMDS2, label = label, hjust = 1.1, vjust = 1)) +
+  geom_text(data = ord_mus_ef[ord_mus_ef$type == "Centroid", ],
+            aes(x = NMDS1, y = NMDS2, label = label, hjust = 1.1, vjust = 1))
 
 
 
@@ -317,7 +322,8 @@ head(ord_mus_os, 4)
 
 ggplot(data = ord_mus_os, aes(x = x, y = y, z = z)) +
   stat_contour(aes(colour = after_stat(level))) +
-  labs(x = "NMDS1", y = "NMDS2", colour = "Age")
+  labs(x = "NMDS1", y = "NMDS2", colour = "Age") +
+  scale_colour_gradient(low = "blue", high = "red")
 
 
 # ## Финальный график
@@ -326,8 +332,9 @@ f_vect <- ord_mus_ef$Type == "Vector" & ord_mus_ef$Label == "L"
 
 ggplot(data = ord_mus_pt, aes(x = NMDS1, y = NMDS2)) +
   stat_contour(data = ord_mus_os,
-               aes(x = x, y = y, z = z, colour = ..level..),
+               aes(x = x, y = y, z = z, colour = after_stat(level)),
                binwidth = 0.25) +
+  scale_colour_gradient(low = "blue", high = "red") +
   geom_point(data = ord_mus_pt,
              aes(fill = Zone, shape = Site),
              alpha = 0.5, size = 3) +
@@ -340,7 +347,7 @@ ggplot(data = ord_mus_pt, aes(x = NMDS1, y = NMDS2)) +
                arrow = arrow(length = unit(0.25, "cm"))) +
   geom_text(data = ord_mus_ef[f_vect, ],
             colour = "blue", size = 6,
-            aes(label = Label, hjust = 1.1, vjust = 0.7)) +
+            aes(label = label, hjust = 1.1, vjust = 0.7)) +
   guides(fill = guide_legend(override.aes = list(shape = 22, alpha = 1))) +
   coord_fixed() +
   labs(colour = "Age")
