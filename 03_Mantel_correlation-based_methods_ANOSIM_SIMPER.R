@@ -40,41 +40,39 @@ scores(ord)
 
 mds_points <- as.data.frame(ord$points)
 
-ggplot(mds_points, aes(x = MDS1, y = MDS2)) +
-  geom_point(aes(color = varechem$Al), size = 4) +
-  scale_color_gradient(low = "yellow", high = "red") +
-  theme_bw() +
-  theme(legend.position = "bottom") +
-  labs(color = "Концентрация алюминия") +
-  ggtitle(paste("Stress = ", stres_ord))
+# код для построения графика ординации
+
+
+
+
+
+
 
 
 
 # Применяем функцию envfit()
-env_fit <- envfit(ord  ~ ., data = varechem)
+env_fit <- envfit(  ~ ., data = )
 env_fit
 
 # Визуализация результатов
-ordiplot(ord, display = "sites")
-plot(env_fit)
-
-env_fit
+ordiplot( , display = )
+plot( )
 
 
 # Анализ связи с переменными c помощью функции `ordisurf()`
 
-veg_ord <- ord
+ordiplot( , display = "sites")
 
-ordiplot(veg_ord, display = "sites")
-
-ordisurf(veg_ord, varechem$Al,
+ordisurf( , varechem$Al,
          add = TRUE, col="blue", method = "REML")
-ordisurf(veg_ord,varechem$Mn,
+ordisurf(  ,varechem$Mn,
          add = TRUE, col="green")
 
 
 
 # Задание: Отразите связь ординации растительности со значениями концентрации гумуса.
+
+
 
 
 # Вычисление мантеловской корреляции
@@ -86,13 +84,19 @@ dist_com <- vegdist(varespec, method = "bray")
 
 dist_chem <- vegdist(varechem, method = "euclidean")
 
+
 x <- as.vector(dist_com)
 y <- as.vector(dist_chem)
 
 qplot(x, y) + geom_smooth(se = F, method = "lm")
 
+
 xy <- data.frame(x, y)
+
+R <- round(cor(x, y, method = "spearman"), 3)
+
 mant <- ggplot(xy, aes(x = x, y = y))
+
 mant + geom_point(size=3) + xlab("Biological dissimilarity") +
   ylab("Chemical dissimilarity") +
   annotate("text", x = 0.25, y = 0.35, label=paste("Rspearmen =", R, sep=" ")) +
@@ -100,8 +104,6 @@ mant + geom_point(size=3) + xlab("Biological dissimilarity") +
 
 
 
-R <- round(cor(x, y, method = "pearson"), 3)
-R
 
 cor.test(x, y, method = "pearson") # Это неправильное действие! Так делать нельзя!
 
@@ -235,13 +237,14 @@ BioEnv <- bioenv(varespec, varechem, method = "spearman", index = "bray")
 BioEnv
 
 
-
-plot(veg_ord)
-
-plot(envfit(veg_ord ~ N + P + Al + Mn + Baresoil, data = varechem))
+# Код для вмзуализации связи ординации растительности с парамтерами среды, которые вошли в финальную модель BioEnv
 
 
-# Оценка достоверности результатов BIO-ENV
+
+
+
+
+# Оценка статистической значимости результатов BIO-ENV
 # ЗАПУСКАТЬ КОД МЕЖДУ ДВУМЯ ЛИНИЯМИ ТОЛЬКО ЕСЛИ НЕ ЖАЛКО ВРЕМЕНИ!!!
 #------------------------------------
 perm_binv <- c(1:100)
@@ -302,16 +305,16 @@ log_ascam <- ascam %>%
   filter(Bank == "Vor2") %>%
   select(-c(1:2)) %>% decostand(.,method = "log")
 
-ord_log_com <- metaMDS(log_com, autotransform = FALSE)
 
-mds_com <- as.data.frame(scores(ord_log_com, display = "sites"))
+mds_vor2_com <- as.data.frame(metaMDS(vor2_log_com)$points)
 
-mds_com$Year <- com %>% filter(Bank == "Vor2") %>% select(Year)
 
-str(mds_com)
+mds_vor2_ascam <- as.data.frame(metaMDS(log_ascam,
+                                        distance = "euclid")$points)
 
-ggplot(mds_com, aes(x = NMDS1, y = NMDS2)) +
-  geom_path() + geom_text(label = as.character(mds_com$Year))
+ggplot(mds_vor2_ascam, aes(x = MDS1, y = MDS2)) +
+  geom_path() +
+  geom_text(label = 1997:2011)
 
 
 
@@ -336,8 +339,13 @@ gradient_model <- vegdist(com$Year[com$Bank == "Vor2"], method="euclidian")
 gradient_model
 
 ## Тестируем гипотезу о наличии градиента с помощью теста Мантела
-dist_vor2_com <- vegdist(  , method = "bray")
-dist_vor2_ascam <- vegdist(  , method = "euclidean")
+
+# Получаем матарицы расстояний для двух наборов данных
+
+dist_vor2_com <- vegdist(log_com, method = "bray")
+dist_vor2_ascam <- vegdist(log_ascam, method = "euclidean")
+
+
 
 ### 1) Наличие градиента в структуре сообщества
 mantel(dist_com, gradient_model)
@@ -367,7 +375,7 @@ cycmod <- function(x){
   return(points)
 }
 
-qplot(cycmod(nrow(mds_vor2_ascam))$X, cycmod(nrow(mds_vor2_ascam))$Y, xlab="X", ylab="Y", geom = "point", size = 4)
+qplot(cycmod(nrow(mds_com))$X, cycmod(nrow(mds_com))$Y, xlab="X", ylab="Y", geom = "point", size = 4)
 
 cycl_model <- round(vegdist(cycmod(nrow(mds_vor2_ascam)), method = "euclidean"))
 cycl_model
@@ -404,11 +412,14 @@ library(ggplot2)
 
 log_com <- log(com[,-c(1:3)] + 1)
 
-ord_log_com <- metaMDS(log_com, distance = "", k=2)
+ord_log_com <- metaMDS(log_com, distance = "bray", k=2)
 
-MDS <- data.frame(scores(ord_log_com))
+# Обратите внимание, что при разных способах извлечения данных из объеута 0ординации будут разные заголовки столбцов
 
-ggplot(MDS, aes(x = MDS1, y = MDS2, fill = )) +
+MDS <- data.frame(scores(ord_log_com)[[1]])
+
+
+ggplot(MDS, aes(x = NMDS1, y = NMDS2, fill = com$Mussel_size)) +
   geom_point(shape = 21, size = 4) +
   scale_fill_manual(values = c("red", "blue")) +
   ggtitle(paste("Stress = ", round(ord_log_com$stress, 2))) +
@@ -590,6 +601,7 @@ summary(log_com_simper)
 # Выявитие виды, отвечающие за различия в сообществах разых банок
 
 log_com_simper2 <- simper(log_com, group = com$Bank, permutations = 9999)
+
 summary(log_com_simper2)
 
 
