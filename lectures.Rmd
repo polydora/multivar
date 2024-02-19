@@ -85,7 +85,7 @@ devtools::install_github("gavinsimpson/ggvegan")
 install.packages("coin")
 ```
 
-<!-- - Презентация [html](03_Mantel_correlation-based_methods_ANOSIM_SIMPER.html) -->
+- Презентация [html](03_Mantel_correlation-based_methods_ANOSIM_SIMPER.html)
 - [код R](03_Mantel_correlation-based_methods_ANOSIM_SIMPER.R)
 - Данные
      + [Coordinates.txt](data/Coordinates.txt)
