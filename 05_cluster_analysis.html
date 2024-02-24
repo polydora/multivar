@@ -6,33 +6,33 @@
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
     <meta name="author" content="Анастасия Лянгузова" />
-    <script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
-    <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
-    <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
-    <link href="site_libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
-    <script src="site_libs/tile-view-0.2.6/tile-view.js"></script>
-    <script src="site_libs/fabric-4.3.1/fabric.min.js"></script>
-    <link href="site_libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
-    <script src="site_libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
-    <script src="site_libs/mark.js-8.11.1/mark.min.js"></script>
-    <link href="site_libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
-    <script src="site_libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
     <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
-    <script src="site_libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
-    <script src="site_libs/freezeframe-5.0.2/freezeframe.min.js"></script>
-    <script src="site_libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script src="libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
     <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
-    <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
-    <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-    <script src="site_libs/d3-3.3.8/d3.min.js"></script>
-    <script src="site_libs/dagre-0.4.0/dagre-d3.min.js"></script>
-    <link href="site_libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
-    <script src="site_libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
-    <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-    <script src="site_libs/chromatography-0.1/chromatography.js"></script>
-    <script src="site_libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+    <script src="libs/d3-3.3.8/d3.min.js"></script>
+    <script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+    <link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+    <script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/chromatography-0.1/chromatography.js"></script>
+    <script src="libs/DiagrammeR-binding-1.0.11/DiagrammeR.js"></script>
     <!-- https://github.com/fnaufel/xaringan-smartify-->
     <script
     			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -88,24 +88,6 @@ class: middle, left, inverse, title-slide
 
 
 
-
-
----
-
-## Какие бывают методы построения деревьев?
-
-### Методы кластеризации на основании расстояний (о них сегодня)
-  - Метод ближайшего соседа
-  - Метод отдаленного соседа
-  - Метод среднегруппового расстояния
-  - Метод Варда
-  - и т.д. и т.п.
-
-### Методы кластеризации на основании признаков
-  - Метод максимальной бережливости
-  - Метод максимального правдоподобия
-
-### И это еще далеко не всё!
 
 ---
 
@@ -212,43 +194,38 @@ gg_w &lt;- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) +
 
 ```
 Run 0 stress 0.101 
-Run 1 stress 0.1549 
-Run 2 stress 0.101 
-... New best solution
-... Procrustes: rmse 0.0000011  max resid 0.000003057 
-... Similar to previous best
+Run 1 stress 0.1474 
+Run 2 stress 0.1281 
 Run 3 stress 0.101 
-... Procrustes: rmse 0.000006551  max resid 0.00002144 
+... Procrustes: rmse 0.00001284  max resid 0.0000427 
 ... Similar to previous best
-Run 4 stress 0.1276 
-Run 5 stress 0.101 
-... New best solution
-... Procrustes: rmse 0.000006224  max resid 0.00002101 
+Run 4 stress 0.101 
+... Procrustes: rmse 0.000002757  max resid 0.000008826 
 ... Similar to previous best
+Run 5 stress 0.1368 
 Run 6 stress 0.1368 
-Run 7 stress 0.1281 
-Run 8 stress 0.1281 
-Run 9 stress 0.1412 
-Run 10 stress 0.1368 
-Run 11 stress 0.1389 
-Run 12 stress 0.1374 
-Run 13 stress 0.101 
+Run 7 stress 0.1403 
+Run 8 stress 0.1415 
+Run 9 stress 0.1389 
+Run 10 stress 0.1412 
+Run 11 stress 0.153 
+Run 12 stress 0.1284 
+Run 13 stress 0.1285 
+Run 14 stress 0.1268 
+Run 15 stress 0.101 
 ... New best solution
-... Procrustes: rmse 0.000002104  max resid 0.000008146 
+... Procrustes: rmse 0.000001133  max resid 0.000003401 
 ... Similar to previous best
-Run 14 stress 0.1549 
-Run 15 stress 0.1373 
-Run 16 stress 0.1434 
-Run 17 stress 0.1278 
-Run 18 stress 0.101 
-... New best solution
-... Procrustes: rmse 0.000001637  max resid 0.000005365 
+Run 16 stress 0.1368 
+Run 17 stress 0.1571 
+Run 18 stress 0.1434 
+Run 19 stress 0.101 
+... Procrustes: rmse 0.000006702  max resid 0.00002452 
 ... Similar to previous best
-Run 19 stress 0.1268 
 Run 20 stress 0.101 
-... Procrustes: rmse 0.000001471  max resid 0.000004084 
+... Procrustes: rmse 0.00001006  max resid 0.00003488 
 ... Similar to previous best
-*** Best solution repeated 2 times
+*** Best solution repeated 3 times
 ```
 ]
 
@@ -257,6 +234,42 @@ Run 20 stress 0.101
 ## Решение
 
 ![](05_cluster_analysis_files/figure-html/fig-wolves-1.png)&lt;!-- --&gt;
+
+---
+
+## Методы кластеризации
+
+.pull-left[
+### Иерархические методы
+
+- методы построения деревьев (о них следующие слайды)
+]
+
+.pull-right[
+### Неиерархические методы
+
+- кластеризация K-means 
+- кластеризация C-means (fuzzy clustering)
+- Основанная на плотности пространственная кластеризация для приложений с шумами (Density-based spatial clustering of applications with noise, DBSCAN)
+
+]
+
+---
+
+## Какие бывают методы построения деревьев?
+
+### Методы кластеризации на основании расстояний (о них сегодня)
+  - Метод ближайшего соседа
+  - Метод отдаленного соседа
+  - Метод среднегруппового расстояния
+  - Метод Варда
+  - и т.д. и т.п.
+
+### Методы кластеризации на основании признаков
+  - Метод максимальной бережливости
+  - Метод максимального правдоподобия
+
+### И это еще далеко не всё!
 
 ---
 
@@ -269,8 +282,8 @@ class: middle, center, inverse
 ## Этапы кластеризации 
 
 .pull-left[
-<div id="htmlwidget-0c91fa51dd7969af91d0" style="width:432px;height:540px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0c91fa51dd7969af91d0">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style A color:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-5a590d896810d33455b5" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-5a590d896810d33455b5">{"x":{"diagram":"graph TD; \n           A(Набор признаков)-->B(Матрица расстояний или сходств); \n           B-->C(Группировка объектов);\n           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style A color:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -740,7 +753,7 @@ cl_boot &lt;- pvclust(t(st_w), method.hclust = "average", nboot = 100,
 
 ```
 Creating a temporary cluster...done:
-socket cluster with 7 nodes on host 'localhost'
+socket cluster with 11 nodes on host 'localhost'
 Multiscale bootstrap... Done.
 ```
 
@@ -818,38 +831,6 @@ tanglegram(untang_w[[1]], untang_w[[2]],
 
 Постройте танглграмму из дендрограмм, полученных методом ближайшего соседа и методом Варда.
 
----
-
-class: middle, center, inverse
-
-# Деревья по генетическим данным
-
----
-
-## И небольшая демонстрация --- дерево по генетическим данным
-
-.pull-left[.
-
-```r
-webpage &lt;- "http://evolution.genetics.washington.edu/book/primates.dna"
-primates.dna &lt;- read.dna(webpage)
-d_pri &lt;- dist.dna(primates.dna)
-hc_pri &lt;- hclust(d_pri, method = "average")
-ph_pri &lt;- as.phylo(hc_pri)
-plot.phylo(ph_pri)
-axisPhylo()
-```
-
-![](05_cluster_analysis_files/figure-html/fig-gen-1.png)&lt;!-- --&gt;
-]
-.pull-right[.
-
-```r
-plot.phylo(ph_pri, type = "radial")
-```
-
-![](05_cluster_analysis_files/figure-html/fig-circle-1.png)&lt;!-- --&gt;
-]
 ---
 
 ## Take-home messages
