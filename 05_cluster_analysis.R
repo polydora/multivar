@@ -41,7 +41,6 @@ library(ape)
 library(dendextend)
 
 # Матрица расстояний
-st_w <- scale(Wolves[, 4:ncol(Wolves)]) ## стандартизируем
 d <- dist(x = st_w, method = "euclidean")
 
 
@@ -133,8 +132,8 @@ cor(d, as.dist(c_single))
 
 # Оценка ширины силуэта для 3 кластеров
 library(cluster)
-complete3 <- cutree(tree = hc_avg, k = 3)
-plot(silhouette(x = complete3, dist = d), cex.names = x.names = 0.6)
+avg3 <- cutree(tree = hc_avg, k = 3) # делим дерево на нужное количество кластеров
+plot(silhouette(x = avg3, dist = d), cex.names = x.names = 0.6)
 
 
 ## Бутстреп поддержка ветвей ===============================
@@ -184,12 +183,12 @@ tanglegram(untang_w[[1]], untang_w[[2]],
 # а) Вручную
 # Здесь в примере просто произвольные цвета
 cols <- rainbow(30)
-den_single_manual <- color_labels(dend = den_single, col = cols)
-plot(den_single_manual, horiz = TRUE)
+den_avg_manual <- color_labels(dend = den_avg, col = cols)
+plot(den_avg_manual, horiz = TRUE)
 
-# б) При помощи функции
+# б) С помощью функции
 # Функция для превращения лейблов в цвета
-# (группы определяются по `n_chars` первых букв)
+# (группы определяются по `n_chars` первых букв в лейбле)
 get_colours <- function(dend, n_chars, palette = "Dark2"){
   labs <- get_leaves_attr(dend, "label")
   group <- substr(labs, start = 0, stop = n_chars)
@@ -198,23 +197,91 @@ get_colours <- function(dend, n_chars, palette = "Dark2"){
   return(cols)
 }
 
-# Применяем функцию
-library(RColorBrewer)
-cols <- get_colours(dend = den_single, n_chars = 3)
-den_single_c <- color_labels(dend = den_single, col = cols)
-plot(den_single_c, horiz = TRUE)
+cols <- get_colours(dend = den_avg, n_chars = 3)
+den_avg_c <- color_labels(dend = den_avg, col = cols)
+plot(den_avg_c, horiz = TRUE)
+
+##### Метод k-средних ####
+
+set.seed(333)
+w_kmeans <- kmeans(st_w, centers = 3, nstart = 100)
+
+# Сравниваем полученные кластеры с результатом UPGMA
+table(avg3, w_kmeans$cluster)
+
+# Выбор нужного количества кластеров
+
+w_cascade <- cascadeKM(st_w, inf.gr = 2, sup.gr = 10,
+                       iter = 100, criterion = 'calinski')
+plot(w_cascade, sortg = TRUE) # чтобы объекты, относящиеся к одному кластеру, рисовались вместе
+
+# Визуализация
+library(factoextra)
+fviz_cluster(w_kmeans, data = st_w,
+             ggtheme = theme_bw()) # 3 кластера
+
+w_2k <- kmeans(st_w, centers = 2,
+               nstart = 100) # 2 кластера
+
+fviz_cluster(w_2k, data = st_w,
+             ggtheme = theme_bw())
+
+## Оценка качества кластеризации по ширине силуэта
+
+plot(silhouette(w_kmeans$cluster, d)) # 3 кластера
+plot(silhouette(w_2k$cluster, d)) # 2 кластера
+
+##### DBSCAN: Density-based spatial clustering of applications with noise ####
+library(dplyr)
+data('multishapes')
+
+multi_circle <- multishapes %>% filter(shape == c(1, 2))
+multi <- multi_circle[, 1:2]
+
+ggplot(multi, aes(x, y)) + geom_point()
+
+# когда метод K-средних не справляется...
+set.seed(123)
+circle_kmeans <- kmeans(multi, centers = 2, nstart = 20)
+my_col_circle <- c("#2E9FDF", "#E7B800")
+fviz_cluster(circle_kmeans, data = multi,
+             palette = my_col_circle)
+
+## DBSCAN
+library(dbscan)
+circle_dbscan <- dbscan(multi, 0.23, 5)
+fviz_cluster(circle_dbscan, data = multi,
+             palette = my_col_circle)
+
+## Выбор нужного радиуса
+kNNdistplot(multi, k = 5)
+abline(h = 0.23, lty = 2)
+
+circle_dbscan <- dbscan(multi, 0.23, 5)
+fviz_cluster(circle_dbscan, data = multi,
+             palette = my_col_circle)
+
+## Задание 4 ===============================================
+# Проанализируйте данные по волкам, используя DBSCAM алгоритм
 
 
-## И небольшая демонстрация - дерево по генетическим данным ======
-webpage <- "http://evolution.genetics.washington.edu/book/primates.dna"
-primates.dna <- read.dna(webpage)
-d_pri <- dist.dna(primates.dna)
-hc_pri <- hclust(d_pri, method = "average")
-ph_pri <- as.phylo(hc_pri)
-plot.phylo(ph_pri)
-axisPhylo()
 
-plot.phylo(ph_pri, type = "radial")
+##### Метод нечёткой кластеризации C-средних (C-means, fuzzy clustering) ####
+
+w_cmeans <- fanny(d, k = 4, memb.exp = 2)
+summary(w_cmeans)
+
+## Оценка качества кластеризации
+plot(silhouette(w_cmeans), cex.names = 0.6)
+
+## Задание 5 ===============================================
+# Попробуйте оценить ширину силуэта для C-means кластеризации с более подходящим числом кластеров.
+
+## Визуализация кластеризации методом C-средних ####
+library(scatterpie)
+w_clust <- cbind(dfr_w, $membership)
+ggplot() + geom_scatterpie(data = w_clust, aes(x = MDS1, y = MDS2),
+                           cols = c())
 
 ##### Самостоятельная работа ####
 # Проанализируйте данные об относительных обилиях фораминифер в пробах на Белом
@@ -227,6 +294,7 @@ plot.phylo(ph_pri, type = "radial")
 #
 # - Постройте дендрограмму проб по сходству отн. обилий фораминифер. - оцените
 # при помощи кофенетической корреляции, какой метод аггрегации лучше,
+# - Постройте визуализацию для методов неиерархической кластеризации
 #
 # - Опишите получившиеся кластеры при помощи различных параметров: - ширина
 # силуэта - бутстреп-поддержка ветвлений
