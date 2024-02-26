@@ -156,7 +156,7 @@ install.packages(c("candisc", "ape", "dendextend", "cluster", "pvclust", "factoe
 - __Сообщества фораминифер_.__ Данные из работы *Golikova, E., Varfolomeeva, M., Yakovis, E., & Korsun, S. (2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in summer, endure in winter. Estuarine, Coastal and Shelf Science, 238, 106685.*
     + [Golikova_etal_2020_cluster_data.csv](data/Golikova_etal_2020_cluster_data.csv)
 
-## 6. Основы линейной алгебры
+## 6. Основы линейной алгебры 
 
 ```{r eval=FALSE}
 install.packages("jpeg")
@@ -170,8 +170,6 @@ install.packages("jpeg")
 <!--   + [Матрица 2](data/a_matrix.csv) -->
 
 
-## 7. SVD
-
 <!-- - Презентация [html](07_intro_to_linear_algebra_part2.html) -->
 
 <!-- - [код R](07_intro_to_linear_algebra_part2.R) -->
@@ -184,13 +182,13 @@ install.packages("jpeg")
 <!-- [**Данные для самостоятельной работы**](07_linear_algebra_task.html) -->
 
 
-## 8. Анализ главных компонент (Principal Component Analysis, PCA)
+## 7. Анализ главных компонент (Principal Component Analysis, PCA)
 
 ```{r eval=FALSE}
 install.packages(c("cowplot", "geomorph"))
 ```
 
-### 8.1 Анализ главных компонент
+### 7.1 Анализ главных компонент
 
 <!-- - Презентация [html](08.1_PCA.html) -->
 
@@ -198,7 +196,7 @@ install.packages(c("cowplot", "geomorph"))
 <!-- - Данные: [protein.csv](data/protein.csv) -->
 <!-- - Задание: [08.1_PCA_breast_cancer_task.R](08.1_PCA_breast_cancer_task.R) -->
 
-### 8.2 (Геометрическая) морфометрия
+### 7.2 (Геометрическая) морфометрия
 
 <!-- - Презентация [html](08.2_PCA_geometric_morphometrics.html) -->
 
@@ -206,7 +204,7 @@ install.packages(c("cowplot", "geomorph"))
 <!-- - Данные: [turtles.txt](data/turtles.txt) -->
 <!-- - Задание: [08.2_PCA_geometric_morphometrics_task.R](08.2_PCA_geometric_morphometrics_task.R) -->
 
-## 9. Корреспондентный анализ (Corespondence Analysis, CA)
+## 8. Корреспондентный анализ (Corespondence Analysis, CA)
 
 
 ```{r eval=FALSE}
@@ -230,7 +228,7 @@ install.packages("ade4")
 <!--     + butterfly{ade4} -->
 
 
-## 10. Анализ избыточности (Redundancy analysis, RDA)
+## 9. Анализ избыточности (Redundancy analysis, RDA)
 
 <!-- - Презентация [html](10_RDA.html) -->
 <!-- - [код R](10_RDA.R) -->
@@ -253,7 +251,7 @@ install.packages("ade4")
 <!-- + possum{DAAG} -->
 <!-- + possumsites{DAAG} -->
 
-## 11. Канонический корреспондентный анализ (Canonical Correspondence Analysis, CCA)
+## 10. Канонический корреспондентный анализ (Canonical Correspondence Analysis, CCA)
 
 ```{r eval=FALSE}
 install.packages("DAAG")
@@ -288,7 +286,7 @@ install.packages("reshape2")
 <!--     + параметры среды [BCI_env.csv](data/BCI_env.csv) -->
 
 
-## 12. Анализ избыточности, основанный на расстояниях (distance-based Redundancy Analysis, dbRDA)
+## 11. Анализ избыточности, основанный на расстояниях (distance-based Redundancy Analysis, dbRDA)
 
 <!-- - Презентация [html](12_dbRDA.html) -->
 <!-- - [код R](12_dbRDA.R) -->

@@ -13,7 +13,7 @@
 
 <title>Презентации и данные</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -659,9 +659,6 @@ href="data/Golikova_etal_2020_cluster_data.csv">Golikova_etal_2020_cluster_data.
 <!-- - Данные -->
 <!--   + [Матрица 1](data/face.rda) -->
 <!--   + [Матрица 2](data/a_matrix.csv) -->
-</div>
-<div id="svd" class="section level2">
-<h2>7. SVD</h2>
 <!-- - Презентация [html](07_intro_to_linear_algebra_part2.html) -->
 <!-- - [код R](07_intro_to_linear_algebra_part2.R) -->
 <!-- - RMD-файл с рассказом о фотографиях, как матричных объектах. После knitr дает интерактивный html-файл  [RMD](07_Shiny_SVD_demonstration.RMD) -->
@@ -672,17 +669,17 @@ href="data/Golikova_etal_2020_cluster_data.csv">Golikova_etal_2020_cluster_data.
 </div>
 <div id="анализ-главных-компонент-principal-component-analysis-pca"
 class="section level2">
-<h2>8. Анализ главных компонент (Principal Component Analysis, PCA)</h2>
+<h2>7. Анализ главных компонент (Principal Component Analysis, PCA)</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;geomorph&quot;</span>))</span></code></pre></div>
 <div id="анализ-главных-компонент" class="section level3">
-<h3>8.1 Анализ главных компонент</h3>
+<h3>7.1 Анализ главных компонент</h3>
 <!-- - Презентация [html](08.1_PCA.html) -->
 <!-- - Код: [08.1_PCA.R](08.1_PCA.R) -->
 <!-- - Данные: [protein.csv](data/protein.csv) -->
 <!-- - Задание: [08.1_PCA_breast_cancer_task.R](08.1_PCA_breast_cancer_task.R) -->
 </div>
 <div id="геометрическая-морфометрия" class="section level3">
-<h3>8.2 (Геометрическая) морфометрия</h3>
+<h3>7.2 (Геометрическая) морфометрия</h3>
 <!-- - Презентация [html](08.2_PCA_geometric_morphometrics.html) -->
 <!-- - Код: [08.2_PCA_geometric_morphometrics.R](08.2_PCA_geometric_morphometrics.R) -->
 <!-- - Данные: [turtles.txt](data/turtles.txt) -->
@@ -691,7 +688,7 @@ class="section level2">
 </div>
 <div id="корреспондентный-анализ-corespondence-analysis-ca"
 class="section level2">
-<h2>9. Корреспондентный анализ (Corespondence Analysis, CA)</h2>
+<h2>8. Корреспондентный анализ (Corespondence Analysis, CA)</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ade4&quot;</span>)</span></code></pre></div>
 <!-- - Презентация [html](09_CA_and_CA_calculation.html) -->
 <!-- - [код R](09_CA_calculation.R) -->
@@ -708,7 +705,7 @@ class="section level2">
 </div>
 <div id="анализ-избыточности-redundancy-analysis-rda"
 class="section level2">
-<h2>10. Анализ избыточности (Redundancy analysis, RDA)</h2>
+<h2>9. Анализ избыточности (Redundancy analysis, RDA)</h2>
 <!-- - Презентация [html](10_RDA.html) -->
 <!-- - [код R](10_RDA.R) -->
 <!-- - Данные butterfly{ade4} -->
@@ -728,7 +725,7 @@ class="section level2">
 <div
 id="канонический-корреспондентный-анализ-canonical-correspondence-analysis-cca"
 class="section level2">
-<h2>11. Канонический корреспондентный анализ (Canonical Correspondence
+<h2>10. Канонический корреспондентный анализ (Canonical Correspondence
 Analysis, CCA)</h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DAAG&quot;</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;akima&quot;</span>)</span>
@@ -754,7 +751,7 @@ Analysis, CCA)</h2>
 <div
 id="анализ-избыточности-основанный-на-расстояниях-distance-based-redundancy-analysis-dbrda"
 class="section level2">
-<h2>12. Анализ избыточности, основанный на расстояниях (distance-based
+<h2>11. Анализ избыточности, основанный на расстояниях (distance-based
 Redundancy Analysis, dbRDA)</h2>
 <!-- - Презентация [html](12_dbRDA.html) -->
 <!-- - [код R](12_dbRDA.R) -->
