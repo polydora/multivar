@@ -10,9 +10,17 @@
 
 A <- matrix(1:12, ncol = 3)
 
+A %*% t(A)
+
+
 det(A %*% t(A))
 
 solve(A %*% t(A))
+
+
+A * t(A)
+
+
 
 
 diag(rep(1, 5))
@@ -60,6 +68,8 @@ Vec <- 1:5
 
 sqrt(sum(Vec^2))
 
+norm(t(Vec), type = "F") #Аналогчное решение
+
 
 norm(t(Vec), type = "F") #Аналогчное решение
 
@@ -86,7 +96,7 @@ power <- c(1200, 1300, 1100, 1500, 800)
 
 # Решение
 
-
+n  %*% power
 
 
 #' ## Задание
@@ -95,11 +105,19 @@ power <- c(1200, 1300, 1100, 1500, 800)
 
 a <- c(0, 1)
 b <- c(1, 0)
+
+a %*% b
+
 c <- c(1, 1)
 d <- c(1, -1)
 
 #' Аналитическое решение
 
+a %*% c
+
+c %*% d
+
+a %*% d
 
 
 #' ## Нормализованные векторы
@@ -121,19 +139,29 @@ set.seed(12345)
 vec_1 <- rnorm(100, 10, 1)
 vec_2 <- -10*vec_1 + 10 + rnorm(100, 0, 10)
 
+library(ggplot2)
+
+qplot(vec_1, vec_2)
+
 cor(vec_1, vec_2)
 
 # Цетрируем векторы
 vec_1_c <- as.vector(scale(vec_1, center = T, scale = F))
+
+# vec_1 - mean(vec_1)
 
 vec_2_c <- as.vector(scale(vec_2, center = T, scale = F))
 
 
 # Напишите код для вчисления косинуса угла
 
-cos_alpha <-
+cos_alpha <- (vec_1_c %*% vec_2_c) / (norm(t(vec_1_c), type = "F") * norm(t(vec_2_c), type = "F"))
 
 cos_alpha
+
+Vec <- 1:5
+
+Vec_norm <- Vec/norm(t(Vec), type = "F")
 
 
 
@@ -246,10 +274,14 @@ Image <- cbind((x), (y))
 library(ggplot2)
 qplot(Image[,1], Image[,2] ) + geom_polygon(fill = "red") + coord_fixed()
 
+Matr <- as.data.frame(t(cbind((x), (y))))
+Matr
+
+
 
 #' Поворот изображения на заданный угол
 
-angle <- 45*pi/180
+angle <- 35*pi/180
 
 Rot <- matrix(c(cos(angle), sin(angle),
                 -sin(angle), cos(angle)), nrow = 2)
@@ -269,74 +301,15 @@ qplot(Image_trans[,1], Image_trans[,2] ) +
 
 
 #' Масштабирующая матрица
-Scale <- matrix(c(1, 0, 0, 0.1), nrow = 2)
+Scale <- matrix(c(1, 0, 0, 1), nrow = 2)
 
 Image_trans2 <-   t((Scale) %*% t(Image_trans))
 
 qplot(Image_trans2[,1], Image_trans2[,2] ) +
   geom_polygon(fill = "red") + coord_fixed()
 
-
-
-
-#####################################################
-# Работа с изобажениями, как с матричными объектами #
-#####################################################
-
-
-load("data/face.rda")
-
-faceData
-dim(faceData)
-
-library(reshape2)
-
-faceData_XY <- melt(faceData) ## Переводим матрицу в два вектора координат и вектор значений интенсивности заливки
-
-names(faceData_XY) <- c("X1", "X2", "value")
-
-
-ggplot(faceData_XY, aes(X1, X2)) + geom_tile(aes(fill = value)) + scale_fill_gradient(low = "darkblue",   high =  "white" ) + coord_equal()
-
-
-################## Поворот изображения ##########################3
-
-# Задание: Поверните изображение на угол 30 и 90 градусов
-
-
-angle  #Задаем угол поворота в радианах
-
-# Вращающая матрица
-Rot <-
-
-Image_rot <-   data.frame(t((  ) %*% t(   )), value = faceData_XY[3]) #Надо заполнить пропуски
-
-ggplot(Image_rot, aes(X1, X2)) + geom_point(aes(color = value), size = 5) + scale_fill_gradient(low = "darkblue",   high =  "white" )
-
-
-# Задание: Проведите масштабирование полученного изображения
-
-Scale <- matrix(c(    ), nrow = 2)
-
-Image_trans <-   data.frame(t((Scale) %*% t(Image_rot[,1:2])), value = faceData_XY$value)
-
-ggplot(Image_trans, aes(X1, X2)) + geom_point(aes(color = value), size = 5) + scale_fill_gradient(low = "darkblue",   high =  "white" ) + coord_equal()
-
-
-
-# Задание
-# Загрузите матрицу, содержащую изображение
-
-matr <- as.matrix(read.csv("data/a_matrix.csv", header = T))
-
-
-
-
-# Визуализируйте эту матрицу в виде множества точек в двумерных координатах
-# Hint: при переводе матрицы в длинный формат измените одну из полученных переменных в численный вектор, используя функцию as.numeric()
-
-
-#Произведите вращение и масштабирование этой матрицы
+M <- matrix(c(1,2,3,4,5,5,2,1,2,5,2,1,3,5,4,6,8,4,0,2), ncol = 4)
+M
 
 
 
@@ -356,9 +329,16 @@ M
 Cent_M <- scale(M, center = TRUE, scale = FALSE)
 Cent_M
 
+
+cov(M)
+
 #' Вычислите ковариационную матрицу с помощью методов линейной алгебры и сравните ее с матрицей, полученной с помощью функции `cov()`
 
-Cov_M <-     #код для вычислению ковариационной матрицы с помощью матричной алгебры
+Cov_M <- ( t(Cent_M) %*% Cent_M ) / (nrow(Cent_M) - 1)
+
+
+
+  #код для вычислению ковариационной матрицы с помощью матричной алгебры
 
 cov(M)
 
@@ -370,9 +350,11 @@ apply(M, 2, FUN = function(x)sd(x)^2)
 
 #' ## Вычисление матрицы  корреляций с помощью линейной алгебры {.smaller .columns-2}
 
-Stand_M <- scale(  )
-Stand_M
+cor(M)
 
+Stand_M <- scale(M, center = T, scale = T)
+
+Cor_M <- (t(Stand_M) %*% Stand_M) / (nrow(Stand_M) - 1)
 
 # Вычисление вручную
 Cor_M <-
