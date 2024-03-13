@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Анализ главных компонент</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Марина Варфоломеева" />
+    <meta name="author" content="Вадим Хайтов" />
+    <meta name="author" content="Анастасия Лянгузова" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <script src="libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <!-- https://github.com/fnaufel/xaringan-smartify-->
+    <script
+    			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    			  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    			  crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: middle, left, inverse, title-slide
+
+.title[
+# Анализ главных компонент
+]
+.subtitle[
+## Анализ и визуализация многомерных данных с использованием R
+]
+.author[
+### Марина Варфоломеева
+]
+.author[
+### Вадим Хайтов
+]
+.author[
+### Анастасия Лянгузова
+]
+
+---
+
+
+
+
+
+
+## Вы сможете
+
+- Проводить анализ главных компонент при помощи функций из пакета `vegan`
+- Оценивать долю дисперсии, объясненной компонентами
+- Снизить размерность данных, оставив небольшое число компонент
+- Интерпретировать смысл компонент по их факторным нагрузкам
+- Строить ординацию объектов в пространстве главных компонент
+- Создавать комплексные переменные и использовать их в других видах анализов
+
+---
+
+class: middle, center, inverse
+
+# Постановка задачи для анализа главных компонент
+
+---
+
+## Зачем нужен анализ главных компонент?
+
+Когда признаков много, можно представить все объекты как облако точек в многомерном пространстве. Обычно в биологических исследованиях признаки объектов взаимозависимы (между ними есть ненулевая ковариация или корреляция).
+
+![](./images/Migration-DonMcCullough-Flickr.jpg)
+
+Migration by Don McCullough
+on [Flickr](https://flic.kr/p/fEFhCj)
+
+---
+
+## Не все проекции несут важную информацию
+
+![](./images/BlackShadows-FerranJorda-Flickr.jpg)
+
+black shadows for a white horses / les negres ombres dels cavalls blancs by  Ferran Jordà
+on [Flickr](https://flic.kr/p/9XJxiL)
+
+---
+
+## Можно найти оптимальную проекцию, чтобы сохранить максимум информации в минимуме измерений
+
+![](./images/CatsShadow-MarinaDelCastell-Flickr.jpg)
+
+Cat's shadow by Marina del Castell on [Flickr](https://flic.kr/p/ebe5UF)
+
+---
+
+## Анализ главных компонент (Principal Component Analysis, PCA)
+
+- Ординация объектов по многим признакам.
+
+- Описание системы взаимосвязей между множеством исходных признаков и ранжирование признаков по важности.
+
+- Снижение размерности многомерных данных (dimension reduction) и создание синтетических взаимонезависимых признаков для других анализов (например, для регрессии, дискриминантного анализа)
+
+---
+
+## Пример: Размеры медуз
+
+Данные о размерах медуз _Catostylus mosaicus_ (Lunn &amp; McNeil 1991). Медузы собраны в реке Хоксбери (Новый Южный Уэльс, Австралия): часть --- на острове Дангар, другая --- в заливе Саламандер.
+
+.pull-left[
+&lt;img src="images/Blubberjellies-KirstiScott-Flickr.jpg" height=300&gt;
+
+.tiny[Blubber jellies! by  Kirsti Scott
+on [Flickr](https://flic.kr/p/nWikVp)]
+]
+
+.pull-right[
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; location &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; width &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; length &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+]
+
+---
+
+## Задача анализа главных компонент
+
+Нужно найти такую трансформацию исходных данных, чтобы "новые" переменные:
+
+- содержали всю исходную информацию
+- были независимы друг от друга
+- были ранжированы в порядке убывания важности (например, в порядке убывания их дисперсии)
+
+Интуитивно, мы можем добиться этого, если проведем одну ось вдоль направления, в котором максимально вытянуто облако исходных данных. Вторую ось проведем перпендикулярно первой (и они будут независимы).
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+## Алгоритм PCA
+
+![](images/PCA.png)
+---
+
+## PCA в R своими руками 
+
+Открываем данные по медузам и извлекаем из таблицы числовые измерения. 
+
+```r
+jelly &lt;- read.delim("data/jellyfish.csv")
+X_raw &lt;- jelly[, 2:3]
+```
+
+---
+
+## Задание 1 
+
+Получите новые координаты для датасета с медузами в осях главных компонент. 
+
+---
+
+## Решение
+
+
+```r
+# Исходные данные
+X &lt;- scale(X_raw, center = TRUE, scale = FALSE) # Центрируем
+A &lt;- t(X) %*% X / (nrow(X) - 1)   # Матрица ковариаций
+E &lt;- eigen(A)            # Спектральное разложение
+U &lt;- E$vectors           # Собственные векторы
+Lambda &lt;- E$values 
+
+# Координаты точек в новом пространстве
+Y &lt;- X %*% U
+```
+
+---
+
+## Визаулизация результатов PCA 
+
+.pull-left[
+
+```r
+# график исходных данных
+gg_jelly_raw &lt;- ggplot(as.data.frame(X_raw), 
+                       aes(x = width, y = length)) +
+  geom_point(size = 2)
+gg_jelly_raw
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+```r
+# график в главных осях
+gg_jelly_rotated &lt;- ggplot(as.data.frame(Y), 
+                           aes(x = V1, y = V2)) +
+    geom_point(size = 2) +
+    geom_hline(yintercept = 0) +
+    geom_vline(xintercept = 0) +
+    labs(x = "PC1", y = "PC2")
+gg_jelly_rotated
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Результаты работы PCA
+
+.pull-left[
+
+- __Собственные векторы__ (__факторные нагрузки__)
+  - перпендикулярны друг другу (ортогональны, независимы) 
+  - задают __главные компоненты__ --- направления новых осей
+  - линейные комбинации исходных признаков
+  - упорядочены в порядке убывания дисперсии
+
+- __Собственные числа__
+  - показывают дисперсию вдоль главных компонент
+  - упорядочены в порядке убывания дисперсии
+  - используются для вычисления доли общей изменчивости, связанной с каждой из главных компонент
+
+]
+
+.pull-right[
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+- __Факторные координаты__
+  - координаты объектов в пространстве главных компонент
+
+]
+
+---
+
+## Результаты работы PCA
+
+- Главные компоненты 
+  - новые "синтетические" признаки объектов, которые сочетают несколько исходных признаков
+  - упорядочены по убыванию доли объясненной изменчивости
+  - используя разное число главных компонент можно снизить размерность исходных данных
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+- PC1 --- "размер медузы" --- больше всего изменчивости
+- PC2 --- остаточная изменчивость
+
+---
+
+class: middle, center, inverse
+
+# Действительно многомерные данные
+
+---
+
+## Пример: Потребление белков в странах Европы с разными видами продуктов питания
+
+![](./images/PaleoDiet-zsoolt-Flickr.jpg)
+
+&lt;small&gt;Paleo Diet by zsoolt on [Flickr](https://flic.kr/p/pPK1nz)&lt;/small&gt;
+
+&lt;div class = "footnote"&gt;Данные из Weber, 1973&lt;/div&gt;
+
+---
+
+## Открываем данные
+
+
+```r
+protein &lt;- read.table(file="data/protein.csv", sep="\t", dec=".", header=TRUE)
+protein$region &lt;- factor(protein$region)
+rownames(protein) &lt;- protein$country
+head(protein)
+```
+
+```
+   country      region redmeat whitemeat eggs milk fish cereals starch nuts frveg
+Al      Al     Balkans    10.1       1.4  0.5  8.9  0.2    42.3    0.6  5.5   1.7
+At      At    W Europe     8.9      14.0  4.3 19.9  2.1    28.0    3.6  1.3   4.3
+Be      Be    W Europe    13.5       9.3  4.1 17.5  4.5    26.6    5.7  2.1   4.0
+Bu      Bu     Balkans     7.8       6.0  1.6  8.3  1.2    56.7    1.1  3.7   4.2
+Cz      Cz    E Europe     9.7      11.4  2.8 12.5  2.0    34.3    5.0  1.1   4.0
+Dk      Dk Scandinavia    10.6      10.8  3.7 25.0  9.9    21.9    4.8  0.7   2.4
+```
+
+&lt;div class = "footnote"&gt;Данные из Weber, 1973&lt;/div&gt;
+
+---
+
+## Делаем PCA
+
+
+```r
+library(vegan)
+prot_pca &lt;- rda(protein[, -c(1, 2)], scale = TRUE)
+biplot(prot_pca)
+```
+
+&lt;img src="08_PCA_geom_morph_files/figure-html/pca-owl-1.png" style="display: block; margin: auto auto auto 0;" /&gt;
+
+---
+
+## Делаем PCA
+
+
+```r
+library(vegan)
+prot_pca &lt;- rda(protein[, -c(1, 2)], scale = TRUE)
+biplot(prot_pca)
+```
+
+.pull-left[
+
+![](08_PCA_geom_morph_files/figure-html/pca-owl-1.png)&lt;!-- --&gt;
+]
+.pull-right[
+
+![](images/how-to-owl.jpg)
+
+]
+
+---
+
+## Разбираемся с результатами PCA
+
+.scroll-box-26[
+
+
+```r
+summary(prot_pca)
+```
+
+```
+
+Call:
+rda(X = protein[, -c(1, 2)], scale = TRUE) 
+
+Partitioning of correlations:
+              Inertia Proportion
+Total               9          1
+Unconstrained       9          1
+
+Eigenvalues, and their contribution to the correlations 
+
+Importance of components:
+                        PC1   PC2   PC3   PC4    PC5    PC6    PC7    PC8    PC9
+Eigenvalue            4.006 1.635 1.128 0.955 0.4638 0.3251 0.2716 0.1163 0.0991
+Proportion Explained  0.445 0.182 0.125 0.106 0.0515 0.0361 0.0302 0.0129 0.0110
+Cumulative Proportion 0.445 0.627 0.752 0.858 0.9098 0.9459 0.9761 0.9890 1.0000
+
+Scaling 2 for species and site scores
+* Species are scaled proportional to eigenvalues
+* Sites are unscaled: weighted dispersion equal on all dimensions
+* General scaling constant of scores:  3.834 
+
+
+Species scores
+
+             PC1     PC2     PC3      PC4     PC5     PC6
+redmeat   -0.774 -0.0919 -0.4039 -0.80718  0.2804  0.3351
+whitemeat -0.794 -0.3870  0.8467  0.04619 -0.2612  0.0882
+eggs      -1.091 -0.0577  0.2464 -0.39101  0.0689 -0.2632
+milk      -0.966 -0.3016 -0.5234  0.00414 -0.1744 -0.4506
+fish      -0.347  1.0569 -0.4360  0.26964 -0.2524  0.0997
+cereals    1.120 -0.3815  0.1302  0.00775  0.2073 -0.0588
+starch    -0.760  0.5765  0.3298  0.42038  0.6405 -0.1076
+nuts       1.075  0.2342 -0.0738 -0.41239  0.1310 -0.3257
+frveg      0.282  0.8761  0.5531 -0.57691 -0.2032 -0.0864
+
+
+Site scores (weighted sums of species scores)
+
+         PC1     PC2      PC3     PC4     PC5     PC6
+Al    1.3626 -0.9978 -1.29773 -0.1839  0.0267  1.4194
+At   -0.5562 -0.6372  0.98574 -0.1346 -1.0725 -0.2998
+Be   -0.6341  0.0976  0.15955 -0.4171  0.8676  0.3977
+Bu    1.2253 -0.7962  0.11148 -0.1715 -0.5570  0.9546
+Cz   -0.1448 -0.3688  0.88121  0.3716  0.2951  1.1296
+Dk   -0.9247  0.1747 -0.55429  0.7748 -0.8646  0.2338
+E Ge -0.5560  0.2756  0.95975  0.9098  0.4860  0.8897
+Fi   -0.6114 -0.3648 -1.51014  1.1335  0.0427 -1.1449
+Fr   -0.5817  0.4806  0.00139 -1.5677  0.2878  1.2337
+Gr    0.8756  0.6126 -0.65033 -1.4371 -0.4653 -1.5707
+Hu    0.5698 -0.4994  1.41042  0.1741 -0.0476 -0.7399
+Ir   -1.0413 -0.4674 -0.01465 -0.3482  1.1655 -0.6619
+It    0.5999  0.2442  0.09291 -0.9791 -0.9233 -0.2938
+Nl   -0.6417 -0.5581  0.56477  0.1010 -0.8747 -0.4083
+No   -0.3811  0.5031 -1.25562  0.9111 -0.4767  0.0775
+Po   -0.0476  0.3254  1.08667  0.3670 -0.0267 -0.8074
+Pt    0.6669  2.6248  0.03215  0.7157 -0.4427  0.9567
+Ro    1.0778 -0.6847  0.05164  0.4926  0.3643 -0.1791
+Sp    0.5129  1.5627  0.37968 -0.2877  0.5928 -0.9185
+Se   -0.6387 -0.1269 -0.94342  0.5879 -0.9420 -0.0605
+Sw   -0.3567 -0.4596 -0.11366 -0.9374 -0.9548  0.1238
+Uk   -0.6785 -0.0575 -0.84933 -1.3885  1.2455  0.1325
+USSR  0.3060 -0.0678 -0.27239  0.7429  1.9183 -0.2545
+W Ge -0.8186 -0.1798  0.59240 -0.0871 -0.0785  0.2758
+Yu    1.4164 -0.6353  0.15182  0.6580  0.4340 -0.4857
+```
+
+]
+
+---
+
+class: middle, center, inverse
+
+# 1. Сколько компонент нужно оставить?
+
+---
+
+## Собственные числа показывают вклады главных компонент в общую изменчивость
+
+```
+Eigenvalues, and their contribution to the correlations 
+
+Importance of components:
+                         PC1    PC2    PC3    PC4     PC5     PC6  ...  
+Eigenvalue            4.0064 1.6350 1.1279 0.9547 0.46384 0.32513 ...
+Proportion Explained  0.4452 0.1817 0.1253 0.1061 0.05154 0.03613 ...
+Cumulative Proportion 0.4452 0.6268 0.7521 0.8582 0.90976 0.94589 ...
+```
+
+
+```r
+eigenvals(prot_pca) # собственные числа
+```
+
+```
+  PC1   PC2   PC3   PC4   PC5   PC6   PC7   PC8   PC9 
+4.006 1.635 1.128 0.955 0.464 0.325 0.272 0.116 0.099 
+```
+
+---
+
+## Сколько компонент нужно оставить, если мы хотим редуцировать данные?
+
+- Эмпирические правила (выберите любое, но одно)
+    - Компоненты у которых соб. число &gt; 1 (правило Кайзера-Гатмана)
+    - В сумме объясняют заданный % от общей изменчивости (60-80%) - слишком субъективно
+    - Объясняют больше чем по Broken Stick Model.
+    
+![](images/broken-stick-md.png)
+
+
+```r
+eigenvals(prot_pca) # собственные числа
+```
+
+```
+  PC1   PC2   PC3   PC4   PC5   PC6   PC7   PC8   PC9 
+4.006 1.635 1.128 0.955 0.464 0.325 0.272 0.116 0.099 
+```
+
+```r
+bstick(prot_pca) # ожидаемое по Broken Stick Model
+```
+
+```
+   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9 
+2.8290 1.8290 1.3290 0.9956 0.7456 0.5456 0.3790 0.2361 0.1111 
+```
+
+---
+
+## График собственных чисел
+
+
+```r
+screeplot(prot_pca, type = "lines", bstick = TRUE) # график собственных чисел
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+
+class: middle, center, inverse
+
+# 2. Графики факторных нагрузок и ординации
+
+---
+
+## Параметр `scaling`
+
+Внимание! Координаты объектов или переменных можно получить в нескольких вариантах, отличающихся масштабом. От этого масштаба будет зависеть интерпретация.
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; scaling &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Название графика &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Масштаб &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Расстояния между объектами &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Углы между векторами &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1, sites &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; биплот расстояний &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; координаты объектов масштабированы (х корень из соб. чисел) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; аппроксимируют евклидовы &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; нет смысла &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2, species &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; биплот корреляций &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; координаты признаков масштабированы (х корень из соб. чисел) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; НЕ аппроксимируют евклидовы &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; отражают корреляции &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3, symmetric &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; масштабированы координаты объектов и признаков (х корень 4-й степени из соб. чисел) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 0, none &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; нет масштабирования &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Графики
+
+
+```r
+op &lt;- par(mfrow = c(1, 2), cex = 1.5)
+# График факторных координат
+biplot(prot_pca, display = "sites")
+# График факторных нагрузок
+biplot(prot_pca, display = "species", scaling = "species")
+par(op)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+---
+
+## Те же самые графики можно построить в ggplot2
+
+
+
+
+
+![](08_PCA_geom_morph_files/figure-html/ord-plot-grid-1.png)&lt;!-- --&gt;
+
+---
+
+## Исходный код графика
+
+
+```r
+# Данные для графиков
+df_scores &lt;- data.frame(protein[, 1:2],
+                        scores(prot_pca, display = "sites",
+                               choices = c(1, 2, 3), 
+                               scaling = "sites"))
+## График ординации в ggplot
+
+p_scores &lt;- ggplot(df_scores, aes(x = PC1, y = PC2, colour = region)) +
+  geom_text(aes(label = country)) +
+  coord_equal(xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2))
+```
+
+--
+
+
+```r
+## Данные для графика нагрузок
+df_load &lt;- as.data.frame(scores(prot_pca, 
+                                display = "species", 
+                                choices = c(1, 2, 3), 
+                                scaling = "species"))
+# поправки для размещения подписей
+df_load$hjust &lt;- ifelse(df_load$PC1 &gt;= 0, -0.1, 1)
+df_load$vjust &lt;- ifelse(df_load$PC2 &gt;= 0, -0.1, 1)
+library(grid) # для стрелочек
+ar &lt;- arrow(length = unit(0.25, "cm"))
+## График нагрузок в ggplot
+p_load &lt;- ggplot(df_load) +
+  geom_text(aes(x = PC1, y = PC2, label = rownames(df_load)),
+            size = 3, vjust = df_load$vjust, hjust = df_load$hjust) +
+  geom_segment(aes(x = 0, y = 0, xend = PC1, yend = PC2),
+               colour = "grey40", arrow = ar) +
+  coord_equal(xlim = c(-2, 2), ylim = c(-2, 2))
+```
+
+---
+
+class: middle, center, inverse
+
+# 3. Интерпретация компонент
+
+---
+
+## Интерпретация компонент
+
+.pull-left-55[
+
+Факторные нагрузки оценивают вклады переменных в изменчивость по главной компоненте
+
+- Модуль нагрузки --- величина вклада 
+- Знак нагрузки --- направление вклада
+
+
+```r
+scores(prot_pca, display = "species", 
+       choices = c(1, 2, 3), scaling = 0)
+```
+
+```
+              PC1      PC2      PC3
+redmeat   -0.3026 -0.05625 -0.29758
+whitemeat -0.3106 -0.23685  0.62390
+eggs      -0.4267 -0.03534  0.18153
+milk      -0.3777 -0.18459 -0.38566
+fish      -0.1356  0.64682 -0.32127
+cereals    0.4377 -0.23349  0.09592
+starch    -0.2972  0.35283  0.24298
+nuts       0.4203  0.14331 -0.05439
+frveg      0.1104  0.53619  0.40756
+attr(,"const")
+[1] 3.834
+```
+
+]
+
+.pull-right-45[
+
+__Первая главная компонента__:
+
+Высокие __положительные нагрузки по первой главной компоненте__ у переменных `cereals` и `nuts`. Значит, чем больше значение PC1, тем больше потребление этих продуктов.
+
+Высокие __отрицательные нагрузки__ у переменных `eggs`, `milk`, `whitemeat`, `redmeat`. Т.е., чем меньше значение PC1, тем больше их потребление. 
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+]
+
+--
+
+- Т.е. первую компоненту можно назвать "Мясо -- злаки и орехи"
+
+---
+
+## Интерпретация компонент
+
+
+.pull-left-55[
+
+Факторные нагрузки оценивают вклады переменных в изменчивость по главной компоненте
+
+- Модуль нагрузки --- величина вклада 
+- Знак нагрузки --- направление вклада
+
+
+```r
+scores(prot_pca, display = "species", 
+       choices = c(1, 2, 3), scaling = 0)
+```
+
+```
+              PC1      PC2      PC3
+redmeat   -0.3026 -0.05625 -0.29758
+whitemeat -0.3106 -0.23685  0.62390
+eggs      -0.4267 -0.03534  0.18153
+milk      -0.3777 -0.18459 -0.38566
+fish      -0.1356  0.64682 -0.32127
+cereals    0.4377 -0.23349  0.09592
+starch    -0.2972  0.35283  0.24298
+nuts       0.4203  0.14331 -0.05439
+frveg      0.1104  0.53619  0.40756
+attr(,"const")
+[1] 3.834
+```
+
+]
+
+.pull-right-45[
+__Вторая главная компонента__:
+
+Высокие __положительные нагрузки по второй главной компоненте__ у переменных `fish`, `frveg`. Значит, чем больше значение PC2, тем больше потребление рыбы, овощей.
+
+Высоких __отрицательных нагрузок по второй главной компоненте__ нет ни у одной из переменных. 
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+]
+
+--
+
+- Т.е. вторую компоненту можно назвать "Рыба и овощи"
+
+
+---
+
+class: middle, center, inverse
+
+# PCA и другие методы
+
+---
+
+.pull-left-45[
+
+### PCA
+
+- Метод обучения "без учителя" (unsupervised learning)
+- Все переменные-признаки равноправны
+- Задачи:
+  - описать сходство объектов
+  - снизить размерность данных
+  - интерпретировать связи между переменными
+- Главные компоненты --- линейные комбинации переменных, задающие направления максимального варьирования исходных данных. 
+
+]
+
+.pull-right-55[
+
+### Линейная регрессия
+
+- Метод обучения "с учителем" (supervised learning)
+- Переменные делятся на зависимые (отклики) и независимые (предикторы)
+- Задачи:
+  - описать зависимость значений отклика от предикторов
+  - предсказать значения отклика при известных значениях предикторов
+- Линия регрессии --- направление минимального разброса значений зависимой переменной (сумма квадратов остатков).
+
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+.pull-left[
+
+### PCA
+
+- PCA представляет многомерные данные в пространстве независимых осей, ранжированных по важности, поэтому __есть возможность оставить только самые важные оси изменчивости__.
+
+- Расстояния между объектами на любой ординации PCA соответствуют их евклидовым расстояниям в пространстве главных компонент.
+
+- Исходные признаки --- количественные переменные, связанные друг с другом линейно. Для описания различий между такими объектами подходит евклидово расстояние.
+]
+
+.pull-right[
+
+### nMDS
+
+- nMDS пытается найти отображение многомерного пространства в заданном числе измерений (например, на плоскости) __с максимальным сохранением информации из всех измерений__.
+
+- Ранги расстояний между объектами на nMDS будут соответствовать их рангам в исходной матрице различий.
+&lt;br/&gt;&lt;br/&gt;
+
+- Исходные признаки могут быть любыми, т.к. может быть использована любая мера различий между объектами.
+]
+
+---
+
+## Результаты PCA и nMDS будут похожи, если для nMDS-ординации использовано евклидово расстояние
+
+&lt;img src="08_PCA_geom_morph_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: middle, center, inverse
+
+# Создание составных переменных при помощи PCA
+
+---
+
+## Создание составных переменных
+
+Факторные координаты --- это новые составные признаки, которых можно использовать вместо исходных переменных
+
+Свойства факторных координат:
+
+- Среднее = 0, Дисперсия = 1
+- Не коррелируют друг с другом
+
+Применение:
+
+  - Уменьшение числа зависимых переменных --- для дисперсионного анализа
+  - Уменьшение числа предикторов --- во множественной регрессии
+
+
+```
+        PC1      PC2      PC3
+Al  0.90915 -0.42531 -0.45941
+At -0.37110 -0.27160  0.34896
+Be -0.42310  0.04160  0.05648
+Bu  0.81752 -0.33938  0.03946
+Cz -0.09663 -0.15720  0.31196
+Dk -0.61697  0.07446 -0.19623
+```
+
+---
+
+## При помощи дисперсионного анализа можно проверить, различается ли значение первой главной компоненты ("Мясо -- злаки и орехи") между разными регионами Европы
+
+
+```r
+# Значения факторов (= факторные координаты)
+df &lt;- data.frame(region = protein$region,
+  scores(prot_pca, display = "sites", choices = c(1, 2, 3), scaling = "sites"))
+mod &lt;- lm(PC1 ~ region, data = df)
+anova(mod)
+```
+
+```
+Analysis of Variance Table
+
+Response: PC1
+          Df Sum Sq Mean Sq F value       Pr(&gt;F)    
+region     5   5.97    1.19    39.3 0.0000000022 ***
+Residuals 19   0.58    0.03                         
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+&gt; - Регионы Европы различаются по потреблению мяса, злаков и орехов
+
+---
+
+## Проверка условий применимости дисперсионного анализа
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+
+&gt; - Условия применимости дисперсионного анализа выполняются
+
+---
+
+## График значений первой компоненты по регионам
+
+![](08_PCA_geom_morph_files/figure-html/pc1_p-1.png)&lt;!-- --&gt;
+
+---
+
+## Пост-хок тест
+
+
+```r
+TukeyHSD(aov(mod))
+```
+
+```
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = mod)
+
+$region
+                              diff      lwr      upr  p adj
+E Europe-Balkans          -0.83073 -1.20006 -0.46140 0.0000
+Iberian-Balkans           -0.45413 -0.93093  0.02267 0.0674
+Mediterranean-Balkans     -0.35545 -0.83226  0.12135 0.2210
+Scandinavia-Balkans       -1.27403 -1.66334 -0.88472 0.0000
+W Europe-Balkans          -1.29047 -1.62762 -0.95332 0.0000
+Iberian-E Europe           0.37659 -0.08404  0.83723 0.1498
+Mediterranean-E Europe     0.47527  0.01464  0.93591 0.0408
+Scandinavia-E Europe      -0.44331 -0.81264 -0.07398 0.0133
+W Europe-E Europe         -0.45974 -0.77361 -0.14587 0.0022
+Mediterranean-Iberian      0.09868 -0.45189  0.64924 0.9921
+Scandinavia-Iberian       -0.81990 -1.29670 -0.34310 0.0004
+W Europe-Iberian          -0.83633 -1.27159 -0.40107 0.0001
+Scandinavia-Mediterranean -0.91858 -1.39538 -0.44178 0.0001
+W Europe-Mediterranean    -0.93501 -1.37027 -0.49975 0.0000
+W Europe-Scandinavia      -0.01643 -0.35358  0.32072 1.0000
+```
+
+---
+
+## Take-home messages
+
+- Применение метода главных компонент (PCA):
+    - снижение размерности данных
+    - исследование связей между переменными
+    - построение ординации объектов
+    - создание комплексных переменных
+- Терминология:
+    - Собственные числа --- вклад компонент в общую изменчивость
+    - Факторные нагрузки --- корреляции исходных переменных с компонентами --- используются для интерпретации
+    - Значения факторов --- новые координаты объектов в пространстве уменьшенной размерности
+
+---
+
+class: middle, center, inverse
+
+# Анализ главных компонент в геометрической морфометрии
+
+---
+
+## Анализ морфометрических данных при помощи анализа главных компонент
+
+- Классический подход к морфометрии
+- Геометрическая морфометрия
+- Эволюция формы
+
+### Вы сможете
+
+- Проанализировать морфометрические данные корректно удалив влияние абсолютного размера
+- Рассказать, что происходит во время обобщенного прокрустова анализа
+- Проанализировать данные о координатах меток используя методы геометрической морфометрии
+- Понимать, каким образом происходит отображение филогенетического древа в пространство форм
+
+---
+
+class: middle, center, inverse
+
+# Классический подход к морфометрии
+
+---
+
+## Классический подход к морфометрии
+
+Для анализа формы различных структур анализируются расстояния между метками, а не их координаты.
+
+Признаки сильно интегрированных структур, например частей скелета, лучше анализировать совместно друг с другом. Один из вариантов анализа --- анализ главных компонент.
+
+---
+
+## Пример: морфометрия черепах
+
+Черепахи --- единственные живые представители анапсид (череп не имеет височных окон). Морфология черепа важна для их систематики (Claude et al., 2004).
+
+Данные --- 24 разных измерения черепов черепах 122 ныне живущих пресноводных, морских и наземных видов и одного ископаемого.
+
+![Морфометрия черепах](images/Fig30.1ZuurAED-mod.jpg)
+
+&lt;div class = "footnote"&gt;Рис. 30.1 из Zuur et al. 2007&lt;/div&gt;
+
+---
+
+## Читаем данные
+
+
+```r
+turt &lt;- read.table("data/turtles.txt", header = TRUE)
+turt$Environment3 &lt;- factor(turt$Environment3, levels = c(0, 1, 2, 9),
+          labels = c("Freshwater", "Terrestrial", "Marine", "Fossil"))
+colnames(turt)
+```
+
+```
+ [1] "nspecies"     "species_name" "Family"       "SuperFamily"  "Order"       
+ [6] "Environment"  "Environment3" "D1"           "D2"           "D3"          
+[11] "D4"           "D5"           "D6"           "D7"           "D8"          
+[16] "D9"           "D10"          "D11"          "D12"          "D13"         
+[21] "D14"          "D15"          "D16"          "D17"          "D18"         
+[26] "D19"          "D20"          "D21"          "D22"          "D23"         
+[31] "D24"         
+```
+
+.pull-down[.tiny[Данные из Zuur et al. 2007]]
+
+---
+
+## Чтобы понять, нужно ли стандартизовать исходные данные, построим боксплот
+
+
+```r
+boxplot(x = turt[8:31])
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+
+--
+
+- Наверное, лучше стандартизовать
+
+---
+
+## Делаем анализ главных компонент по стандартизованным данным
+
+
+```r
+library(vegan)
+turt_pca &lt;- rda(turt[, 8:31], scale = TRUE)
+```
+
+---
+
+## Сколько компонент достаточно для описания данных?
+
+
+```r
+eig &lt;- eigenvals(turt_pca)[1:5]
+eig*100/sum(eig) # доля объясненной изменчивости
+```
+
+```
+   PC1    PC2    PC3    PC4    PC5 
+86.760  6.936  3.074  1.956  1.273 
+```
+
+```r
+screeplot(turt_pca, bstick = TRUE)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+
+--
+
+- Первая компонента объясняет очень много, остальные - почти ничего. Одной компоненты достаточно?
+- Нет! Не все так просто.
+
+---
+
+## Что странного в этой картинке?
+
+
+```r
+biplot(turt_pca, display = "species", scaling = 2)
+```
+
+![](08_PCA_geom_morph_files/figure-html/biplot-raw-1.png)&lt;!-- --&gt;
+
+- Как вы думаете, почему у всех переменных большие нагрузки по первой компоненте?
+
+- Что отражает первая компонента?
+
+---
+
+## При анализе сырых морфометрических данных первая компонента отражает размер объектов и, возможно, немножко - их форму
+
+![](08_PCA_geom_morph_files/figure-html/biplot-raw-1.png)&lt;!-- --&gt;
+
+---
+
+## Классические способы избавиться от влияния размера:
+
+- использовать одну из исходных переменных как оценку "размера": использовать в PCA остатки от регрессий исходных признаков от "размера"
+- стандартизация исходных данных при помощи деления на величину "размера" для каждого образца (корень из суммы квадратов измерений)
+- сделать двойное центрирование (логарифмированных) исходных данных
+- и т.д. и т.п.
+
+---
+
+## Двойное центрирование
+
+Нам достаточно центрировать строки, т.к. столбцы будут центрированы автоматически в процессе анализа главных компонент.
+
+
+```r
+# Функция, которая может центрировать вектор
+center &lt;- function(x){
+  x - mean(x, na.rm = TRUE)
+}
+# применяем эту функцию к каждой строке
+dbcent &lt;- t(apply(turt[, 8:31], 1, center))
+# получившийся датафрейм пришлось транспонировать,
+# поскольку apply() результаты от каждой строки
+# возвращает в виде столбцов
+```
+
+---
+
+## После двойного центрирования большие собственные числа у нескольких компонент
+
+
+```r
+turt_db_pca &lt;- rda(dbcent)
+eig_db &lt;- eigenvals(turt_db_pca)[1:5]
+eig_db*100/sum(eig_db)
+```
+
+```
+   PC1    PC2    PC3    PC4    PC5 
+65.477 23.121  6.362  3.125  1.915 
+```
+
+```r
+screeplot(turt_db_pca, bstick = TRUE)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+
+---
+
+## После двойного центрирования у переменных высокие нагрузки на несколько компонент, влияние размера удалено
+
+
+```r
+biplot(turt_db_pca, display = "species", scaling = 2)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+
+Интерпретируем как обычно: компонента отражает несколько признаков
+
+---
+
+## Ординация черепах по морфометрии черепов (двойное центрирование данных)
+
+![](08_PCA_geom_morph_files/figure-html/tradit-pca-1.png)&lt;!-- --&gt;
+
+- У пресноводных большие D12 и D13, и маленькая D2. У морских наоборот
+- Ископаемая черепаха похожа на нынешних морских
+
+---
+
+## Код для графика ординации черепах по морфометрии черепов
+
+
+```r
+op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 0.5, 0.5), cex = 1.3)
+biplot(turt_db_pca, display = "species", scaling = 2)
+# цвета для графика факторных координат
+colvec &lt;- c("orange2", "limegreen", "steelblue", "red3")
+# пустой график
+plot(turt_db_pca, type = "n", scaling = 1)
+# точки, раскрашенные по уровням фактора turt$Environment3
+points(turt_db_pca, display = "sites", scaling = 1, pch = 21, 
+       col = colvec[turt$Environment3], bg = colvec[turt$Environment3])
+# легенда
+legend("bottomright", legend = levels(turt$Environment3), bty = "n", pch = 21, 
+       col = colvec, pt.bg = colvec)
+par(op)
+```
+
+---
+
+class: middle, center, inverse
+
+.pull-right[
+Но настоящие джедаи теперь анализируют координаты меток, а не расстояния между ними!
+]
+
+# Геометрическая морфометрия
+
+---
+
+## Пример: Форма головы Апалачских саламандр рода _Plethodon_
+
+_Plethodon jordani_ и _P.teyahalee_ встречаются вместе и раздельно.
+В совместно обитающих популяциях меняется форма головы обоих видов. В разных группах популяций этот процесс параллельно приводит к одинаковым результатам. По-видимому, одной из причин параллельной эволюции может быть межвидовая конкуренция (Adams, 2004, 2010).
+
+.pull-left[
+
+![_Plethodon jordani_](images/PlethodoJordaniJordansSalamander-JohnPClare-Flickr.jpg)
+
+.tiny[_Plethodon jordani_ - Jordan's Salamander by [John P Clare on Flickr](https://flic.kr/p/dMfNq6)]
+]
+
+.pull-right[
+![_Plethodon_ cf. _teyahalee_](images/PlethodonCfTeyahalee-squamatologist-Flickr.jpg)
+
+.tiny[_Plethodon_ cf. _teyahalee_ by [squamatologist on Flickr](https://flic.kr/p/8m82g6)]
+]
+
+---
+
+## Морфометрия головы саламандр
+
+![Схема измерений](images/measurements-Adams2004.jpg)
+
+
+```r
+# install.packages("geomorph", dependencies = TRUE)
+library(geomorph)
+data(plethodon)
+str(plethodon, vec.len = 2, give.attr = F)
+```
+
+```
+List of 5
+ $ land   : num [1:12, 1:2, 1:40] 8.89 9.27 ...
+ $ links  : num [1:14, 1:2] 4 3 2 1 1 ...
+ $ species: Factor w/ 2 levels "Jord","Teyah": 1 1 1 1 1 ...
+ $ site   : Factor w/ 2 levels "Allo","Symp": 2 2 2 2 2 ...
+ $ outline: num [1:3631, 1:2] 0.399 0.4 ...
+```
+
+.pull-down[.tiny[рис. из Adams, 2004, 2010]]
+
+---
+
+## Сырые морфометрические данные еще не выравнены
+
+Все образцы разного размера и разной ориентации в пространстве. На этом графике --- два образца для примера.
+
+
+```r
+plotRefToTarget(plethodon$land[, , 1], plethodon$land[, ,10],
+                method = "points", mag = 1, 
+                links = plethodon$links)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+
+---
+
+## Если нарисовать не выравненные образцы, получится полная каша. Что делать?
+
+Слева --- три образца, справа --- все. Жирные точки --- центроиды соответствующих меток.
+
+
+```r
+op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 1, 1))
+plotAllSpecimens(plethodon$land[, , 1:3], links=plethodon$links)
+plotAllSpecimens(plethodon$land,links=plethodon$links)
+par(op)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+
+---
+
+## Геометрическая морфометрия
+
+1. Влияние размера удаляется при помощи обобщенного прокрустова анализа (масштабирование, поворот и сдвиг координат)
+1. Преобразованные координаты меток используются как признаки объектов (конкретных особей) в анализе главных компонент. Получается морфопространство. Главные компоненты отражают изменения формы.
+
+- можно получить усредненную форму для любой группы выравненных координат
+- можно сравнить форму любой особи со средней формой
+- можно проследить изменение формы вдоль осей главных компонент
+
+---
+
+## Прокрустов анализ
+
+![Прокрустово ложе](images/Theseus-Procrustes.jpg)
+
+.small[Тезей убивает разбойника Прокруста (источник https://mrpsmythopedia.wikispaces.com/Procrustes)]
+
+---
+
+## Шаг 1. Выравниваем данные при помощи обобщенного прокрустова анализа
+
+Generalized Procrustes Analysis (GPA)
+
+Минимизируем сумму квадратов расстояний между одноименными метками, меняя масштаб, поворачивая и сдвигая координаты. Вот как это выглядит на данных про черепах:
+
+![Прокрустово преобразование](images/Fig30.8ZuurAED-mod.jpg)
+
+.pull-down[.small[Рис. 30.8 из Zuur et al. 2007 с изменениями]]
+
+---
+
+## Выравниваем головы саламандр
+
+
+```r
+gpa &lt;- gpagen(plethodon$land, print.progress = FALSE)
+plotAllSpecimens(gpa$coords,links=plethodon$links)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+
+---
+
+## Усредненная форма
+
+
+```r
+ref &lt;- mshape(gpa$coords) 
+plotRefToTarget(ref, ref, method = "TPS", links = plethodon$links)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+
+---
+
+## Можем посмотреть, как отличается любой из образцов от усредненной формы
+
+Изменение формы можно представить графически несколькими способами
+
+![](08_PCA_geom_morph_files/figure-html/comparis-1.png)&lt;!-- --&gt;
+
+---
+
+## Код для графиков сравнения образцов с усредненной формой
+
+
+```r
+# матрица, в которой хранится разметка общего графика
+m &lt;- matrix(data = c(1, 2,
+                     3, 3),
+            nrow = 2, ncol = 2, byrow = TRUE)
+l &lt;- layout(m, heights = c(1, 1), widths = c(1, 1))
+# layout.show(l) # можно просмотреть разметку
+
+# Графики
+op &lt;- par( mar = c(0, 0, 0, 0))
+# 1) изменение конфигурации обозначено векторами
+plotRefToTarget(ref, gpa$coords[, , 11],
+                method = "vector", mag = 1,
+                links = plethodon$links)
+# 2) формы обозначены точками
+plotRefToTarget(ref, gpa$coords[, , 11],
+                method = "points", mag = 1,
+                links = plethodon$links)
+# 3) сплайн
+plotRefToTarget(ref, gpa$coords[, , 11],
+                method = "TPS", mag = 1,
+                links = plethodon$links)
+par(op)
+```
+
+---
+
+## Шаг 2. Создаем морфопространство
+
+__Анализ главных компонент по координатам меток для выравненных образцов__. Главные компоненты отражают изменения формы.
+
+
+```r
+op &lt;- par(mfrow = c(1, 2), mar = c(4, 4, 1, 1))
+ord &lt;- gm.prcomp(gpa$coords)
+plot(ord, main = "PCA")
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+
+---
+
+## Можно раскрасить по группам
+
+![](08_PCA_geom_morph_files/figure-html/pca-p-1.png)&lt;!-- --&gt;
+
+---
+
+## Код для графика ординации и для легенды
+
+
+```r
+# группа должна быть фактором
+gp &lt;- as.factor(paste(plethodon$species, plethodon$site)) 
+
+# задаем соответствие цветов уровням фактора
+colvec &lt;- c("Jord Allo" = "yellow2", 
+            "Jord Symp" = "orange", 
+            "Teyah Allo" = "green4", 
+            "Teyah Symp" = "green1")
+# вектор цветов в порядке заданном фактором gp
+colvec &lt;- colvec[match(gp, names(colvec))]
+# график
+plot(ord, bg = colvec, pch = 21, col = "grey20")
+# легенда
+legend("topright", legend = levels(gp), 
+                   bty = "n", pch = 21, 
+                   col = "grey20", 
+                   pt.bg = levels(as.factor(colvec)))
+par(op)
+```
+
+---
+
+## Доля объясненной изменчивости и факторные координаты
+
+
+```r
+# Доля изменчивости объясненной 1-5 компонентами
+expl &lt;- round(ord$d[1:5]/sum(ord$d) * 100, 1) 
+
+# Факторные координаты по 1-5 компонентам
+head(ord$x[, 1:5]) 
+```
+
+```
+       Comp1   Comp2      Comp3     Comp4     Comp5
+1 -0.0369931 0.05118 -0.0016972 -0.003129 -0.010936
+2 -0.0007494 0.05942  0.0001372 -0.002769 -0.008118
+3  0.0056005 0.07420 -0.0052612 -0.005035 -0.002747
+4 -0.0134808 0.06464 -0.0458436 -0.007887  0.009817
+5 -0.0334696 0.06864  0.0136292  0.007359  0.022347
+6 -0.0052145 0.06163 -0.0299333 -0.005753 -0.024060
+```
+
+---
+
+## Чтобы легко рисовать изменения формы вдоль главной компоненты нам понадобится функция
+
+
+```r
+plot_shape_change &lt;- function(ord, ref_shape, PC,
+                              horiz = TRUE,
+                              gridPars = NULL, ...){
+  if(horiz){
+    op &lt;- par(mfrow = c(1, 2), mar = c(0, 0 , 0, 0))
+    plotRefToTarget(M1 = ref_shape, M2 = ord$shapes[[PC]]$min,
+                    gridPars = gridPars,  ...)
+    plotRefToTarget(M1 = ref_shape, M2 = ord$shapes[[PC]]$max,
+                    gridPars = gridPars, ...)
+    par(op)
+    } else {
+     op &lt;- par(mfrow = c(2, 1), mar = c(0, 0 , 0, 0))
+     plotRefToTarget(M1 = ref_shape, M2 = ord$shapes[[PC]]$max,
+                     gridPars = gridPars,  ...)
+     plotRefToTarget(M1 = ref_shape, M2 = ord$shapes[[PC]]$min,
+                     gridPars = gridPars, ...)
+     par(op)
+    }
+}
+```
+
+---
+
+## Изменение формы вдоль главных компонент относительно средней формы
+
+
+```r
+plot_shape_change(ord, ref_shape = gpa$consensus, PC = 1, 
+                  links = plethodon$links, method = "TPS") 
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+
+
+```r
+plot_shape_change(ord, ref_shape = gpa$consensus, PC = 2, 
+                  links = plethodon$links, method = "TPS", horiz = FALSE) 
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+
+---
+
+## Можно нарисовать одновременно изменение формы вдоль обеих компонент и ординацию
+
+![](08_PCA_geom_morph_files/figure-html/forms-pca-p-1.png)&lt;!-- --&gt;
+
+
+---
+
+## Код для графика
+
+
+```r
+my_gridPar &lt;- gridPar(tar.pt.size = 0.6, grid.lwd = 0.7)
+library(cowplot)
+library(gridGraphics)
+gg_pca &lt;- plot_grid(
+  # Изменение формы вдоль PC2
+  ~ plot_shape_change(ord, ref_shape = gpa$consensus, PC = 2,
+                      horiz = FALSE, links = plethodon$links,
+                      method = "TPS", gridPars = my_gridPar),
+  # Ординация
+  ~ {plot(ord, bg = colvec, pch = 21, col = "grey20", cex = 1.5)
+    legend("topright", legend = levels(gp),  bty = "n", 
+           pch = 21, col = "grey20", 
+           pt.bg = levels(as.factor(colvec)))},
+  # пустой график
+  NULL,
+  # Изменение формы вдоль PC1
+  ~ plot_shape_change(ord, ref_shape = gpa$consensus, PC = 1,
+                      links = plethodon$links, 
+                      method = "TPS", gridPars = my_gridPar),
+  # Параметры размещения
+  ncol = 2, rel_heights = c(5, 1), rel_widths = c(1, 4)
+)
+
+gg_pca
+```
+
+---
+
+class: middle, center, inverse
+
+
+# Эволюционные изменения формы
+
+---
+
+## Фило-морфо пространство
+
+Если у вас есть данные о средних формах для каждого вида и данные о филогении (из любого источника), то можно изобразить эволюционные изменения формы
+
+Этапы:
+
+1. Выравнивание средних форм для таксонов при помощи обобщенного прокрустова анализа
+1. Ординация таксонов при помощи анализа главных компонент
+1. Поиск анцестральных состояний количественных признаков (форм) методом максимального правдоподобия
+1. Наложение филогенетического дерева и анцестральных форм на график ординации
+
+---
+
+## Фило-морфопространство саламандр рода Plethodon
+
+P. serratus, P. cinereus, P. shenandoah, P. hoffmani, P. virginia, P. nettingi, P. hubrichti, P. electromorphus, P. richmondi
+
+
+```r
+data(plethspecies)
+str(plethspecies, vec.len = 2, give.attr = F)
+```
+
+```
+List of 2
+ $ land: num [1:11, 1:2, 1:9] 0.217 0.259 ...
+ $ phy :List of 4
+  ..$ edge       : int [1:16, 1:2] 10 10 11 12 12 ...
+  ..$ Nnode      : int 8
+  ..$ tip.label  : chr [1:9] "P_serratus" "P_cinereus" ...
+  ..$ edge.length: num [1:16] 15.17 3.84 ...
+```
+
+---
+
+## Выравниваем средние формы для видов
+
+
+```r
+species_gpa &lt;- gpagen(plethspecies$land) #GPA-alignment
+```
+
+```
+
+Performing GPA
+
+  |                                                                                   
+  |                                                                             |   0%
+  |                                                                                   
+  |===================                                                          |  25%
+  |                                                                                   
+  |======================================                                       |  50%
+  |                                                                                   
+  |=============================================================================| 100%
+
+Making projections... Finished!
+```
+
+---
+
+## Наложение филогенетического дерева и анцестральных форм на график PCA ординации
+
+Филоморфопространство
+
+
+```r
+pca_with_phylo &lt;- gm.prcomp(species_gpa$coords, phy = plethspecies$phy)
+plot(pca_with_phylo, phylo = TRUE)
+```
+
+![](08_PCA_geom_morph_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
+
+---
+
+## Take-home messages
+
+- Классический подход к морфометрии
+    - анализируют расстояния между метками
+    - для корректного анализа необходимо удалить влияние размера и оставить форму, но сделать это корректно почти невозможно
+- Геометрическая морфометрия
+    - анализируют координаты меток
+    - различные конфигурации выравнивают при помощи обобщенного прокрустова анализа
+    - преобразованные координаты точек используют в анализе главных компонент
+    - чтобы визуализировать эволюцию форм, можно наложить филогенетическое древо на ординацию
+
+---
+
+## Что почитать
+
+- Bookstein, F.L., 2003. Morphometric Tools for Landmark Data Geometry and Biology. Cambridge University Press.
+- Borcard, D., Gillet, F., Legendre, P., 2011. Numerical ecology with R. Springer.
+- Claude, J., 2008. Morphometrics With R. Springer.
+- GEOL G562 - Geometric Morphometrics [WWW Document], n.d. URL http://www.indiana.edu/~g562/PBDB2013/ (accessed 4.1.15).
+- Legendre, P., Legendre, L., 2012. Numerical ecology. Elsevier.
+- Oksanen, J., 2011. Multivariate analysis of ecological communities in R: vegan tutorial. R package version 2–0.
+- The Ordination Web Page http://ordination.okstate.edu/ (accessed 05.04.17).
+- Quinn, G.G.P., Keough, M.J., 2002. Experimental design and data analysis for biologists. Cambridge University Press.
+- Zelditch, M., Swiderski, D.L., Sheets, D.H., Fink, W.L., 2004. Geometric Morphometrics for Biologists. Academic Press.
+- Zuur, A.F., Ieno, E.N., Smith, G.M., 2007. Analysing ecological data. Springer.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "vs",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- https://github.com/fnaufel/xaringan-smartify-->
+<script type="text/javascript">
+  smartify();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

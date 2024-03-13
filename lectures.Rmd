@@ -182,21 +182,22 @@ install.packages("jpeg")
 [**Данные для самостоятельной работы**](07_linear_algebra_task.html)
 
 
-## 7. Анализ главных компонент (Principal Component Analysis, PCA)
+## 7. Анализ главных компонент (Principal Component Analysis, PCA) и (геометрическая) морфометрия
 
 ```{r eval=FALSE}
-install.packages(c("cowplot", "geomorph"))
+install.packages(c("cowplot", "geomorph", "gridGraphics"))
 ```
 
-### 7.1 Анализ главных компонент
+<!-- - Презентация [html](08_PCA_geom_morph.html) -->
 
-<!-- - Презентация [html](08.1_PCA.html) -->
+- Код: [08_PCA_geom_morph.R](08_PCA_geom_morph.R)
+- Данные: 
+    + [jellyfish.csv](data/jellyfish.csv)
+    + [protein.csv](data/protein.csv)
+    + [turtles.txt](data/turtles.txt)
+- Задание: [08_PCA_tasks.R](08_PCA_tasks.R)
 
-<!-- - Код: [08.1_PCA.R](08.1_PCA.R) -->
-<!-- - Данные: [protein.csv](data/protein.csv) -->
-<!-- - Задание: [08.1_PCA_breast_cancer_task.R](08.1_PCA_breast_cancer_task.R) -->
-
-### 7.2 (Геометрическая) морфометрия
+<!-- ### 7.2 (Геометрическая) морфометрия -->
 
 <!-- - Презентация [html](08.2_PCA_geometric_morphometrics.html) -->
 
