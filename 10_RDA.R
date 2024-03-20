@@ -1,12 +1,12 @@
 # ---
 # title: "Анализ избыточности (Redundancy analysis, RDA)"
 # subtitle: "Анализ и визуализация многомерных данных с использованием R"
-# author: Марина Варфоломеева, Вадим Хайтов
+# author: Марина Варфоломеева, Вадим Хайтов, Анастасия Лянгузова
 
 
-# ### Пример: генетика бабочек _Euphydryas editha_ ####
+# ### Пример: генетика бабочек Euphydryas editha ####
 #
-# Частоты разных аллелей фосфоглюкоизомеразы и данные о факторах среды для 16 колоний бабочек _Euphydryas editha_ в Калифорнии и Орегоне (данные McKechnie et al., 1975)
+# Частоты разных аллелей фосфоглюкоизомеразы и данные о факторах среды для 16 колоний бабочек Euphydryas editha в Калифорнии и Орегоне (данные McKechnie et al., 1975)
 
 # # Подготовка данных к RDA ####
 
@@ -145,3 +145,40 @@ bf_rda_full <- rda(gen ~ x + y + Altitude, data = env_geo)
 # В процентах от чего???
 
 
+# ## Данные для самостоятельной работы -----------------------
+# Влияние выпаса скота на зообентос рек о.Тасмания. Данные из работы Magierowski, RH, Davies, PE, Read, SM (2015). Biological and physical data collected from river sites selected across a gradient of catchment area under grazing in northern Tasmania., Version 1. http://doi.org/10.4227/05/54BEEE248D22B. ÆKOS Data Portal, rights owned by University of Tasmania. Accessed 02 Mar 2017.
+# В таблице содержится несколько листов:
+# fauna - обилия разных групп животных на разных реках;
+# env - параметры среды в каждой из рек:
+##### Abstraction - накопленый индекс водозабора (сумма всех водозаборов и водоотводов вверх по течению, делённая на средний многолетний (25-30 лет) годовой сток),
+##### Regulation - накопленный индекс регулирования (сумма водосборных водохранилищ вверх по течению, делённая на средний многолетний годовой сток),
+##### Grazing  (доля от общей площади) - выпас скота,
+##### fines (proportion substrata) - мелкие отложения,
+##### Temperature (oC) - температура,
+##### Conductivity (uS/cm) - проводимость,
+##### average turbidity (NTU) - средняя мутность,
+##### pH,
+##### Alkalinity Total (mg CaCO3/L) - общая щелочность,
+##### Nitrate+Nitrite (mg-N/L),
+##### DRP (mg-P/L) - растворённый реактивный фосфор,
+##### N total (mg-N/L),
+##### P Total (mg-P/L),
+##### Average % shading - средняя затенённость,
+##### Average algae cover (%) - средний покров водорослей,
+##### Chl a (mg/m2),
+##### GrazingRank - уровень выпаса скота;
+# coord - географические координаты каждой из рек.
+
+
+library(readxl)
+fauna <- read_xls('data/Grazing_Magierowski_et_al_2015.xls', sheet = 'fauna')
+env <- read_xls('data/Grazing_Magierowski_et_al_2015.xls', sheet = 'env')
+coord <- read_xls('data/Grazing_Magierowski_et_al_2015.xls', sheet = 'coord')
+
+
+
+# Морфометрия поссумов в Австралии. Данные из работы Lindenmayer, D. B., Viggers, K. L., Cunningham, R. B., and Donnelly, C. F. 1995. Morphological variation among columns of the mountain brushtail possum, Trichosurus caninus Ogilby (Phalangeridae: Marsupiala). Australian Journal of Zoology 43: 449-458.
+#
+library(DAAG)
+data(possum)
+data(possumsites)
