@@ -233,8 +233,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление канонических осей 
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-716153d112f501c2a7c0" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-716153d112f501c2a7c0">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-7e94875635a0c8153be6" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-7e94875635a0c8153be6">{"x":{"diagram":"graph TD; \n           A(Центрирование матрицы Y)-->B(Множественная линейная регрессия)\n           B-->C(Матрица предсказанных значений); \n           C-->D(Анализ главных компонент);\n           D-->E(Матрица собственных векторов); E-->F(Ординация в пространстве Y);\n           E-->G(Ординация в пространстве X); A-->F; C-->G\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n           style E fill:#C6FFE7,stroke:#C6FFE7;\n           style F fill:#C6FFE7,stroke:#C6FFE7;\n           style G fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[1. Множественная линейная регрессия `\(\mathbf{Y}_{np}\)` от `\(\mathbf{X}_{nm}\)`. Получаем матрицу предсказанных значений: `\(\mathbf{\hat Y} = \mathbf{X}[\mathbf{X}'\mathbf{X}]^{-1}\mathbf{X}'\mathbf{Y}\)` 
@@ -254,8 +254,8 @@ b _0 \\ b _1 \\  b _2 \\ \vdots \\ b _k
 ## Вычисление неканонических осей
 
 .pull-left[
-<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-e5732836a184c1c7f0ab" style="width:432px;height:540px;"></div>
-<script type="application/json" data-for="htmlwidget-e5732836a184c1c7f0ab">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-ebf03018d20da17db214" style="width:432px;height:540px;"></div>
+<script type="application/json" data-for="htmlwidget-ebf03018d20da17db214">{"x":{"diagram":"graph TD; \n           A(Получение остатков от множественных регрессий)-->B(Анализ главных компонент)\n           B-->C(Матрица собственных векторов); \n           C-->D(Ординация в пространстве остатков);\n           A-->D\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 ]
 
 .pull-right[
@@ -808,7 +808,7 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance    F Pr(&gt;F)   
-Model     3      372 4.15 0.0074 **
+Model     3      372 4.15 0.0067 **
 Residual 12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -838,8 +838,8 @@ Number of permutations: 9999
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
               Df Variance    F Pr(&gt;F)   
 Altitude       1      279 9.37 0.0016 **
-Precipitation  1       72 2.43 0.1050   
-Temp_Max       1       20 0.67 0.5147   
+Precipitation  1       72 2.43 0.1052   
+Temp_Max       1       20 0.67 0.5109   
 Residual      12      358               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -898,9 +898,9 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
          Df Variance     F Pr(&gt;F)   
-RDA1      1      352 11.82 0.0053 **
-RDA2      1       18  0.62 0.8517   
-RDA3      1        1  0.03 0.9976   
+RDA1      1      352 11.82 0.0054 **
+RDA2      1       18  0.62 0.8495   
+RDA3      1        1  0.03 0.9983   
 Residual 12      358                
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -975,20 +975,20 @@ Start: gen ~ 1
                 Df AIC    F Pr(&gt;F)   
 + Altitude       1 101 8.69 0.0022 **
 + Temp_Max       1 101 8.12 0.0035 **
-+ Precipitation  1 102 7.30 0.0044 **
++ Precipitation  1 102 7.30 0.0043 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Step: gen ~ Altitude 
 
            Df AIC    F Pr(&gt;F)   
-- Altitude  1 106 8.69  0.002 **
+- Altitude  1 106 8.69 0.0018 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
                 Df   AIC    F Pr(&gt;F)  
-+ Precipitation  1  99.9 2.49  0.089 .
-+ Temp_Max       1 102.0 0.64  0.552  
++ Precipitation  1  99.9 2.49  0.095 .
++ Temp_Max       1 102.0 0.64  0.551  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -1034,7 +1034,7 @@ Call: gen ~ 1
 &lt;none&gt;               0.0000
 
            Df AIC    F Pr(&gt;F)   
-+ Altitude  1 101 8.69 0.0025 **
++ Altitude  1 101 8.69  0.002 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1061,7 +1061,7 @@ m_radj$anova
 
 ```
                 R2.adj Df AIC    F Pr(&gt;F)   
-+ Altitude       0.339  1 101 8.69 0.0025 **
++ Altitude       0.339  1 101 8.69  0.002 **
 &lt;All variables&gt;  0.387                      
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1095,8 +1095,8 @@ class: middle, center, inverse
 
 ### Алгоритм
 
-<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-e4ced88fd73387e0ac6c" style="width:648px;height:360px;"></div>
-<script type="application/json" data-for="htmlwidget-e4ced88fd73387e0ac6c">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
+<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-103dbda9ce16bfffd5f7" style="width:648px;height:360px;"></div>
+<script type="application/json" data-for="htmlwidget-103dbda9ce16bfffd5f7">{"x":{"diagram":"graph TD; \n           A(Множественная регрессия зависимости предикторов от ковариат)-->B(Остатки Y по W и X по W)\n           B-->C(RDA остатков Y и остатков X); \n           B-->D(RDA исходной матрицы Y и остатков X);\n           style A fill:#C6FFE7,stroke:#C6FFE7;\n           style B fill:#C6FFE7,stroke:#C6FFE7;\n           style C fill:#C6FFE7,stroke:#C6FFE7;\n           style D fill:#C6FFE7,stroke:#C6FFE7;\n  "},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -1149,7 +1149,7 @@ Number of permutations: 9999
 
 Model: rda(formula = gen ~ Altitude + Condition(x + y), data = env_geo)
          Df Variance    F Pr(&gt;F)   
-Model     1      213 9.94 0.0011 **
+Model     1      213 9.94 0.0013 **
 Residual 12      257               
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1200,8 +1200,8 @@ class: middle, center, inverse
 | ---- | ---- | ---- |
 | a + b + c | вся потенциально объяснимая средой и географией изменчивость | Объясненная каноническими осями RDA среда + география |
 | a | изменчивость, объясненная средой |  Объясненная каноническими осями pRDA среда + Condition (география) |
-| с | изменчивость, объясненная географией |  Объясненная каноническими осями pRDA география + Condition (среда)  |
-| b | изменчивость, совместно объясненная средой и географией | Находим инерцию по разности |
+| b | изменчивость, объясненная географией |  Объясненная каноническими осями pRDA география + Condition (среда)  |
+| c | изменчивость, совместно объясненная средой и географией | Находим инерцию по разности |
 
 ---
 
@@ -1215,7 +1215,7 @@ class: middle, center, inverse
 
 У нас уже есть __частный RDA №1: зависимость генетики от среды с учетом географии__ (чтобы найти a)
 
-Нам нужен __частный RDA №2: генетика от географии с учетом свойств среды__ (чтобы найти c)
+Нам нужен __частный RDA №2: генетика от географии с учетом свойств среды__ (чтобы найти b)
 
 
 ```r
