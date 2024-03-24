@@ -65,7 +65,7 @@ background-size: cover
 
 class: inverse
 
-# Во всем виноваты длинные градиенты
+# Во всем виноваты ~~они~~ длинные градиенты
 
 ---
 
@@ -195,8 +195,8 @@ biplot(mod_pca, scaling = 2)
 
 - Корреспондентный анализ, CA (хи-квадрат)
 - Трансформация данных 
-  - Расстояние Хеллингера
-  - Хордальное расстояние
+  - *Расстояние Хеллингера*
+  - *Хордальное расстояние*
 - Использование другого коэффициента различия
   - Коэффициент Брея-Куртиса
 
@@ -673,7 +673,7 @@ eigenvals(mod_pcoa_bray)
 ```{r, R.options=list(width=60), highlight.output=3}
 d_bray <- vegdist(varespec,  method = "bray")
 mod_pcoa_bray_cai <- cmdscale(d_bray,  k = nrow(varespec) - 1, eig = TRUE, 
-                              add = TRUE) # <<-
+                              add = TRUE) 
 
 eigenvals(mod_pcoa_bray_cai)
 ```
