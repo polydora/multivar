@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Методы филогении в R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Анастасия Лянгузова" />
+    <meta name="author" content="Вадим Хайтов" />
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/fabric-4.3.1/fabric.min.js"></script>
+    <link href="libs/xaringanExtra-scribble-0.0.1/scribble.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-scribble-0.0.1/scribble.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function() { window.xeScribble = new Scribble({"pen_color":["#FF0000"],"pen_size":3,"eraser_size":30,"palette":[]}) })</script>
+    <script src="libs/mark.js-8.11.1/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search-0.0.1/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search-0.0.1/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
+    <script src="libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="libs/freezeframe-5.0.2/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe-0.0.1/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <link href="libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <!-- https://github.com/fnaufel/xaringan-smartify-->
+    <script
+    			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    			  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    			  crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/xaringan-smartify/smartify.min.js"></script>
+    <link rel="stylesheet" href="assets/eee.css" type="text/css" />
+    <link rel="stylesheet" href="assets/eee-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/cols.css" type="text/css" />
+    <link rel="stylesheet" href="assets/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="assets/xaringan.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: middle, left, inverse, title-slide
+
+.title[
+# Методы филогении в R
+]
+.subtitle[
+## Анализ и визуализация многомерных данных с использованием R
+]
+.author[
+### Анастасия Лянгузова
+]
+.author[
+### Вадим Хайтов
+]
+
+---
+
+
+
+
+
+## Филогения корнеголовыx ракообразныx 
+
+.pull-left[
+![](images/rhizocephala_tree.png)
+]
+
+.pull-right[Корнеголовые раки --- сильно модифицированные паразиты, морфология которыx практически не дает информации об иx эволюционныx взаимоотношенияx. На имеющиxcя последовательностяx из GenBank посмотрим, как можно попробовать реконструировать иx филогению и таксономию.
+
+
+```r
+ids &lt;- readLines("data/genbank_ids.txt")
+library(ape)
+seqs &lt;- read.GenBank(ids) # позволяет извлечь fasta-файлы из базы данныx
+```
+]
+
+.tiny[из Høeg et al., 2020]
+
+---
+
+## Делаем читабельными названия строк
+
+
+```r
+seqs_ids &lt;- paste(attr(seqs, "species"), names(seqs), sep = "_")
+write.dna(seqs, file = "data/rhiz_ids.fasta", format = "fasta", nbcol = 1) #ape
+#
+
+library(seqinr)
+rhiz_fasta &lt;- read.fasta(file = "data/rhiz_ids.fasta", seqtype = "DNA",
+           as.string = TRUE, forceDNAtolower = FALSE)
+
+write.fasta(sequences = rhiz_fasta, names = seqs_ids, file.out = "data/rhiz_not_align.fasta")
+```
+
+---
+
+## Алгоритм филогенетического анализа
+
+1. Подготовка базы данных (секвенирование, поиск нужных последовательностей в базах данных);
+
+2. Множественное выравнивание последовательностей;
+
+3. Выбор подходящей модели нуклеотидных замен;
+
+4. Получение матрицы сxодств-различий;
+
+5. Построение дерева;
+
+6. Оценка надёжности полученного дерева. 
+
+---
+
+## Выравнивание
+
+Основная идея --- поиск общиx участков в последовательностяx, несмотря наличие в последовательностяx инсерций и делеций. Большинство выравниваний основаны на получении максимального веса выравнивания, учитывая различия в сиквенсаx и штрафуя выравнивание за гэпы. 
+
+Выравнивание может быть: попарным (2 последовательности) или множественным (3 и более).
+
+---
+
+## Попарное выравнивание
+
+
+&lt;img src="images/dynamic_prog.jpg"&gt;
+
+.tiny[из The Phylogenetic Handbook by Philippe Lemey et al., 2009]
+
+Выравнивание может быть глобальным (последовательность выравнивается от начала и до конца), полуглобальным (считают хорошим выравниванием, где похожи конец одной и начало другой последовательости) и локальным (выравниваются участки последовательностей). 
+
+Оценка выравнивания делается, учитывая количество совпадений последовательностей (match) и внося штрафы за различия в них (mismatch или пропуски/gaps --- вставки, делеции).
+
+[http://experiments.mostafa.io/public/needleman-wunsch/](http://experiments.mostafa.io/public/needleman-wunsch/)
+
+---
+
+## Множественное выравнивание
+
+Выравнивают несколько последовательностей, их вариаций существует очень много! 
+
+Основные алгоритмы: 
+
+1. Clustal (функция `clustal` из пакета `phyloch` или `ape`);
+2. Muscle (функция `muscle` из пакета `phyloch` или `ape`);
+3. Mafft (функция `mafft` из пакета `phyloch`);
+4. T-Coffee (функция `tcoffee` из пакета `phyloch` или `ape`);
+5. Prank (функция `prank` из пакета `phyloch`).
+
+Все они работают с объектом класса `DNAbin` и основаны на работе командной строки. 
+
+Широко популярные программы с графическим интерфейсом: MEGA, UGENE, Geneious. 
+
+---
+
+## Общая схема прогрессивного алгоритма выравнивания
+
+1. Попарные выравнивания последовательностей (точный/эвристический алгоритм);
+
+2. Построение дерева методом neighbour-joining;
+
+3. Постепенное объединение последовательностей от более схожим к менее схожим. 
+
+Итеративные алгоритмы выравнивания прогоняют данную последовательность несколько раз. 
+
+Есть алгоритмы выравнивания, основанные на скрытых марковских моделях. 
+
+---
+
+## Множественное выравнивание в R
+
+
+```r
+library(adegenet) # для превращения fasta-файла в формат DNAbin
+# выравнивание
+rhiz_dnabin &lt;- fasta2DNAbin('data/rhiz_not_align.fasta')
+```
+
+
+```r
+library(ape)
+clustal_align &lt;- clustal(rhiz_dnabin)
+image(clustal_align) # функция из пакета ape
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+## Фильтрация выравнивания перед построением дерева
+
+Выравнивание может получиться разным! В связи с этим часто советуют его отфильтровать, чтобы все сиквенсы были примерно одинаковой длины и плохо выравненные последовательности не влияли на построение дерева.
+
+Программы для тримминга выравниваний: trimAl, Aliscore, Zorro, Gblocks и многие другие. 
+
+---
+
+## Выбор модели нуклеотидных замен
+
+![](images/p_distance.jpg)
+
+.tiny[из The Phylogenetic Handbook by Philippe Lemey et al., 2009] 
+
+Основано на метрике p-distance (наблюдаемое расстояние): подсчитывается количество сайтов, в которых последовательности различаются. Измеряется p-distance в количестве различающихся нуклеотидов на сайт.
+
+Проблема __множественных__ замен! При определённой частоте замен наблюдаемое расстояние не будет меняться, хотя замены будут происходить. 
+
+---
+
+## Выбор модели нуклеотидных замен 
+
+В общем виде эволюционную модель нуклеотидных замен можно представить как Марковский процесс, который использует `\(Q\)`-матрицу, отражающую частоту замен определённых нуклеотидов в последовательности. 
+
+`$$Q = \begin{pmatrix} 
+-\frac{3}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu \\
+\frac{1}{4} \mu &amp; - \frac{3}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu \\
+\frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; - \frac{3}{4} \mu &amp; \frac{1}{4} \mu \\
+\frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; - \frac{3}{4} \mu
+\end{pmatrix}$$`
+
+В этой матрице строки расположены в последовательности A, C, G, T. 
+
+Вероятность замену одного нуклеотида на любой другой в течение времени `\(t\)` можно расчитать с помощью матричной экспоненты: `\(P(t) = exp(Q t)\)`
+
+---
+
+## Параметры в моделях нуклеотидных замен
+
+.pull-left[
+ __Возможные нуклеотидные замены__
+![](images/substitutions.png)
+]
+
+.pull-right[
+__Иерархия моделей нуклеотидных замен__
+![](images/hierarchy.png)
+]
+
+.tiny[из The Phylogenetic Handbook by Philippe Lemey et al., 2009] 
+
+---
+
+## Матрица Q в модели JC69 и GTR 
+
+.pull-left[
+### JC-69 (Jukes and Cantor)
+`$$Q = \begin{pmatrix} 
+-\frac{3}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu \\
+\frac{1}{4} \mu &amp; - \frac{3}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu \\
+\frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; - \frac{3}{4} \mu &amp; \frac{1}{4} \mu \\
+\frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; - \frac{3}{4} \mu
+\end{pmatrix}$$`
+]
+
+.pull-right[
+### GTR (General time reversible)
+
+`$$Q = \begin{pmatrix}
+- \mu(a\pi_{C} + b\pi_{G} + c\pi_{T}) &amp; a \mu \pi_{C} &amp; b \mu \pi_{G} &amp; c \mu \pi_{T} \\
+a \mu \pi_{A} &amp; - \mu(a\pi_{A} + d\pi_{G} + e\pi_{T}) &amp; d \mu \pi_{G} &amp; e \mu \pi_{T} \\
+b \mu \pi_{A} &amp; d \mu \pi_{C} &amp; - \mu(b\pi_{A} + d\pi_{C} + f\pi_{T}) &amp; f \mu \pi_{T} \\
+c \mu \pi_{A} &amp; e \mu \pi_{C} &amp; f \mu \pi_{G} &amp; - \mu(c\pi_{A} + e\pi_{C} + f\pi_{G})
+\end{pmatrix}$$`
+]
+
+---
+
+## Выбор подходящей модели эволюции
+
+Широко распространённая программа --- jModelTest. В R реализуется функцией `modelTest` из пакета `phangorn`. 
+
+
+```r
+mafft_fasta &lt;- fasta2DNAbin('data/18S_alignment.fasta') # выравнивание, сделанное алгоритмом mafft
+```
+
+
+```r
+library(phangorn)
+sub_models &lt;- modelTest(as.phyDat(mafft_fasta), multicore = TRUE,
+                        mc.cores = 6) # распараллеливаем процесс, чтобы он шёл быстрее
+(best &lt;- sub_models[which.min(sub_models$AIC), ]) # лучшая модель
+```
+
+```
+        Model df logLik   AIC   AICw  AICc  AICcw   BIC
+92 GTR+G(4)+I 69 -15917 31972 0.7024 31976 0.6768 32372
+```
+
+```r
+(worst &lt;- sub_models[which.max(sub_models$AIC), ]) # худшая модель
+```
+
+```
+  Model df logLik   AIC AICw  AICc AICcw   BIC
+1    JC 59 -17820 35759    0 35762     0 36101
+```
+
+---
+
+## Построение деревьев
+
+1. Методы расстояний: 
+
+  а. Кластерный анализ: UPGMA, WPGMA (редко используется сейчас, т.к. не оценивают возможность разной скорости эволюции в разных ветвях дерева);
+  
+  б. Минимальная эволюция;
+  
+  в. Присоединение соседа (NG, neighbor-joining)
+
+2. Дискретные методы:
+
+  а. Максимальная парсимония (MP);
+  
+  б. Максимальное правдоподобие (ML);
+  
+  в. Байесовский анализ. 
+  
+---
+
+## Neighbor-joining алгоритм
+
+.pull-left-33[
+![](images/nj.jpg)
+
+.tiny[из Wikipedia]
+
+Исходно имеем не разрешённое дерево!
+]
+
+.pull-right-66[
+1. Вычисление матрицы попарных расстояний между таксонами.
+
+2. Вычисление net divergence `\((r)\)` --- расстояния от каждого узла до всех остальных.
+
+3. Вычисление матрицы расстояний, в которые внесены поправки по формуле: `\(M_{i} = d_{ij} - (r_i + r_j)(N - 2)\)`. 
+
+4. Выбор нового узла с __минимальным__ значением `\(M_i\)`. 
+
+5. Расчёт длины ветвей от нового узла до объектов, из которых он был создан. 
+
+6. Расчёт новых расстояний от нового узла до оставшихся узлов.
+
+7. Теперь `\(N = N - 1\)`, повторяем все предыдущие шаги. 
+
+В результате получаем __неукоренённое дерево__, которое можно дополнительно укоренить. 
+]
+
+---
+
+## Метод максимального правдоподобия (ML)
+
+Функция максимпального правдоподобия: 
+
+`$$L(\theta) = Pr(Data | \tau, \theta) = Pr(alignment| tree, model)$$`
+
+Функция правдоподобия --- условная вероятность того, что наше выравнивание будет выглядеть таким образом при выбранной модели эволюции и полученном дереве. 
+
+Лучшее дерево то, у которого значение `\(L\)` будет максимальным. 
+
+---
+
+## Метод максимальной парсимонии (MP)
+
+Основная идея проста --- поиск дерева, которое будет минимизировать количество эволюционных изменений, необходимых для объяснений полученных данных.
+
+![](images/treeoptions2.png)
+
+.tiny[
+из [evolution.berkeley.edu](evolution.berkeley.edu)
+]
+
+---
+
+## Что делать, если последовательностей больше, чем 3?
+
+1. "Branch-and-bound" метод: пытается оценить все возможные деревья, но отсекает те, которые не могут привести к оптимальным;
+
+2. "Stepwise addition" (пошаговое добавление): фиксирует путь построения дерева из наиболее многообещающего узла (так можно прийти к локальному минимуму!);
+
+3. "Branch-swapping" методы (методы замены ветвей):
+
+  а. "nearest-neighbor interchange" (обмен ближайшими соседями): меняем местами узлы, если дерево стало лучше --- начинаем искать варианты вокруг этого дерева;
+  
+  б. "subtree pruning and regrafting (SPR, обрезка и прививка дерева)": берём ветку дерева и вставляем её в любое другое место дерева
+
+  d. "tree bisection and
+reconnection (TBR, делим дерево пополам и обратное присоединение)": делим дерево на 2 самостоятельных поддерева и снова их соединяем. 
+
+---
+
+## Способы оценки полученного дерева
+
+1. Jackknife: берём выравнивание и убираем случайным образом какое-то количество позиций, строим дерево. Повторяем много-много раз и смотрим, в каком проценте деревьев повторяются клады. Более старый метод.
+
+2. Bootstrap: выборка того же объёма с повторениями. Повторяем много-много раз и смотрим, в каком проценте деревьев повторяются клады. 
+
+---
+
+## Байесовские методы в филогении
+
+
+.pull-left[
+### Теорема Байеса в общем виде:
+
+`\(P(A | B) = \frac{P(A) * P(B|A)}{P(B)}\)`, где 
+
+`\(P(A|B)\)` --- апостериорная вероятность;
+
+`\(P(A)\)` --- априорная вероятность;
+
+`\(P(B | A)\)` --- вероятность B при условии A;
+
+`\(P(B)\)` --- вероятность события B. 
+]
+
+.pull-right[
+### Теорема Байеса в филогенетике
+
+`\(P(T, \beta, k|X) = \frac{P(T, \beta, k) P(X | T, \beta, k)}{P(X)}\)`, где 
+
+`\(T\)` --- топология,
+
+`\(\beta\)` --- длина ветвей;
+
+`\(k\)` --- параметры эволюционной модели,
+
+`\(X\)` --- выравнивание,
+
+`\(P(T, \beta, k|X)\)` --- апостериорная вероятность гипотезы;
+
+`\(P(T, \beta, k)\)` --- априорная вероятность гипотезы;
+
+`\(P(X|T, \beta, k)\)` --- правдоподобие данных;
+
+`\(P(X)\)` --- нормалищующая константа.
+]
+
+---
+
+## Алгоритм Монте-Карло по схеме марковской цепи
+
+Все вероятности для всех деревьев перебрать невозможно!
+
+Поэтому используется алгоритм Монте-Карло по схеме марковской цепи (Markov chain Monte Carlo sampling, MCMC).
+
+![](images/mcmc.jpg)
+
+.tiny[из The Phylogenetic Handbook by Philippe Lemey et al., 2009]
+
+1. Начало в произвольной точке;
+
+2. Делаем небольшой случайный шаг;
+
+3. Шаг вверх всегда принимаем, шаг вниз принимаем с вероятностью, равной соотношенью апостериорных вероятностей. 
+
+Но что делать с локальным максимумом?
+
+---
+
+## Алгоритм MCMCMC (Metropolis coupled MCMC)
+
+Холодые и горячие цепи. Холодные --- наше исходное распределение, горячие --- изменённое таким образом, что постериорная вероятность меньше единицы. Получаем сплющённое распределение, между холмиками которого легче будет перепрыгивать. 
+
+![](images/mcmcmc.png)
+
+---
+
+## Программы для построения деревьев 
+
+### ML
+
+- Mega
+
+- RAxML
+
+- PhyML
+
+- IQ-TREE
+
+### MP
+
+- Mega 
+
+- PAUP
+
+- PHYLIP
+
+### Байесовские методы
+
+- MrBayes
+
+- BEAST
+
+---
+
+## Визуализация деревьев 
+
+R позволяет достаточно красиво визуализировать построенную филогению, а также сопоставить деревья, полученные разными способами.
+
+Дерево, полученное с помощью байесовского подхода:
+
+
+```r
+library(treeio) # для чтения формата 
+library(ggtree)
+nex_rhiz &lt;- read.beast("data/18S_ver2.nex.con.tre") # модель: GTR+I+G, выравнивание: MAFFT
+gtr_tree &lt;- ggtree(nex_rhiz) +
+  geom_tiplab(size = 4) +
+  geom_text(aes(label = prob_percent),
+            hjust = 1.2, vjust = -0.3)
+```
+
+---
+
+## Структура данных
+
+
+```r
+str(nex_rhiz)
+```
+
+
+```r
+str(nex_rhiz@phylo)
+```
+
+```
+List of 4
+ $ edge       : int [1:68, 1:2] 42 42 43 44 45 46 47 48 48 49 ...
+ $ edge.length: num [1:68] 0.02348 0.04143 0.00841 0.0044 0.00759 ...
+ $ Nnode      : int 28
+ $ tip.label  : chr [1:41] "Ibla_quadrivalvis_AY520655_18S" "Semibalanus_balanoides_AY520626_18S" "Poecilasma_inaequilaterale_AY520654_18S" "Briarosaccus_auratum_MN650344_18S" ...
+ - attr(*, "class")= chr "phylo"
+ - attr(*, "order")= chr "cladewise"
+```
+
+
+---
+
+## Укоренение дерева
+
+Укоренение дерева может быть, например, выполнено с указанием внешней группы. 
+
+.pull-left[
+Дерево, в котором отмечены номера узлов
+
+```r
+(gg_nodes &lt;- ggtree(nex_rhiz) +
+  geom_tiplab(size = 4) +
+  geom_text(aes(label=node), hjust=1.2, vjust = -.3))
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+```r
+library(ape)
+nex_rhiz@phylo &lt;- root(nex_rhiz@phylo, node = 43) # укорененение дерева по аутгруппе
+```
+]
+
+---
+
+## Визуализация необходимых участков дерева
+
+Создаём необходимые для нас группы.
+
+```r
+group_rhiz &lt;- groupOTU(nex_rhiz@phylo, c("Spug_18S_14_5",
+                                       "Spug_18S_16_1",
+                                       "Spug_18S_19_4",
+                                       "Spug_18S_24_2"))
+```
+
+---
+
+## Визуализация необходимых участков дерева
+
+
+```r
+(gg_spug &lt;- ggtree(nex_rhiz) +
+  geom_tiplab(size = 4) +
+  geom_treescale() +
+  geom_tippoint(data = group_rhiz,
+                aes(alpha = group), col = "red") +
+  geom_text(aes(label = prob_percent),
+            hjust = 1.2, vjust = -0.3) +
+  theme(legend.position = 'null'))
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
+## Визуализация нескольких необходимых участков дерева
+
+
+```r
+## добавляем парасаккулину
+sac_para_nodes &lt;- list("Sacculina pugettiae" = c("Spug_18S_14_5",
+                                                 "Spug_18S_16_1",
+                                                 "Spug_18S_19_4",
+                                                 "Spug_18S_24_2"),
+                       "Parasacculina pilosella" = nex_rhiz@phylo$tip.label[18:24])
+
+sac_para_otus &lt;- groupOTU(nex_rhiz, sac_para_nodes)
+```
+
+---
+
+## Визуализация
+
+
+```r
+(gg_spug_ppil &lt;-  ggtree(sac_para_otus) +
+  geom_tiplab(size = 4) +
+  geom_nodelab() +
+  geom_treescale() +
+  geom_tippoint(aes(col = group)) +
+  scale_color_manual(values=c("black", "blue", "orange")) +
+  geom_text(aes(label = prob_percent),
+            hjust = 1.2, vjust = -0.3))
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+---
+
+## Выделение нужных узлов на дереве
+
+Подсматриваем нумерацию нужных узлов. 
+
+```r
+ggtree(sac_para_otus) +
+  geom_tiplab(size = 4) +
+  geom_treescale() +
+  geom_text(aes(label=node), hjust=1.2, vjust = -.3)
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+---
+
+## Графическое изображение нужных узлов разными способами
+
+.pull-left[
+__Раскрашивание ветвей__
+
+```r
+ggtree(sac_para_otus) +
+  geom_tiplab(size = 4) +
+  geom_nodelab() +
+  geom_treescale() +
+  geom_hilight(node = 63, fill = "orange") +
+  geom_hilight(node = 58, fill = "blue") +
+  geom_text(aes(label = prob_percent),
+          hjust = 1.2, vjust = -0.3)
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+__Выделение узлов__
+
+```r
+ggtree(sac_para_otus) +
+  geom_tiplab(size = 4) +
+  geom_text(aes(label = prob_percent),
+            hjust = 1.2, vjust = -0.3) +
+  geom_cladelabel(node = 63, label="Sacculina pugettiae",
+                color = 'orange', offset = 0.3,
+                hjust = -0.1) +
+  geom_cladelabel(node = 58, label="Parasacculina pilosella",
+                color = 'blue', offset = 0.28,
+                hjust = -0.1)
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Сравнение разных деревьев
+
+Возьмём дерево, полученное методом максимального правдоподобие и с использованием заведомо неправильной модели (JC69).
+
+
+```r
+jc69 &lt;- read.tree("data/18S_JC69_sac_parasac.treefile")
+
+ggtree(jc69) +
+  geom_tiplab(size = 4) +
+  geom_treescale() +
+  geom_text(aes(label=node), hjust=1.2, vjust = -.3)
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+
+## Укоренение дерева, построенного по другой модели замен
+
+
+```r
+jc69 &lt;- root(jc69, node = 42)
+
+(jc69_tree &lt;- ggtree(jc69) +
+  geom_tiplab(size = 4) +
+  geom_nodelab(hjust = 1.2, vjust = -0.3) +
+  geom_treescale())
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+
+## Построение кофилогении
+
+Отображение двух графиков, построенных посредством `ggtree` вместе.
+
+```r
+library(ggpubr)
+ggarrange(gtr_tree, jc69_tree)
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+---
+
+## Дерево, построенное с помощью пакета ape
+
+
+```r
+library(ape)
+cophyloplot(nex_rhiz@phylo, jc69, length.line=4, space=40)
+```
+
+```
+[1] "No association matrix specified. Links will be omitted."
+```
+
+![](13_Phylogeny_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+---
+
+## Дерево, построенное с помощью пакета phytools
+
+
+```r
+library(phytools)
+trees.cophylo&lt;-cophylo(nex_rhiz@phylo, jc69, rotate = TRUE)
+```
+
+```
+Rotating nodes to optimize matching...
+Done.
+```
+
+```r
+png("cophyplot.png", width = 1200, height = 800)
+plot(trees.cophylo, link.type = "curved", link.lwd = 4,
+     link.lty="solid", link.col = "blue", size = 1)
+dev.off()
+```
+
+```
+RStudioGD 
+        2 
+```
+
+---
+
+## Дерево, построенное с помощью пакета phytools
+
+![](cophyplot.png)
+
+---
+
+## Дополнительные ресурсы
+
+- Lemey, P., Salemi, M., &amp; Vandamme, A. M. (Eds.). (2009). The phylogenetic handbook: a practical approach to phylogenetic analysis and hypothesis testing. Cambridge University Press.
+
+- Paradis, E. (2012). Analysis of Phylogenetics and Evolution with R (Vol. 2). New York: Springer.
+
+- Курс "Молекулярная филогенетика" на Stepik от [Института Биоинформатики в лице Полины Дроздовой](https://stepik.org/course/2054/syllabus)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/cols_macro.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "vs",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- https://github.com/fnaufel/xaringan-smartify-->
+<script type="text/javascript">
+  smartify();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+#NEXUS
+begin taxa;
+	dimensions ntax=26;
+	taxlabels
+	'KR149729.1_Antorchis_pomacanth'
+	'AY222270.1_Trigonocryptus_conu'
+	'AY222269.1_Bacciger_lesteri'
+	'AY222271.1_Zoogonoides_vivipar'
+	Pseudozoogonoides_subaequiporu
+	'AY222272.1_Diphterostomum_sp.'
+	'AY222273.1_Deretrema_nahaense'
+	'KU163452.1_Proctophantastes_gi'
+	'MT704138.1_Lecithostaphylus_br'
+	'OK636407.1_Lecithostaphylus_ha'
+	'MW264135.1_Steganoderma_eamiqt'
+	'AY157175.1_Lepidophyllum_steen'
+	'MN217108.1_Lepidophyllum_camer'
+	'KM505035.1_Plectognathotrema_k'
+	'KJ868215.1_Renicola_sp.'
+	'AY116871.1_Renicola_sp.'
+	'JX231098.1_Paratanaisia_bragai'
+	'AY116870.1_Tanaisia_fedtschenk'
+	'AY116869.1_Schistogonimus_raru'
+	'AY220634.1_Prosthogonimus_cune'
+	'AF151926.1_Maritrema_subdolum'
+	'AY220625.1_Microphallus_simili'
+	'KJ533393.1_Plagiorchis_elegans'
+	'AF300329.1_Neoglyphe_sobolevi'
+	'KR703279.1_Brachycladium_golia'
+	'AY222255.1_Zalophotrema_hepati'
+;
+end;
+
+begin trees;
+	tree tree_1 = [&R] [&branchAttributeNames={"Value"}]((((((((((('KR149729.1_Antorchis_pomacanth':0.11415700000000001,'AY222270.1_Trigonocryptus_conu':0.10831999999999997)[&Value=80]:0.016913699999999976,'AY222269.1_Bacciger_lesteri':0.07492899999999997)[&Value=100]:0.12247200000000003,('AY222271.1_Zoogonoides_vivipar':0.052559999999999996,Pseudozoogonoides_subaequiporu:0.0326265)[&Value=100]:0.06562570000000001)[&Value=49]:0.008648069999999952,'AY222272.1_Diphterostomum_sp.':0.17830599999999996)[&Value=74]:0.022791600000000023,(('AY222273.1_Deretrema_nahaense':0.023135099999999992,'KU163452.1_Proctophantastes_gi':0.22176)[&Value=78]:0.04274620000000001,('MT704138.1_Lecithostaphylus_br':0.027015299999999992,'OK636407.1_Lecithostaphylus_ha':0.04689270000000001)[&Value=98]:0.015195999999999987)[&Value=88]:0.08442900000000003)[&Value=79]:0.027229699999999968,'MW264135.1_Steganoderma_eamiqt':0.10846299999999998)[&Value=49]:0.008744410000000036,(('AY157175.1_Lepidophyllum_steen':0.10190599999999997,'MN217108.1_Lepidophyllum_camer':0.06551049999999997)[&Value=100]:0.05770940000000002,'KM505035.1_Plectognathotrema_k':0.168068)[&Value=77]:0.021359600000000034)[&Value=99]:0.03805249999999999,(('KJ868215.1_Renicola_sp.':0.0861178,'AY116871.1_Renicola_sp.':0.0645695)[&Value=100]:0.08123219999999998,('JX231098.1_Paratanaisia_bragai':0.041278499999999996,'AY116870.1_Tanaisia_fedtschenk':0.041877600000000015)[&Value=100]:0.05352899999999994)[&Value=100]:0.04626440000000004)[&Value=47]:0.007940940000000007,(('AY116869.1_Schistogonimus_raru':0.02330500000000002,'AY220634.1_Prosthogonimus_cune':0.024017200000000016)[&Value=100]:0.024606799999999984,('AF151926.1_Maritrema_subdolum':0.06083689999999997,'AY220625.1_Microphallus_simili':0.03200190000000003)[&Value=100]:0.018569200000000008)[&Value=100]:0.025827900000000015)[&Value=84]:0.011739499999999958,('KJ533393.1_Plagiorchis_elegans':0.030091099999999982,'AF300329.1_Neoglyphe_sobolevi':0.008963600000000016)[&Value=100]:0.050053899999999985):0.0024990100000000237,('KR703279.1_Brachycladium_golia':0.0032255900000000004,'AY222255.1_Zalophotrema_hepati':0.004449900000000007):0.0474812)[&Value=100];
+end;

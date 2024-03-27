@@ -872,6 +872,38 @@ class="section level3">
 <h3>11.1 Филогенетический анализ в R: визуализация деревьев</h3>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="st">&quot;adegenet&quot;</span>, <span class="st">&quot;phangorn&quot;</span>, <span class="st">&quot;BiocManager&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;phytools&quot;</span>))</span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">&quot;treeio&quot;</span>, <span class="st">&quot;ggtree&quot;</span>))</span></code></pre></div>
+<ul>
+<li>Презентация <a href="data/13_Phylogeny.html">html</a></li>
+<li>Код <a href="13_Phylogeny_code.R">13_Phylogeny_code.R</a></li>
+<li>Данные:
+<ul>
+<li>Файл с GeneID из GenBank <a
+href="data/genbank_ids.txt">genbank_ids.txt</a></li>
+<li>Выравнивание <a
+href="data/18S_alignment.fasta">alignment.fasta</a></li>
+<li>Дерево GTR + I + G <a
+href="data/18S_ver2.nex.con.tre">gtr_tree.nex.con.tre</a></li>
+<li>Дерево JC69 <a
+href="data/18S_JC69_sac_parasac.treefile">jc69.treefile</a></li>
+</ul></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li>Филогения Digenea с акцентом на семейство Zoogonidae (из статьи
+<em>Kremnev, G., Gonchar, A., Uryadova, A., Krapivin, V., Skobkina, O.,
+Gubler, A., &amp; Krupenko, D. (2023). No Tail No Fail: Life Cycles of
+the Zoogonidae (Digenea). Diversity, 15(1), 121. <a
+href="https://www.mdpi.com/1424-2818/15/1/121"
+class="uri">https://www.mdpi.com/1424-2818/15/1/121</a></em>)
+<ul>
+<li>Выравнивание <a
+href="data/aligned-manual-Zoogonidae-28S.fasta">zoo_alignment.fasta</a></li>
+<li>Дерево, построеное ML <a
+href="data/28S_ML.result.nex">ml_tree.nex</a></li>
+<li>Дерево, построенное байесовским методом <a
+href="data/28S-Bayes.nex">bayes_tree.nex</a></li>
+</ul></li>
+</ul>
 </div>
 <div id="анализ-микробиомных-данных" class="section level3">
 <h3>11.2 Анализ микробиомных данных</h3>
@@ -880,6 +912,16 @@ class="section level3">
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;vmikk/metagMisc&quot;</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;phyloseq&quot;</span>) <span class="co"># или</span></span>
 <span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;phyloseq/joey711&quot;</span>)</span></code></pre></div>
+<ul>
+<li>Код <a href="13_Micro.Rmd">13_Micro.Rmd</a>, html-версия <a
+href="13_Micro.html">13_Micro.html</a></li>
+<li>Данные:
+<ul>
+<li><a href="data/master_tax.txt">features.txt</a></li>
+<li><a href="data/master_meta.txt">meta.txt</a></li>
+<li><a href="data/master_tax.txt">taxa.txt</a></li>
+</ul></li>
+</ul>
 </div>
 </div>
 

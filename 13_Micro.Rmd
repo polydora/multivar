@@ -1,0 +1,520 @@
+---
+title: "obt_fab_master"
+author: "Lisa"
+date: '2024-03-27'
+language: russian, english
+output: 
+  bookdown::html_document2:
+    fig_caption: yes
+    toc: yes
+    toc_float: no
+    theme: lumen
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+Небольшой пример обработки микробных данных на примере анализа измкенчивости микробиома литторин (данные изменены)
+
+Осторожно, встречаются неоптимизированные действия, неединообразный код и конфликты пакетов.
+
+
+```{r libs}
+#Подгружаем минимальное необходимое количество пакетов
+library(ggplot2)
+library(vegan)
+library(phyloseq)
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(fantaxtic)
+library(devtools)
+library(RRPP)
+library(metagMisc)
+```
+
+# Основные действия до фильтрации
+
+## Загрузка данных
+
+```{r read-data}
+#Осноновной пакет для предобработки - phyloseq, 
+
+################################setwd("C:/Users/Пользователь/Desktop/Курсы обработка данных"))
+###не забывать менять рабочую директорию
+#я в итоге стала писать полные пути до файлов
+
+# читать таблицы можно и другими функциями, в зависимости от формата, с которым вы столкнулись, это может быть .tsv .xlsx и что угодно
+#stringsAsFactors = FALSE as character vectors should not be converted to factors (so far)
+
+feature_mat <- read.delim("/data/master_feature.txt", stringsAsFactors = FALSE)
+tax_mat <- read.delim("/data/master_tax.txt", stringsAsFactors = FALSE)
+samples_df <- read.delim("/data/master_meta.txt", stringsAsFactors = FALSE)
+
+# обозначаем имена строк
+
+feature_mat <- feature_mat %>%
+  tibble::column_to_rownames("ASV")
+tax_mat <- tax_mat %>%
+  tibble::column_to_rownames("ASV")
+samples_df <- samples_df %>%
+  tibble::column_to_rownames("sample")
+
+# таблицы таксонов и фичей должны быть матрицами, метаданные могут остаться датафреймом
+
+feature_mat <- as.matrix(feature_mat)
+tax_mat <- as.matrix(tax_mat)
+
+OTU <- otu_table(feature_mat, taxa_are_rows = TRUE)
+TAX <- tax_table(tax_mat)
+samples <- sample_data(samples_df)
+
+
+snails <- phyloseq(OTU, TAX, samples)
+snails
+
+
+sample_names(snails)
+
+rank_names(snails)
+
+sample_variables(snails)
+```
+
+# Фильтрация и нормализация образцов
+
+## Общая фильтрация 
+
+Фильтрация мягкая - удаляем ASV, встреченные 1 раз во всем наборе данных (singletones), ASV, присутствующие менее чем в 5% образцов. 
+Порог обилия моджет быть иным, но даже если удалить фичи, встреченные менее, чем в 10%, это может помешать найти различия между образцами по редким микробам.
+
+
+```{r filter-data}
+#фильтурю по параметрам из шапки встроенной в филосек функцией
+
+
+snails_filtred <- phyloseq_filter_prevalence(snails, prev.trh = 0.05, abund.trh = 1, threshold_condition = "AND", abund.type = "total")
+# надо вспомнить зависимость library(metagMisc) если он вдруг не найдет эту функцию :/
+
+head(sort(sample_sums(snails_filtred), decreasing = FALSE, na.last = TRUE), 15)
+
+head(sort(sample_sums(snails_filtred), decreasing = TRUE, na.last = TRUE), 15)
+```
+  
+
+## Удаление низкой глубины прочтения
+
+первые два образца (с наиболее низкой глубиной прочтения, она НОЛЬ) далее в анализе не используются
+
+
+кроме того, имеет смысл удалить лишние летние образцы (Лето 2021, неполные L.fabalis)
+
+
+было принято волевое решение не удалять единственную пробу F.vesiculosus
+
+
+```{r filter-data-1}
+
+#сделала вектор того, что я хочу оставить
+good_names <-sample_names(snails)
+
+good <- good_names[! good_names %in% c('L11_L_obt_gut7', 'L11_L_obt_gut5')]
+
+#оставила только те образцы, которые перечислены в векторе
+snails_subsampled <- prune_samples(good, snails_filtred)
+
+snails_subsampled_2 <- subset_samples(snails_subsampled, samples$season!="June_2021")
+
+head(sort(sample_sums(snails_subsampled_2), decreasing = FALSE, na.last = TRUE), 15)#проверяем, получилось ли
+
+```
+
+Значения размеров библиотек для самых больших образцов если что такие:
+
+
+```{r}
+
+tail(sort(sample_sums(snails_subsampled_2), decreasing = FALSE, na.last = TRUE), 15) #варьирование на порядок можно пережить, на 2 - нет
+
+```
+
+
+## Нормализация 
+
+Мы в своем анализе делили на медианный размер библиотеки (здесь - 11539) для всех образцов, но можно хоть логарифмировать
+
+
+```{r norm-data}
+
+total <- median(sample_sums(snails_subsampled_2))
+#[1] 12498.5
+snails_norm <- transform_sample_counts(snails_subsampled_2, function(x, t = total) round(t * (x / sum(x))))
+
+
+#ну какие же теперь они нормализованные
+
+sum_seq_norm <- sample_sums(snails_norm)
+plot(sum_seq_norm, ylim=c(0,25000), main=c("Number of counts per sample, norm"), xlab=c("Samples"))
+
+sum_seq <- sample_sums(snails_subsampled_2)
+
+plot(sum_seq, ylim=c(0,25000), main=c("Number of counts per sample, raw"), xlab=c("Samples"))
+
+```
+
+
+# Интегральные характеристики
+
+Давайте сначала опишем простые вещи
+
+## Таблица
+
+альфа-ранообразие, полный датасет, объединено по типу образца
+
+```{r}
+#посчитаем разнообразие
+
+shannon_df_full <- estimate_richness(snails_norm, measures = "Shannon")
+richness_df_full <- estimate_richness(snails_norm, measures = "Observed")
+evenness_df_full <- shannon_df_full/log(richness_df_full) # выровненность пропишем руками, потому что автоматом ее не мерют
+alpha_diversity <- estimate_richness(snails_norm, measure = c("Shannon", "Observed"))
+alpha_diversity$Evenness = evenness_df_full$Shannon
+alpha_diversity
+
+```
+
+## Выровненность и Шеннон общие
+
+```{r}
+# сделала общую таблицу по разнообразию со всеми 
+df <- data.frame(alpha_diversity, sample_data(snails_norm))
+# я хочу такой порядок столбцов
+df2 <- tidyr::gather(df, key =  "Measure", value = "Value", Shannon, Evenness) %>%
+  mutate(name = fct_relevel(sp_type, "A_nodosum_e", "F_vesiculosus_e", "Fillamentous_Algae_e", "stones_e", "L_fabalis_g", "L_fabalis_tent", "L_obtusata_g", "L_obtusata_tent"))
+
+#рисовать можно в жижаплоте
+
+color_full <- c("#B3DE69", "#8DD3C7", "#80B1D3", "gray", "#FDB462", "#FB8072", "#FCCDE5", "#BC80BD","#B3DE69", "#8DD3C7", "#80B1D3", "gray", "#FDB462", "#FB8072", "#FCCDE5", "#BC80BD")
+
+ggplot(df2, aes(x = name, y = Value)) + 
+facet_wrap(~Measure, scale = "free") +
+geom_boxplot(color = color_full, width=0.5,  fill = NA, outlier.shape = 2) +
+theme_dark() +
+theme(axis.text.x = element_text(angle = 90, size = 7)) +
+ylab("Alpha Diversity Measure")
+
+
+
+```
+
+## Ранее построенный Шеннон
+
+```{r}
+# рисовать можно встроенной функцией
+
+shannon_full <- plot_richness(snails_norm, color = "sp_type",measures = "Shannon", x = "sp_type") +
+  geom_boxplot(width=0.5,  fill = NA, outlier.shape = 2) +
+  #scale_colour_manual(values = color_full) +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 90, size = 7))  
+
+shannon_full
+
+```
+
+
+#### Шеннон в кишках, по сезонам на Белом
+
+```{r}
+gut_integr_df <- df2 %>% filter(type == 'gut') %>% filter(Measure == 'Shannon') 
+color_gut_alpha_white <- c("#FDB462","#FCCDE5", "#FDB462","#FCCDE5")
+
+ggplot(gut_integr_df, aes(x = sp_type, y = Value)) + 
+facet_wrap(~season_site, scale = "fixed") +
+geom_boxplot(color = color_gut_alpha_white, width=0.5,  fill = NA, outlier.shape = 2) +
+theme_dark() +
+theme(axis.text.x = element_text(angle = 90, size = 7)) +
+ylab("Shannon")
+```
+
+#### Выровненность в кишках, по сезонам на Белом
+
+```{r}
+gut_integr2_df <- df2 %>% filter(type == 'gut') %>% filter(Measure == 'Evenness') 
+ggplot(gut_integr2_df, aes(x = sp_type, y = Value)) + 
+facet_wrap(~season_site, scale = "fixed") +
+geom_boxplot(color = color_gut_alpha_white, width=0.5,  fill = NA, outlier.shape = 2) +
+theme_dark() +
+theme(axis.text.x = element_text(angle = 90, size = 7)) +
+ylab("Evenness")
+```
+
+
+
+# Ординации и PERMANOVA
+
+Наконец-то многомерный подход
+
+Базово я привыкла делать nMDS по матрице различий Брея-Куртиса, но с некоторыми (напр, логарифмическими нормализациями он не дружит)
+Можно делать и Жаккара в качестве расстояний, и хоть главные компоненты в качестве ординации
+Можно делать хитмап или кластеризацию, главное понять, на какие расстояния относит композиция микробиома ваши образцы друг ото друга
+
+```{r}
+
+snails_norm.ord <- phyloseq::ordinate(snails_norm, "NMDS", "bray")#может думать что веган
+# (использована двойная висконсинская стандартизация, за нас уже подумали)
+
+snails_norm.ord$stress
+# 0.200135
+```
+
+
+## Картинки
+
+
+### Все точки на одной панели автоматом
+
+```{r}
+# если хочешь рисовать все встроенным, смирись с невозможностью нанести все факторы
+
+plot_ordination(snails_norm, snails_norm.ord, color="sp_type", shape= "season", 
+                  title="look at this")
+
+```
+
+### Все точки на одной панели руками
+
+```{r}
+# если хочешь рисовать все жижаплотом - делай из всего датафрейм\
+color_full_ord <- c("#B3DE69", "#8DD3C7", "#80B1D3", "#FDB462", "#FB8072", "#FCCDE5", "#BC80BD","gray","#B3DE69", "#8DD3C7", "#80B1D3", "#FDB462", "#FB8072", "#FCCDE5", "#BC80BD", "gray")
+snails_norm_ord_df <- data.frame(snails_norm.ord$points, sample_data(snails_norm))
+gg_ord <- ggplot(snails_norm_ord_df, aes(x = MDS1, y = MDS2)) +
+  geom_point(aes(colour = sp_type, shape = season), size = 3, stroke = 0.7) +
+  #geom_path(aes(colour = sp_type)) +
+  scale_colour_manual(values = color_full_ord)+
+  theme_dark() +
+  coord_fixed()
+gg_ord
+
+```
+
+
+### Фасетки по сезонам
+
+```{r}
+white_sea_plot_facet <- ggplot(snails_norm_ord_df, aes(x = MDS1, y = MDS2)) +
+  geom_point(aes(colour = sp_type, shape = season), size = 3, stroke = 0.7) +
+  scale_colour_manual(values = color_full_ord) +
+  theme_dark() +
+  facet_wrap(~season, scales = "free_x", drop = TRUE, nrow = 1)
+white_sea_plot_facet
+```
+
+### Кишечная ординация
+
+```{r}
+guts <- snails_norm_ord_df %>% filter(type == 'gut')
+
+guts_plot<- ggplot(guts, aes(x = MDS1, y = MDS2)) +
+  geom_point(aes(colour = sp_type, shape = season), size = 3, stroke = 0.7) +
+  scale_colour_manual(values = color_gut_alpha_white) +
+  theme_dark() +
+  coord_fixed() 
+
+guts_plot
+
+```
+
+### Для одного вида
+
+```{r}
+guts_obt <- guts %>% filter(species == 'L_obtusata')
+
+obt_guts_plot<- ggplot(guts_obt, aes(x = MDS1, y = MDS2)) +
+  geom_point(aes(colour = sp_type, shape = season), size = 3, stroke = 0.7) +
+  scale_colour_manual(values = "pink") +
+  theme_dark() +
+  coord_fixed() 
+
+obt_guts_plot
+
+```
+
+
+## Циферки 
+
+будем тестировать с помощью PERMANOVA, есть ли влияние вида для кишечного микробиома и есть ли влияние сезона
+
+### кишки, 2 сезона, 2 вида, 2 фактора
+
+```{r}
+
+guts_ps <- subset_samples(snails_norm, snails_norm@sam_data[["type"]]=="gut")
+
+guts_df <- as(sample_data(guts_ps), "data.frame")
+guts_matrix <- t(data.frame(otu_table(guts_ps)))
+
+guts_bray_snails <- vegdist(guts_matrix, method = "bray")
+
+####условия применимости
+anyNA(otu_table(guts_ps))
+
+# [1] FALSE
+
+table(sample_data(guts_ps)$season)
+
+# May-June_2022 November_2021 
+#            17            17 
+
+table(sample_data(guts_ps)$species)
+
+ # L_fabalis L_obtusata 
+ #        13         21 
+
+anova(betadisper(guts_bray_snails, guts_df$season))
+#неравномерно
+
+anova(betadisper(guts_bray_snails, guts_df$species))
+#равномерно
+
+
+guts_white_adonis_100k <- adonis2(guts_bray_snails ~ season * species, guts_df, permutations = 99999, method="bray")
+guts_white_adonis_100k
+
+
+```
+
+### кишки летнего сезона, 2 вида, однофакторно
+
+```{r}
+guts_summer_white <- subset_samples(guts_ps, guts_ps@sam_data[["season"]]!="November_2021")
+
+guts_white_df <- as(sample_data(guts_summer_white), "data.frame")
+guts_white_matrix <- t(data.frame(otu_table(guts_summer_white)))
+
+guts_white_bray_snails <- vegdist(guts_white_matrix, method = "bray")
+
+guts_white_adonis_10k <- adonis2(guts_white_bray_snails ~ species, guts_white_df, permutations = 9999, method="bray")
+guts_white_adonis_10k
+```
+
+### кишки летнего сезона, 2 вида, однофакторно, иная перманова
+
+```{r}
+guts_white_fit <- lm.rrpp(guts_white_bray_snails ~ species, data = guts_white_df)
+anova(guts_white_fit)
+```
+
+
+# Барплоты обилия
+
+```{r}
+
+#Agglomerate taxa at any level
+snails_gen <- tax_glom(snails_norm, taxrank = "Genus")
+snails_sp <- tax_glom(snails_norm, taxrank = "Species")
+snails_ph <- tax_glom(snails_norm, taxrank = "Phylum")
+snails_cl <- tax_glom(snails_norm, "Class")
+
+# Calculate relative abundance
+snails_gen_rel <- transform_sample_counts(snails_gen, function(x) x / sum(x) )
+snails_sp_rel <- transform_sample_counts(snails_sp, function(x) x / sum(x) )
+snails_ph_rel <- transform_sample_counts(snails_ph, function(x) x / sum(x) )
+snails_cl_rel <- transform_sample_counts(snails_cl, function(x) x / sum(x) )
+```
+
+
+## для всего датасета
+
+```{r}
+#full_abund_plot <- plot_bar(snails, fill="Phylum")
+```
+
+### встроенное в филосек
+
+```{r}
+rel_phylum_plot <- plot_bar(snails_ph_rel, fill="Phylum") + 
+  geom_bar(aes(color = Phylum, fill = Phylum), stat="identity") +
+  labs(x = "", y = "Relative Abundance\n") 
+rel_phylum_plot
+```
+
+
+### специальный пакет для вложенных столбиков
+
+
+```{r}
+ 
+#берем склеенный на уровне класса нормализованный полный датасет
+
+#склеиваем все каунты для повторностей опр типа образца по среднему значению (оно дефолтное)
+merged_cl <- merge_samples(snails_cl, "sufficient")
+
+#переводим в относительное обилие бактерий
+merged_cl_rel <- transform_sample_counts(merged_cl, function(x) x / sum(x))
+
+#вынимаем наиболее обильные таксоны, сколько хотим, у меня 10
+top_cl<- get_top_taxa(merged_cl_rel, 10, relative = FALSE, discard_other = FALSE, other_label = "Other")#тут отключена относительность, ведь мы ее сделали
+
+########################################################### некрасиво
+new_plot_cl <- fantaxtic_bar(top_cl, color_by = "Class",  other_label = "Other",
+                          order_alg = "alphabetical",  other_color = 'grey', )+
+  theme (legend.key.size = unit(0.2, "cm"))
+new_plot_cl
+
+
+```
+```{r}
+
+#############33 красиво
+
+top_nested_cl <- nested_top_taxa(merged_cl_rel,
+                              top_tax_level = "Phylum",
+                              nested_tax_level = "Class",
+                              n_top_taxa = 7, 
+                              n_nested_taxa = 2)
+class_graph <- plot_nested_bar(ps_obj = top_nested_cl$ps_obj,
+                top_level = "Phylum",
+                nested_level = "Class", sample_order = c("White_June_EB","White_June_obt_BSB","White_June_obt_GB","White_June_fab_GB","White_Nov_EB","White_Nov_obt_BSB","White_Nov_fab_BSB","White_Nov_obt_GB","White_Nov_fab_GB"))
+class_graph
+
+
+```
+
+
+## Барплоты для отдельных видов
+
+
+### Pseudoalteromonas
+
+```{r}
+Pseudoalteromonas <- subset_taxa(snails_gen_rel, Genus == " g__Pseudoalteromonas")
+plot_bar(Pseudoalteromonas, fill = "type") + 
+  theme_dark() +
+  labs(title = " g__Pseudoalteromonas") + 
+  theme(axis.text.x = element_text(angle = 90, size = 5)) + 
+  facet_wrap(~season_site, scale = "free")
+
+```
+
+### Streptococcus
+
+```{r, echo=FALSE,out.height="700px",out.width="2000px"}
+
+Streptococcus <- subset_taxa(snails_gen_rel, Genus == " g__Streptococcus")
+plot_bar(Streptococcus, fill = "type") + 
+  theme_dark() +
+  labs(title = " g__Streptococcus") + 
+  theme(axis.text.x = element_text(angle = 90, size = 5)) + 
+  facet_wrap(~season_site, scale = "free")
+
+```
+
+# Бонусный пример хитмапа
+
+```{r}
+some_heatmap <- plot_heatmap(snails_cl, sample.label = "season", taxa.label = "Class")
+some_heatmap
+```
