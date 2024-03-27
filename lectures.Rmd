@@ -319,7 +319,7 @@ BiocManager::install(c("treeio", "ggtree"))
 ```{r eval = FALSE}
 install.packages(c("tidyr", "devtools", "RRPP"))
 devtools::install_github("gmteunisse/fantaxtic")
-Bioconductor::install("phyloseq") # или
+BioManager::install("phyloseq") # или
 devtools::install_github("phyloseq/joey711")
 ```
 
