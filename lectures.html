@@ -774,10 +774,15 @@ Marsupiala). Australian Journal of Zoology 43: 449-458.</em></li>
 </ul>
 </div>
 <div
-id="канонический-корреспондентный-анализ-canonical-correspondence-analysis-cca"
+id="канонический-корреспондентный-анализ-и-анализ-избыточности-основанный-на-расстоянии"
 class="section level2">
-<h2>10. Канонический корреспондентный анализ (Canonical Correspondence
-Analysis, CCA)</h2>
+<h2>10. Канонический корреспондентный анализ и анализ избыточности,
+основанный на расстоянии</h2>
+<div
+id="канонический-корреспондентный-анализ-canonical-correspondence-analysis-cca"
+class="section level3">
+<h3>10.1 Канонический корреспондентный анализ (Canonical Correspondence
+Analysis, CCA)</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DAAG&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;akima&quot;</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;reshape2&quot;</span>)</span></code></pre></div>
@@ -835,9 +840,9 @@ Science 295, 666–669.</em>
 </div>
 <div
 id="анализ-избыточности-основанный-на-расстояниях-distance-based-redundancy-analysis-dbrda"
-class="section level2">
-<h2>11. Анализ избыточности, основанный на расстояниях (distance-based
-Redundancy Analysis, dbRDA)</h2>
+class="section level3">
+<h3>10.2 Анализ избыточности, основанный на расстояниях (distance-based
+Redundancy Analysis, dbRDA)</h3>
 <ul>
 <li>Презентация <a href="12_dbRDA_version_2024.html">html</a></li>
 <li><a href="12_dbRDA.R">код R</a></li>
@@ -857,6 +862,24 @@ hydrographique du Doubs. Essai de biotypologie. Thèse d’état, Besançon.
 <li>doubs{ade4}</li>
 </ul></li>
 </ul>
+</div>
+</div>
+<div id="современные-методы-анализа-многомерных-данных"
+class="section level2">
+<h2>11. Современные методы анализа многомерных данных</h2>
+<div id="филогенетический-анализ-в-r-визуализация-деревьев"
+class="section level3">
+<h3>11.1 Филогенетический анализ в R: визуализация деревьев</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;seqinr&quot;</span>, <span class="st">&quot;adegenet&quot;</span>, <span class="st">&quot;phangorn&quot;</span>, <span class="st">&quot;BiocManager&quot;</span>, <span class="st">&quot;ggpubr&quot;</span>, <span class="st">&quot;phytools&quot;</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">&quot;treeio&quot;</span>, <span class="st">&quot;ggtree&quot;</span>))</span></code></pre></div>
+</div>
+<div id="анализ-микробиомных-данных" class="section level3">
+<h3>11.2 Анализ микробиомных данных</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;RRPP&quot;</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;gmteunisse/fantaxtic&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>Bioconductor<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;phyloseq&quot;</span>) <span class="co"># или</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;phyloseq/joey711&quot;</span>)</span></code></pre></div>
+</div>
 </div>
 
 <p><small>

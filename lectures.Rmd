@@ -253,7 +253,9 @@ install.packages("DAAG")
 + possum{DAAG}
 + possumsites{DAAG}
 
-## 10. Канонический корреспондентный анализ (Canonical Correspondence Analysis, CCA)
+## 10. Канонический корреспондентный анализ и анализ избыточности, основанный на расстоянии
+
+### 10.1 Канонический корреспондентный анализ (Canonical Correspondence Analysis, CCA)
 
 ```{r eval=FALSE}
 install.packages("DAAG")
@@ -288,7 +290,7 @@ install.packages("reshape2")
     + параметры среды [BCI_env.csv](data/BCI_env.csv)
 
 
-## 11. Анализ избыточности, основанный на расстояниях (distance-based Redundancy Analysis, dbRDA)
+### 10.2 Анализ избыточности, основанный на расстояниях (distance-based Redundancy Analysis, dbRDA)
 
 - Презентация [html](12_dbRDA_version_2024.html)
 - [код R](12_dbRDA.R)
@@ -301,4 +303,23 @@ install.packages("reshape2")
 - Данные из работы *Verneaux, J. (1973) Cours d'eau de Franche-Comté (Massif du Jura). Recherches écologiques sur le réseau hydrographique du Doubs. Essai de biotypologie. Thèse d'état, Besançon. 1–257.*
 
     + doubs{ade4}
+
+## 11. Современные методы анализа многомерных данных 
+
+### 11.1 Филогенетический анализ в R: визуализация деревьев
+
+```{r eval = FALSE}
+install.packages(c("seqinr", "adegenet", "phangorn", "BiocManager", "ggpubr", "phytools"))
+BiocManager::install(c("treeio", "ggtree"))
+```
+
+
+### 11.2 Анализ микробиомных данных
+
+```{r eval = FALSE}
+install.packages(c("tidyr", "devtools", "RRPP"))
+devtools::install_github("gmteunisse/fantaxtic")
+Bioconductor::install("phyloseq") # или
+devtools::install_github("phyloseq/joey711")
+```
 
