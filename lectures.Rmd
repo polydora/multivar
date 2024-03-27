@@ -317,9 +317,10 @@ BiocManager::install(c("treeio", "ggtree"))
 ### 11.2 Анализ микробиомных данных
 
 ```{r eval = FALSE}
-install.packages(c("tidyr", "devtools", "RRPP"))
+install.packages(c("tidyr", "devtools", "RRPP", "remotes"))
 devtools::install_github("gmteunisse/fantaxtic")
-BioManager::install("phyloseq") # или
+remotes::install_github("vmikk/metagMisc")
+BiocManager::install("phyloseq") # или
 devtools::install_github("phyloseq/joey711")
 ```
 
