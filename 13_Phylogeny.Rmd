@@ -215,27 +215,16 @@ __Иерархия моделей нуклеотидных замен__
 
 ---
 
-## Матрица Q в модели JC69 и GTR 
+## Матрица Q в модели GTR (General time reversable)
 
-.pull-left[
-### JC-69 (Jukes and Cantor)
-$$Q = \begin{pmatrix} 
--\frac{3}{4} \mu & \frac{1}{4} \mu & \frac{1}{4} \mu & \frac{1}{4} \mu \\
-\frac{1}{4} \mu & - \frac{3}{4} \mu & \frac{1}{4} \mu & \frac{1}{4} \mu \\
-\frac{1}{4} \mu & \frac{1}{4} \mu & - \frac{3}{4} \mu & \frac{1}{4} \mu \\
-\frac{1}{4} \mu & \frac{1}{4} \mu & \frac{1}{4} \mu & - \frac{3}{4} \mu
-\end{pmatrix}$$
-]
-
-.pull-right[
-### GTR (General time reversible)
-
+.small[
 $$Q = \begin{pmatrix}
-- \mu(a\pi_{C} + b\pi_{G} + c\pi_{T}) & a \mu \pi_{C} & b \mu \pi_{G} & c \mu \pi_{T} \\
+-\mu(a\pi_{C} + b\pi_{G} + c\pi_{T}) & a \mu \pi_{C} & b \mu \pi_{G} & c \mu \pi_{T} \\
 a \mu \pi_{A} & - \mu(a\pi_{A} + d\pi_{G} + e\pi_{T}) & d \mu \pi_{G} & e \mu \pi_{T} \\
 b \mu \pi_{A} & d \mu \pi_{C} & - \mu(b\pi_{A} + d\pi_{C} + f\pi_{T}) & f \mu \pi_{T} \\
 c \mu \pi_{A} & e \mu \pi_{C} & f \mu \pi_{G} & - \mu(c\pi_{A} + e\pi_{C} + f\pi_{G})
 \end{pmatrix}$$
+
 ]
 
 ---

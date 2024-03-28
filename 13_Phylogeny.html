@@ -241,27 +241,16 @@ __Иерархия моделей нуклеотидных замен__
 
 ---
 
-## Матрица Q в модели JC69 и GTR 
+## Матрица Q в модели GTR (General time reversable)
 
-.pull-left[
-### JC-69 (Jukes and Cantor)
-`$$Q = \begin{pmatrix} 
--\frac{3}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu \\
-\frac{1}{4} \mu &amp; - \frac{3}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu \\
-\frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; - \frac{3}{4} \mu &amp; \frac{1}{4} \mu \\
-\frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; \frac{1}{4} \mu &amp; - \frac{3}{4} \mu
-\end{pmatrix}$$`
-]
-
-.pull-right[
-### GTR (General time reversible)
-
+.small[
 `$$Q = \begin{pmatrix}
-- \mu(a\pi_{C} + b\pi_{G} + c\pi_{T}) &amp; a \mu \pi_{C} &amp; b \mu \pi_{G} &amp; c \mu \pi_{T} \\
+-\mu(a\pi_{C} + b\pi_{G} + c\pi_{T}) &amp; a \mu \pi_{C} &amp; b \mu \pi_{G} &amp; c \mu \pi_{T} \\
 a \mu \pi_{A} &amp; - \mu(a\pi_{A} + d\pi_{G} + e\pi_{T}) &amp; d \mu \pi_{G} &amp; e \mu \pi_{T} \\
 b \mu \pi_{A} &amp; d \mu \pi_{C} &amp; - \mu(b\pi_{A} + d\pi_{C} + f\pi_{T}) &amp; f \mu \pi_{T} \\
 c \mu \pi_{A} &amp; e \mu \pi_{C} &amp; f \mu \pi_{G} &amp; - \mu(c\pi_{A} + e\pi_{C} + f\pi_{G})
 \end{pmatrix}$$`
+
 ]
 
 ---
@@ -285,7 +274,7 @@ sub_models &lt;- modelTest(as.phyDat(mafft_fasta), multicore = TRUE,
 
 ```
         Model df logLik   AIC   AICw  AICc  AICcw   BIC
-92 GTR+G(4)+I 69 -15917 31972 0.7024 31976 0.6768 32372
+92 GTR+G(4)+I 69 -15911 31961 0.6424 31965 0.6146 32361
 ```
 
 ```r
@@ -294,7 +283,7 @@ sub_models &lt;- modelTest(as.phyDat(mafft_fasta), multicore = TRUE,
 
 ```
   Model df logLik   AIC AICw  AICc AICcw   BIC
-1    JC 59 -17820 35759    0 35762     0 36101
+1    JC 59 -17817 35752    0 35755     0 36095
 ```
 
 ---
@@ -769,8 +758,8 @@ dev.off()
 ```
 
 ```
-RStudioGD 
-        2 
+png 
+  2 
 ```
 
 ---

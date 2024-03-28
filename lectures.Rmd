@@ -313,7 +313,7 @@ install.packages(c("seqinr", "adegenet", "phangorn", "BiocManager", "ggpubr", "p
 BiocManager::install(c("treeio", "ggtree"))
 ```
 
-- Презентация [html](data/13_Phylogeny.html)
+- Презентация [html](13_Phylogeny.html)
 - Код [13_Phylogeny_code.R](13_Phylogeny_code.R)
 - Данные:
     + Файл с GeneID из GenBank [genbank_ids.txt](data/genbank_ids.txt)
