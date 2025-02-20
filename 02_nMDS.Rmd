@@ -1135,7 +1135,7 @@ __Осторожно!__ Для использования `ordisurf()` важн�
 ## Финальный график
 
 ```{r gg-envfit-fin, echo=FALSE, fig.width=8, fig.height=6}
-f_vect <- ord_mus_ef$Type == "Vector" & ord_mus_ef$Label == "L"
+f_vect <- ord_mus_ef$type == "Vector" & ord_mus_ef$label == "L"
 
 ggplot(data = ord_mus_pt, aes(x = NMDS1, y = NMDS2)) +
   stat_contour(data = ord_mus_os, 

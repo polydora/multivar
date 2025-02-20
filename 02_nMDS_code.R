@@ -327,7 +327,7 @@ ggplot(data = ord_mus_os, aes(x = x, y = y, z = z)) +
 
 
 # ## Финальный график
-f_vect <- ord_mus_ef$Type == "Vector" & ord_mus_ef$Label == "L"
+f_vect <- ord_mus_ef$type == "Vector" & ord_mus_ef$label == "L"
 
 
 ggplot(data = ord_mus_pt, aes(x = NMDS1, y = NMDS2)) +
