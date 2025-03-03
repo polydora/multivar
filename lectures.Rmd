@@ -148,7 +148,7 @@ install.packages("readxl")
 install.packages(c("candisc", "ape", "dendextend", "cluster", "pvclust", "factoextra", "dbscan", "scatterpie"))
 ```
 
-<!-- - Презентация [html](05_cluster_analysis.html) -->
+- Презентация [html](05_cluster_analysis.html)
 
 - [код R](05_cluster_analysis.R)
 
