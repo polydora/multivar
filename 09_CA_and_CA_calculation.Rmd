@@ -53,6 +53,104 @@ library(ggvegan)
 - Интерпретировать графики результатов корреспондентного анализа
 
 
+# PCA и SVD
+
+## Еще раз суть PCA
+
+![](images/PCA.png)
+
+## Данные по протеинам
+
+```{r}
+protein <- read.table(file="data/protein.csv", sep="\t", dec=".", header=TRUE)
+protein$region <- factor(protein$region)
+rownames(protein) <- protein$country
+head(protein)
+```
+
+Исходная матрица имеет размерность `r dim(protein[, -c(1,2)])`
+
+Сколько исходных осей?
+Сколько объектов?
+
+## PCA данных по протеинам
+
+```{r}
+prot_pca <- rda(protein[, -c(1,2)], scale = FALSE)
+```
+
+## Ординация в новых осях
+
+```{r, fig.height=6}
+biplot(prot_pca)
+```
+
+
+
+## Собственные числа {.smaller}
+
+```{r}
+prot_pca$CA$eig
+```
+
+```{r}
+summary(prot_pca)
+```
+
+Как определить долю дисперсии, которую описывает каждая из новых осей?
+
+## SVD исходной матрицы
+
+```{r}
+prot_pca <- rda(protein[, -c(1,2)], scale = FALSE)
+prot_svd <- svd(scale(protein[, -c(1,2)], center = TRUE, scale = FALSE))
+
+U <- prot_svd$u
+D <- prot_svd$d
+V <- prot_svd$u
+
+```
+
+
+## Собственные числа и сингулярные числа
+
+```{r}
+plot(x = prot_pca$CA$eig, y = D)
+
+```
+
+- Всего признаков (изначальных осей): `r ncol(protein[, -c(1,2)])`
+- Квадратичная зависимость: собственное число из PCA = D^2^ из SVD
+
+## Собственные векторы (базис новой системы координат) и левая сингулярная матрица **U**
+
+```{r}
+plot(x = prot_pca$CA$u, y = U)
+```
+
+Это одно и тоже!
+
+
+## Координаты объектов в осях главных компонент и правая сингулярная матрица **V**
+
+```{r}
+plot(scores(prot_pca, choices = 1:9)$sites, V)
+```
+
+Это одно и тоже!
+
+## Итог
+
+Для ординации объектов в новой системе координат, заданной главными компонентами, нет необходимости проводить спектральное разложение: 
+
+X -> A -> $\lambda$, $U$ -> Новые координаты  
+
+Можно короче
+
+X -> SVD -> $U, D, V$ -> Новые координаты
+
+
+
 # Анализ видового состава сообществ. 
 
 ## Пример: Птицы в лесах Австралии
@@ -74,7 +172,7 @@ colnames(birds) <- tolower(colnames(birds))
 
 ```{r fig.height=4, message=FALSE, echo=F}
 library(vegan)
-bird_pca <- rda(birds[ , -c(1, 2)], scale = TRUE)
+bird_pca <- rda(birds[ , -c(1, 2)], scale = FALSE)
 # summary(bird_pca)
 screeplot(bird_pca,  bstick = TRUE) # график собственных чисел
 ```
@@ -107,12 +205,13 @@ plot(bird_pca, display = "sites", type = "t")
 
 ```{r fig.height=4, message=FALSE, echo=TRUE}
 library(vegan)
-bird_pca <- rda(birds[ , -c(1, 2)], scale = TRUE)
+bird_pca <- rda(birds[ , -c(1, 2)], scale = FALSE)
 # summary(bird_pca)
 screeplot(bird_pca,  bstick = TRUE) # график собственных чисел
 ```
 
 > - Первые две компоненты объясняют умеренное количество изменчивости
+
 
 
 ## Решение: Факторные нагрузки {.smaller}
@@ -315,7 +414,7 @@ head(mite[, 1:5])
 
 ```{r, fig.width=5,  echo=F}
 
-mite_pca <- rda(mite, scaling = TRUE)
+mite_pca <- rda(mite)
 
 ```
 

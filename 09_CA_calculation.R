@@ -89,6 +89,9 @@ screeplot(mite_ca, bstick = T)
 plot(mite_ca)
 
 
+
+
+
 #### Матрицы сопряженности #####
 
 peas <- matrix(c(99, 42, 29, 13), byrow = T, ncol = 2)
