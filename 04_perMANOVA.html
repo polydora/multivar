@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Марина Варфоломеева" />
     <meta name="author" content="Вадим Хайтов" />
-    <script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
+    <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="site_libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/tamu-fonts.css" rel="stylesheet" />
     <link href="site_libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
@@ -26,10 +26,10 @@
     <link href="site_libs/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
     <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
     <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-    <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
     <script src="site_libs/viz-1.8.2/viz.js"></script>
     <link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-    <script src="site_libs/grViz-binding-1.0.9/grViz.js"></script>
+    <script src="site_libs/grViz-binding-1.0.11/grViz.js"></script>
     <!-- https://github.com/fnaufel/xaringan-smartify-->
     <script
     			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -59,17 +59,18 @@ class: middle, left, inverse, title-slide
 
 ---
 
-
+### На занятии мы обсудим: 
 - Множественные сравнения
 - perMANOVA
 - Условия применимости perMANOVA
-- Более подробная интерпретация результатов perMANOVA
-- Более сложные дизайны в perMANOVA
+- Подробную интерпретацию результатов perMANOVA
+- Различные дизайны в perMANOVA
 
 ### Вы сможете
 
 - Вспомнить основные дизайны для тестирования гипотез в рамках дисперсионного анализа
 - Применить функции R для тестирования гипотез с помощью perMANOVA
+
 
 
 
@@ -127,37 +128,13 @@ class: middle, center, inverse
 
 В таблице даны значения `\(\alpha _{familywise}\)` для разного числа сравнений, если `\(\alpha _{per\,comparison} = 0.05\)`:
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Число средних &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Число сравнений &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; &amp;alpha;&lt;sub&gt;familywise&lt;/sub&gt; &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0500 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.1426 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2649 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4013 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+| Число средних| Число сравнений| &amp;alpha;&lt;sub&gt;familywise&lt;/sub&gt;|
+|-------------:|---------------:|----------------------------:|
+|             2|               1|                       0.0500|
+|             3|               3|                       0.1426|
+|             4|               6|                       0.2649|
+|             5|              10|                       0.4013|
 
 ---
 
@@ -181,42 +158,14 @@ class: middle, center, inverse
 
 Ниже `\(\alpha _{per\,comparison}\)` после поправки Бонферрони, сохраняющие `\(\alpha _{familywise} = 0.05\)`:
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Число средних &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Число сравнений &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; &amp;alpha;&lt;sub&gt;per comparison&lt;/sub&gt; &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0500 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0167 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0083 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0050 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.0033 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+| Число средних| Число сравнений| &amp;alpha;&lt;sub&gt;per comparison&lt;/sub&gt;|
+|-------------:|---------------:|--------------------------------:|
+|             2|               1|                           0.0500|
+|             3|               3|                           0.0167|
+|             4|               6|                           0.0083|
+|             5|              10|                           0.0050|
+|             6|              15|                           0.0033|
 
 ---
 
@@ -737,7 +686,7 @@ class: middle, center, inverse
 
 ---
 
-## Применим метод perMANOVA (функция `adonis()`)
+## Применим метод perMANOVA (функция `adonis2()`)
 
 
 ```r
@@ -749,13 +698,12 @@ permanova_pesch
 
 ```
 Permutation test for adonis under reduced model
-Terms added sequentially (first to last)
 Permutation: free
 Number of permutations: 999
 
 adonis2(formula = log_pesch[3:9] ~ Species, data = log_pesch, method = "euclidean")
          Df SumOfSqs    R2    F Pr(&gt;F)  
-Species   2       60 0.237 3.58  0.012 *
+Model     2       60 0.237 3.58  0.012 *
 Residual 23      193 0.763              
 Total    25      253 1.000              
 ---
@@ -771,13 +719,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ```
 Permutation test for adonis under reduced model
-Terms added sequentially (first to last)
 Permutation: free
 Number of permutations: 999
 
 adonis2(formula = log_pesch[3:9] ~ Species, data = log_pesch, method = "euclidean")
          Df SumOfSqs    R2    F Pr(&gt;F)  
-Species   2       60 0.237 3.58  0.012 *
+Model     2       60 0.237 3.58  0.012 *
 Residual 23      193 0.763              
 Total    25      253 1.000              
 ---
@@ -1059,17 +1006,14 @@ twofact_pesch
 
 ```
 Permutation test for adonis under reduced model
-Terms added sequentially (first to last)
 Permutation: free
 Number of permutations: 999
 
 adonis2(formula = log_pesch2[, 3:ncol(pesch)] ~ Gender * Species, data = log_pesch2, method = "euclidean")
-               Df SumOfSqs    R2    F Pr(&gt;F)   
-Gender          1      7.2 0.049 1.13  0.292   
-Species         1     45.5 0.311 7.16  0.004 **
-Gender:Species  1      4.5 0.031 0.72  0.529   
-Residual       14     88.9 0.608               
-Total          17    146.1 1.000               
+         Df SumOfSqs    R2  F Pr(&gt;F)  
+Model     3     57.2 0.392  3  0.014 *
+Residual 14     88.9 0.608            
+Total    17    146.1 1.000            
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -1090,14 +1034,13 @@ nested_pesch
 
 ```
 Permutation test for adonis under reduced model
-Terms added sequentially (first to last)
 Blocks:  strata 
 Permutation: free
 Number of permutations: 999
 
 adonis2(formula = log_pesch2[, 3:ncol(pesch)] ~ Gender, data = log_pesch2, method = "euclidean", strata = log_pesch2$Species)
          Df SumOfSqs    R2    F Pr(&gt;F)
-Gender    1      7.2 0.049 0.83    0.3
+Model     1      7.2 0.049 0.83    0.3
 Residual 16    138.9 0.951            
 Total    17    146.1 1.000            
 ```
@@ -1125,13 +1068,12 @@ adonis2(com[,1:2] ~ com$NO3) # Ошибочный дизайн
 
 ```
 Permutation test for adonis under reduced model
-Terms added sequentially (first to last)
 Permutation: free
 Number of permutations: 999
 
 adonis2(formula = com[, 1:2] ~ com$NO3)
          Df SumOfSqs    R2    F Pr(&gt;F)  
-com$NO3   1    0.048 0.084 3.13  0.053 .
+Model     1    0.048 0.084 3.13  0.053 .
 Residual 34    0.521 0.916              
 Total    35    0.569 1.000              
 ---
@@ -1144,14 +1086,13 @@ adonis2(com[,1:2] ~ com$NO3, strata = com$field) # Правильный диза
 
 ```
 Permutation test for adonis under reduced model
-Terms added sequentially (first to last)
 Blocks:  strata 
 Permutation: free
 Number of permutations: 999
 
 adonis2(formula = com[, 1:2] ~ com$NO3, strata = com$field)
          Df SumOfSqs    R2    F Pr(&gt;F)    
-com$NO3   1    0.048 0.084 3.13  0.001 ***
+Model     1    0.048 0.084 3.13  0.001 ***
 Residual 34    0.521 0.916                
 Total    35    0.569 1.000                
 ---

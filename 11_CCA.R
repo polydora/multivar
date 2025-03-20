@@ -101,30 +101,22 @@ grid.arrange(arrangeGrob(p1, p2, p3, p4, nrow = 1), mylegend, nrow = 2, heights 
 
 mite_cca <- cca()
 
-
 vif.cca()
-
-
-mite_cca <- cca( )
 
 mite_cca
 
 summary(mite_cca)
 
 ################################
+#Вычисление CA вручную
 
 f_ij <- mite #Частота встречи данного вида в данной пробе, то есть это первичные даные!
 
-
 Ft <- sum(mite) #Общее количество найденных животных
-
-
 
 f_i <- apply(mite, 1, FUN = sum) #Общее количество особей в каждой пробе
 
 p_i <- f_i/Ft #Вектор вероятностей встретить какую-либо особь в данной пробе
-
-
 
 f_j <- apply(mite, 2, FUN = sum) #Общее количество особей в каждом виде
 
@@ -133,14 +125,13 @@ p_j <- f_j/Ft #Вектор вероятностей встретить особ
 
 ###########################
 
-
-Q <- (f_ij*Ft - f_i %*% t(f_j))/(Ft*sqrt(f_i %*% t(f_j))) #Матрица вкладов, вычисленная через частоты
-
+#Матрица вкладов, вычисленная через частоты
+Q <- (f_ij*Ft - f_i %*% t(f_j))/(Ft*sqrt(f_i %*% t(f_j)))
 Q <- as.matrix(Q)
 
 sum(Q^2)
 
-
+#Сингулярное разложение матрицы вкладов
 U <- svd(Q)$u
 D <- diag(svd(Q)$d)
 V <- svd(Q)$v
@@ -151,8 +142,8 @@ Q1 <- U %*% D %*% t(V)
 
 round(sum(Q1 - Q))
 
-sum(round(diag(D), 5) != 0)
-
+Inertia_total <- sum(D^2) #Общая инерция в системе
+CA_number <- sum(round(D, 2) !=0) #Количество главныю осей в CA
 
 X <- model.matrix( ~ SubsDens + WatrCont + Substrate + Topo, data =  mite.env)
 
@@ -178,10 +169,12 @@ D_pred <- diag(svd(Q_pred)$d)
 V_pred <- svd(Q_pred)$v
 
 
+#Инерция в пространстве канонических осей
+Inertia_constrained <- sum(D_pred^2) #Инерция в ограниченной ординации
 
-sum(round(diag(D_pred), 5) != 0)
+CCA_number <- sum(round(D_pred, 2) !=0) #Количество Канонических осей в СCA
 
-sum(D_pred^2)
+Inertia_unconstrained <- sum(D_res^2)
 
 
 mite_cca
@@ -193,20 +186,8 @@ U_res <- svd(Q_resid)$u
 D_res <- diag(svd(Q_resid)$d)
 V_res <- svd(Q_resid)$v
 
-sum(round(diag(D_res), 5) != 0)
-
-sum(D_res^2)
 
 sum(D_res^2)  + sum(D_pred^2)
-
-
-
-mite_cca
-
-
-
-sum(D_res^2) + sum(D_pred^2)
-
 
 constr_CA_samples <- diag(p_i^(-1/2))%*% U_pred
 

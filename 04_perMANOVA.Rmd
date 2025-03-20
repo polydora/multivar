@@ -20,18 +20,20 @@ output:
     includes:
       in_header: "assets/xaringan_in_header.html"
       after_body: "assets/xaringan_after_body.html"
+      
 ---
-
+### На занятии мы обсудим: 
 - Множественные сравнения
 - perMANOVA
 - Условия применимости perMANOVA
-- Более подробная интерпретация результатов perMANOVA
-- Более сложные дизайны в perMANOVA
+- Подробную интерпретацию результатов perMANOVA
+- Различные дизайны в perMANOVA
 
 ### Вы сможете
 
 - Вспомнить основные дизайны для тестирования гипотез в рамках дисперсионного анализа
 - Применить функции R для тестирования гипотез с помощью perMANOVA
+
 
 ```{r setup, include = FALSE, cache = FALSE, purl = FALSE, fig.showtext = TRUE}
 source("assets/xaringan_setup.R")
@@ -708,7 +710,7 @@ class: middle, center, inverse
 
 ---
 
-## Применим метод perMANOVA (функция `adonis()`)
+## Применим метод perMANOVA (функция `adonis2()`)
 
 ```{r}
 library(vegan)
