@@ -50,6 +50,7 @@ biplot(mod_pca_sqrt, scaling = 2, main = "квадратный корень")
 mod_pca_log <- rda(log(varespec + 1))
 biplot(mod_pca_log, scaling = 2, main = "логарифм")
 
+
 # Трансформации для перехода к другим расстояниям
 
 #  Хордальное расстояние
@@ -151,6 +152,9 @@ biplot.pcoa(mod_pcoa_lin, varespec)
 
 # Функция ordiggplot ----
 # Рисует график ординации из vegan в ggplot
+
+library(dplyr) # Без загрузки этого пакета функция не работает
+
 ordiggplot <- function(mod, lab_size = 5, lab_var_size = 6,
                        line_size = 0.5, point_size = 2,
                       plot_sites = TRUE, plot_species = TRUE,
@@ -227,6 +231,8 @@ eigenvals(mod_tbrda)/sum(eigenvals(mod_tbrda))
 # ordiggplot(mod_tbrda, scaling = 1)
 ordiggplot(mod_tbrda, scaling = 2) + aes(colour = varechem$Mn)
 
+mod_dat <- scores(mod_tbrda, tidy = T)
+
 anova(mod_tbrda, by = "mar")
 
 
@@ -240,7 +246,16 @@ eigenvals(mod_dbrda_lingoes)/sum(eigenvals(mod_dbrda_lingoes))
 # ordiggplot(mod_dbrda_lingoes, scaling = 1)
 ordiggplot(mod_dbrda_lingoes, scaling = 2) + aes(colour = varechem$Mn)
 
+plot(mod_dbrda_lingoes)
+
 anova(mod_dbrda_lingoes, by = "mar")
+
+
+mod_dbrda_new <- dbrda(varespec ~ Mn + Baresoil + N,
+                       distance = "bray", data = varechem)
+
+
+ordiggplot(mod_dbrda_new, scaling = 2) + aes(colour = varechem$Mn)
 
 
 # Задание 4 ------------------------------------------------------------------
