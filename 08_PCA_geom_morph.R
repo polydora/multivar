@@ -11,7 +11,6 @@
 jelly <- read.delim("data/jellyfish.csv")
 X_raw <- jelly[, 2:3]
 X <- scale() # Центрируем
-X_mat <- as.matrix()
 A <- t() %*%/(nrow()) # Матрица ковариаций
 
 E <-            # Спектральное разложение

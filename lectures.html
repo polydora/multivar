@@ -13,7 +13,7 @@
 
 <title>Презентации и данные</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -594,42 +594,91 @@ href="data/Backlund_et_al_2016_PLOS.XLSX">Backlund_et_al_2016_PLOS.XLSX</a></li>
 <div id="permanova" class="section level2">
 <h2>4. PERMANOVA</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</span></code></pre></div>
-<!-- - Презентация [html](04_perMANOVA.html) -->
-<!-- - [код R](04_perMANOVA.R) -->
-<!-- - Данные -->
-<!--     + [pesch.csv](data/pesch.csv) -->
-<!--     + [simulated_data.csv](data/simulated_data.csv) -->
-<!-- **Данные для самостоятельной работы** -->
-<!-- - [Пояснения к датасетам и задание](04_perMANOVA_task.html) -->
-<!-- - __Влияние выпаса скота на зообентос рек о.Тасмания.__ Данные из работы *Magierowski, RH, Davies, PE, Read, SM (2015). Biological and physical data collected from river sites selected across a gradient of catchment area under grazing in northern Tasmania., Version 1. http://doi.org/10.4227/05/54BEEE248D22B. ÆKOS Data Portal, rights owned by University of Tasmania. Accessed 02 Mar 2017.* -->
-<!--     + [Grazing_Magierowski_et_al_2015.xls](data/Grazing_Magierowski_et_al_2015.xls) -->
-<!-- - __Гематология сонных ящериц _Tiliqua rugosa_.__ Данные из работы *Smyth, A. K., Smee, E., Godfrey, S. S., Crowther, M., Phalen, D. (2014). Haematology of the Sleepy Lizard (Tiliqua rugosa) in Australia's cereal croplands, 2010, Version 1.0. http://doi.org/10.4227/05/537C5C5553F9E. ÆKOS Data Portal, rights owned by University of Adelaide, University of Sydney, Commonwealth Scientific and Industrial Research Organisation. Accessed 03 Mar 2017.* -->
-<!--     + [Sleepy lizard.xlsx](data/Sleepy lizard.xlsx) -->
+<ul>
+<li><p>Презентация <a href="04_perMANOVA.html">html</a></p></li>
+<li><p><a href="04_perMANOVA.R">код R</a></p></li>
+<li><p>Данные</p>
+<ul>
+<li><a href="data/pesch.csv">pesch.csv</a></li>
+<li><a href="data/simulated_data.csv">simulated_data.csv</a></li>
+</ul></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li><p><a href="04_perMANOVA_task.html">Пояснения к датасетам и
+задание</a></p></li>
+<li><p><strong>Влияние выпаса скота на зообентос рек
+о.Тасмания.</strong> Данные из работы <em>Magierowski, RH, Davies, PE,
+Read, SM (2015). Biological and physical data collected from river sites
+selected across a gradient of catchment area under grazing in northern
+Tasmania., Version 1. <a href="http://doi.org/10.4227/05/54BEEE248D22B"
+class="uri">http://doi.org/10.4227/05/54BEEE248D22B</a>. ÆKOS Data
+Portal, rights owned by University of Tasmania. Accessed 02 Mar
+2017.</em></p>
+<ul>
+<li><a
+href="data/Grazing_Magierowski_et_al_2015.xls">Grazing_Magierowski_et_al_2015.xls</a></li>
+</ul></li>
+<li><p><strong>Гематология сонных ящериц <em>Tiliqua
+rugosa</em>.</strong> Данные из работы <em>Smyth, A. K., Smee, E.,
+Godfrey, S. S., Crowther, M., Phalen, D. (2014). Haematology of the
+Sleepy Lizard (Tiliqua rugosa) in Australia’s cereal croplands, 2010,
+Version 1.0. <a href="http://doi.org/10.4227/05/537C5C5553F9E"
+class="uri">http://doi.org/10.4227/05/537C5C5553F9E</a>. ÆKOS Data
+Portal, rights owned by University of Adelaide, University of Sydney,
+Commonwealth Scientific and Industrial Research Organisation. Accessed
+03 Mar 2017.</em></p>
+<ul>
+<li><a href="data/Sleepy%20lizard.xlsx">Sleepy lizard.xlsx</a></li>
+</ul></li>
+</ul>
 </div>
 <div id="кластерный-анализ" class="section level2">
 <h2>5. Кластерный анализ</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;candisc&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;cluster&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;factoextra&quot;</span>, <span class="st">&quot;dbscan&quot;</span>, <span class="st">&quot;scatterpie&quot;</span>))</span></code></pre></div>
-<!-- - Презентация [html](05_cluster_analysis.html) -->
-<!-- - [код R](05_cluster_analysis.R) -->
-<!-- **Данные для самостоятельной работы** -->
-<!-- - __Сообщества фораминифер_.__ Данные из работы *Golikova, E., Varfolomeeva, M., Yakovis, E., & Korsun, S. (2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in summer, endure in winter. Estuarine, Coastal and Shelf Science, 238, 106685.* -->
-<!--     + [Golikova_etal_2020_cluster_data.csv](data/Golikova_etal_2020_cluster_data.csv) -->
+<ul>
+<li><p>Презентация <a href="05_cluster_analysis.html">html</a></p></li>
+<li><p><a href="05_cluster_analysis.R">код R</a></p></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li><strong>Сообщества фораминифер_.</strong> Данные из работы
+<em>Golikova, E., Varfolomeeva, M., Yakovis, E., &amp; Korsun, S.
+(2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in
+summer, endure in winter. Estuarine, Coastal and Shelf Science, 238,
+106685.</em>
+<ul>
+<li><a
+href="data/Golikova_etal_2020_cluster_data.csv">Golikova_etal_2020_cluster_data.csv</a></li>
+</ul></li>
+</ul>
 </div>
 <div id="основы-линейной-алгебры" class="section level2">
 <h2>6. Основы линейной алгебры</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;jpeg&quot;</span>)</span></code></pre></div>
-<!-- - Презентация [html](06_intro_to_linear_algebra_part1.html) -->
-<!-- - [код R](06_intro_to_linear_algebra_part1.R) -->
-<!-- - Данные -->
-<!--   + [Матрица 1](data/face.rda) -->
-<!--   + [Матрица 2](data/a_matrix.csv) -->
-<!-- - Презентация [html](07_intro_to_linear_algebra_part2.html) -->
-<!-- - [код R](07_intro_to_linear_algebra_part2.R) -->
-<!-- - RMD-файл с рассказом о фотографиях, как матричных объектах. После knitr дает интерактивный html-файл  [RMD](07_Shiny_SVD_demonstration.RMD) -->
-<!-- - Данные -->
-<!--     + [Матрица 1](data/face.rda) -->
-<!--     + [Матрица 2](data/a_matrix.csv) -->
-<!-- [**Данные для самостоятельной работы**](07_linear_algebra_task.html) -->
+<ul>
+<li><p>Презентация <a
+href="06_intro_to_linear_algebra_part1.html">html</a></p></li>
+<li><p><a href="06_intro_to_linear_algebra_part1.R">код R</a></p></li>
+<li><p>Данные</p>
+<ul>
+<li><a href="data/face.rda">Матрица 1</a></li>
+<li><a href="data/a_matrix.csv">Матрица 2</a></li>
+</ul></li>
+<li><p>Презентация <a
+href="07_intro_to_linear_algebra_part2.html">html</a></p></li>
+<li><p><a href="07_intro_to_linear_algebra_part2.R">код R</a></p></li>
+<li><p>RMD-файл с рассказом о фотографиях, как матричных объектах. После
+knitr дает интерактивный html-файл <a
+href="07_Shiny_SVD_demonstration.RMD">RMD</a></p></li>
+<li><p>Данные</p>
+<ul>
+<li><a href="data/face.rda">Матрица 1</a></li>
+<li><a href="data/a_matrix.csv">Матрица 2</a></li>
+</ul></li>
+</ul>
+<p><a href="07_linear_algebra_task.html"><strong>Данные для
+самостоятельной работы</strong></a></p>
 </div>
 <div
 id="анализ-главных-компонент-principal-component-analysis-pca-и-геометрическая-морфометрия"
@@ -637,51 +686,89 @@ class="section level2">
 <h2>7. Анализ главных компонент (Principal Component Analysis, PCA) и
 (геометрическая) морфометрия</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;geomorph&quot;</span>, <span class="st">&quot;gridGraphics&quot;</span>))</span></code></pre></div>
-<!-- - Презентация [html](08_PCA_geom_morph.html) -->
-<!-- - Код: [08_PCA_geom_morph.R](08_PCA_geom_morph.R) -->
-<!-- - Данные:  -->
-<!--     + [jellyfish.csv](data/jellyfish.csv) -->
-<!--     + [protein.csv](data/protein.csv) -->
-<!--     + [turtles.txt](data/turtles.txt) -->
-<!-- - Задание: [08_PCA_tasks.R](08_PCA_tasks.R) -->
-<!-- ### 7.2 (Геометрическая) морфометрия -->
-<!-- - Презентация [html](08.2_PCA_geometric_morphometrics.html) -->
-<!-- - Код: [08.2_PCA_geometric_morphometrics.R](08.2_PCA_geometric_morphometrics.R) -->
-<!-- - Данные: [turtles.txt](data/turtles.txt) -->
-<!-- - Задание: [08.2_PCA_geometric_morphometrics_task.R](08.2_PCA_geometric_morphometrics_task.R) -->
+<ul>
+<li><p>Презентация <a href="08_PCA_geom_morph.html">html</a></p></li>
+<li><p>Код: <a
+href="08_PCA_geom_morph.R">08_PCA_geom_morph.R</a></p></li>
+<li><p>Данные:</p>
+<ul>
+<li><a href="data/jellyfish.csv">jellyfish.csv</a></li>
+<li><a href="data/protein.csv">protein.csv</a></li>
+<li><a href="data/turtles.txt">turtles.txt</a></li>
+</ul></li>
+<li><p>Задание: <a href="08_PCA_tasks.R">08_PCA_tasks.R</a></p></li>
+</ul>
 </div>
 <div id="корреспондентный-анализ-corespondence-analysis-ca"
 class="section level2">
 <h2>8. Корреспондентный анализ (Corespondence Analysis, CA)</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ade4&quot;</span>)</span></code></pre></div>
-<!-- - Презентация [html](09_CA_and_CA_calculation.html) -->
-<!-- - [код R](09_CA_calculation.R) -->
-<!-- - Данные [macnally.xlsx](data/macnally.xlsx) -->
-<!-- -  [Решение для задания про птиц](09_CA_bird_analysis_solution.R) -->
-<!-- **Данные для самостоятельной работы** -->
-<!-- - Растительные сообщества во франции La Mafragh (Annaba, Algérie). Данные из работы  *de Belair, G. and Bencheikh-Lehocine, M. (1987) Composition et déterminisme de la végétation d'une plaine côtière marécageuse : La Mafragh (Annaba, Algérie). Bulletin d'Ecologie, 18, 393–407.* -->
-<!--     + [mafragh_species.csv](data/mafragh_species.csv) -->
-<!-- - __Крысы.__ -->
-<!--     + [bolger1.csv](data/bolger1.csv) -->
-<!-- - __Бабочки.__ -->
-<!--     + butterfly{ade4} -->
+<ul>
+<li><p>Презентация <a
+href="09_CA_and_CA_calculation.html">html</a></p></li>
+<li><p><a href="09_CA_calculation.R">код R</a></p></li>
+<li><p>Данные <a href="data/macnally.xlsx">macnally.xlsx</a></p></li>
+<li><p><a href="09_CA_bird_analysis_solution.R">Решение для задания про
+птиц</a></p></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li>Растительные сообщества во франции La Mafragh (Annaba, Algérie).
+Данные из работы <em>de Belair, G. and Bencheikh-Lehocine, M. (1987)
+Composition et déterminisme de la végétation d’une plaine côtière
+marécageuse : La Mafragh (Annaba, Algérie). Bulletin d’Ecologie, 18,
+393–407.</em>
+<ul>
+<li><a href="data/mafragh_species.csv">mafragh_species.csv</a></li>
+</ul></li>
+<li><strong>Крысы.</strong>
+<ul>
+<li><a href="data/bolger1.csv">bolger1.csv</a></li>
+</ul></li>
+<li><strong>Бабочки.</strong>
+<ul>
+<li>butterfly{ade4}</li>
+</ul></li>
+</ul>
 </div>
 <div id="анализ-избыточности-redundancy-analysis-rda"
 class="section level2">
 <h2>9. Анализ избыточности (Redundancy analysis, RDA)</h2>
-<!-- - Презентация [html](10_RDA.html) -->
-<!-- - [код R](10_RDA.R) -->
-<!-- - Данные butterfly{ade4} -->
-<!--     - [butterfly_envir.csv](data/butterfly_envir.csv) -->
-<!--     - [butterfly_genet.csv](data/butterfly_genet.csv) -->
-<!--     - [butterfly_xy.csv](data/butterfly_xy.csv) -->
-<!-- **Данные для самостоятельной работы** -->
-<!-- - __Влияние выпаса скота на зообентос рек о.Тасмания.__ Данные из работы *Magierowski, RH, Davies, PE, Read, SM (2015). Biological and physical data collected from river sites selected across a gradient of catchment area under grazing in northern Tasmania., Version 1. http://doi.org/10.4227/05/54BEEE248D22B. ÆKOS Data Portal, rights owned by University of Tasmania. Accessed 02 Mar 2017.* -->
-<!--     + [Grazing_Magierowski_et_al_2015.xls](data/Grazing_Magierowski_et_al_2015.xls) -->
-<!-- - __Морфометрия поссумов в Австралии.__ Данные из работы *Lindenmayer, D. B., Viggers, K. L., Cunningham, R. B., and Donnelly, C. F. 1995. Morphological variation among columns of the mountain brushtail possum, Trichosurus caninus Ogilby (Phalangeridae: Marsupiala). Australian Journal of Zoology 43: 449-458.* -->
+<ul>
+<li>Презентация <a href="10_RDA.html">html</a></li>
+<li><a href="10_RDA.R">код R</a></li>
+<li>Данные butterfly{ade4}
+<ul>
+<li><a href="data/butterfly_envir.csv">butterfly_envir.csv</a></li>
+<li><a href="data/butterfly_genet.csv">butterfly_genet.csv</a></li>
+<li><a href="data/butterfly_xy.csv">butterfly_xy.csv</a></li>
+</ul></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li><strong>Влияние выпаса скота на зообентос рек о.Тасмания.</strong>
+Данные из работы <em>Magierowski, RH, Davies, PE, Read, SM (2015).
+Biological and physical data collected from river sites selected across
+a gradient of catchment area under grazing in northern Tasmania.,
+Version 1. <a href="http://doi.org/10.4227/05/54BEEE248D22B"
+class="uri">http://doi.org/10.4227/05/54BEEE248D22B</a>. ÆKOS Data
+Portal, rights owned by University of Tasmania. Accessed 02 Mar
+2017.</em>
+<ul>
+<li><a
+href="data/Grazing_Magierowski_et_al_2015.xls">Grazing_Magierowski_et_al_2015.xls</a></li>
+</ul></li>
+<li><strong>Морфометрия поссумов в Австралии.</strong> Данные из работы
+<em>Lindenmayer, D. B., Viggers, K. L., Cunningham, R. B., and Donnelly,
+C. F. 1995. Morphological variation among columns of the mountain
+brushtail possum, Trichosurus caninus Ogilby (Phalangeridae:
+Marsupiala). Australian Journal of Zoology 43: 449-458.</em></li>
+</ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DAAG&quot;</span>)</span></code></pre></div>
-<!-- + possum{DAAG} -->
-<!-- + possumsites{DAAG} -->
+<ul>
+<li>possum{DAAG}</li>
+<li>possumsites{DAAG}</li>
+</ul>
 <!-- ## 10. Канонический корреспондентный анализ и анализ избыточности, основанный на расстоянии -->
 <div
 id="канонический-корреспондентный-анализ-canonical-correspondence-analysis-cca"
@@ -691,8 +778,10 @@ Analysis, CCA)</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;DAAG&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;akima&quot;</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;reshape2&quot;</span>)</span></code></pre></div>
-<!-- - Презентация [html](11_CCA.html) -->
-<p><a href="11_CCA.R">код R</a></p>
+<ul>
+<li>Презентация <a href="11_CCA.html">html</a></li>
+<li><a href="11_CCA.R">код R</a></li>
+</ul>
 <p><strong>Данные для самостоятельной работы</strong></p>
 <ul>
 <li><strong>Влияние выпаса скота на зообентос рек о.Тасмания.</strong>
@@ -746,14 +835,26 @@ id="анализ-избыточности-основанный-на-рассто
 class="section level3">
 <h3>10.2 Анализ избыточности, основанный на расстояниях (distance-based
 Redundancy Analysis, dbRDA)</h3>
-<!-- - Презентация [html](12_dbRDA_version_2024.html) -->
-<!-- - [код R](12_dbRDA.R) -->
-<!-- - Данные -->
-<!--   - `varespec{vegan}` -->
-<!--   - `varechem{vegan}` -->
-<!-- **Данные для самостоятельной работы** -->
-<!-- - Данные из работы *Verneaux, J. (1973) Cours d'eau de Franche-Comté (Massif du Jura). Recherches écologiques sur le réseau hydrographique du Doubs. Essai de biotypologie. Thèse d'état, Besançon. 1–257.* -->
-<!--     + doubs{ade4} -->
+<ul>
+<li><p>Презентация <a
+href="12_dbRDA_version_2024.html">html</a></p></li>
+<li><p><a href="12_dbRDA.R">код R</a></p></li>
+<li><p>Данные</p>
+<ul>
+<li><code>varespec{vegan}</code></li>
+<li><code>varechem{vegan}</code></li>
+</ul></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li><p>Данные из работы <em>Verneaux, J. (1973) Cours d’eau de
+Franche-Comté (Massif du Jura). Recherches écologiques sur le réseau
+hydrographique du Doubs. Essai de biotypologie. Thèse d’état, Besançon.
+1–257.</em></p>
+<ul>
+<li>doubs{ade4}</li>
+</ul></li>
+</ul>
 </div>
 </div>
 <div id="современные-методы-анализа-многомерных-данных"

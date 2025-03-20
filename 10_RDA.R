@@ -126,7 +126,6 @@ anova(bf_prda_1, permutations = 99999) ## Пермутационный тест
 
 plot(bf_prda_1, main = "Partial RDA", scaling = )
 
-
 # # Компоненты объясненной инерции ###############
 showvarparts(2)
 

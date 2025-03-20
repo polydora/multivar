@@ -1,5 +1,45 @@
+protein <- read.table(file="data/protein.csv", sep="\t", dec=".", header=TRUE)
 
-#######################################
+protein$region <- factor(protein$region)
+rownames(protein) <- protein$country
+head(protein)
+
+library(vegan)
+
+prot_pca <- rda(protein[, -c(1,2)])
+
+plot(prot_pca)
+
+eigenvals(prot_pca)
+summary(prot_pca)
+
+scores(prot_pca, choices = 1:ncol(protein[, -c(1,2)]))
+
+prot_cent <- scale(protein[, -c(1,2)], center = TRUE, scale = FALSE)
+
+D <- svd(prot_cent)$d
+
+diag(D)
+
+U <- svd(prot_cent)$u
+
+V <- svd(prot_cent)$v
+
+library(ggplot2)
+
+qplot(y = D^2, x = eigenvals(prot_pca)) + geom_line()
+
+dim(U)
+
+
+plot(x = U, y= prot_pca$CA$u)
+
+plot(x = V, y= prot_pca$CA$v)
+
+
+
+
+########vegan#######################################
 # МЕХАНИКА КОРРЕСПОНДЕНТНОГО  АНАЛИЗА #
 #######################################
 
@@ -19,8 +59,10 @@ colnames(birds) <- tolower(colnames(birds))
 
 library(vegan)
 
-bird_pca <- rda(birds[,-c(1:2)], scale = T)
+bird_pca <- rda(birds[,-c(1:2)], scale = TRUE)
 screeplot(bird_pca, bstick = T)
+
+eigenvals(bird_pca)
 
 
 # Код для вывода информации об информативности PC
@@ -74,19 +116,28 @@ mite_mds <- metaMDS(mite)
 
 plot(mite_mds, display = "site")
 
-
+summary(mite_pca)
 
 # CA в темную ######
 
 
 mite_ca <- cca(mite)
 
+summary(mite_ca)
+
+
 biplot(mite_ca)
+
+biplot(mite_pca)
 
 
 screeplot(mite_ca, bstick = T)
 
-plot(mite_ca)
+plot(mite_ca, display = "sites")
+
+plot(mite_ca, display = "species")
+
+
 
 
 #### Матрицы сопряженности #####
@@ -117,6 +168,8 @@ q <- p_i %*% t(p_j)
 
 
 E <- q * Ft
+E <- round(E, 1)
+
 
 O <- peas
 
@@ -124,6 +177,7 @@ O <- peas
 sum((O-E)^2/E)
 
 chisq.test(x = O, p = q, correct = F)
+
 
 
 ### CA Вручную ##############
@@ -156,6 +210,8 @@ O <- mite
 
 Chi2 <- sum((O-E)^2/E)
 
+summary(mite_ca)
+
 Inertia <- Chi2/Ft
 
 
@@ -169,6 +225,9 @@ Q1 <- (p_ij - p_i %*% t(p_j))/sqrt(p_i %*% t(p_j))
 
 #Та же матрица, вычисленная через частоты
 Q <- (f_ij*Ft - f_i %*% t(f_j))/(Ft*sqrt(f_i %*% t(f_j)))
+
+round(sum(Q1 - Q))
+
 
 
 sum(Q^2)
@@ -205,6 +264,8 @@ dim(D)
 
 round(t(Q) %*% Q -   V %*% t(D) %*% D %*% t(V))
 
+Q <- as.matrix(Q)
+
 A <- t(Q) %*% Q
 
 
@@ -236,6 +297,7 @@ Information <- data.frame(
 )
 
 
+summary(mite_ca)
 
 
 CA_samples <- diag(p_i^(-1/2))%*% U[,1:2]
@@ -254,8 +316,18 @@ Pl_CA_st <-
 Pl_CA_st
 
 
+CA <- as.data.frame(CA_samples)
+
+mite.env
+
+plot(x = mite.env$SubsDens, y = CA$V2)
+
+
+
 
 CA_species <- diag(p_j^(-1/2))%*% V[,1:2]
+
+
 
 
 Pl_CA_sp <-
@@ -268,13 +340,65 @@ Pl_CA_sp <-
 
 Pl_CA_sp
 
+
+
+
+
+
 # Задание: Проведите корреспондентный анализ данных по птицам Австралии, используя "ручной" метод обработки
 # После этого сравните полученные результаты с теми результатами, которые получаются с использованием функции из пакета vegan.
 
+library(ggvegan)
+
+birds_ca <- cca(birds[, -c(1,2)])
+
+autoplot(birds_ca, scaling = "sites") +
+  theme_bw()
+
+
+birds_2 <- birds[, -c(1,2)] #только численность
+
+Ft <- sum(birds_2) #Общее количество
+f_ij <- birds_2 #Частота встречи данного вида в данной пробе, то есть это первичные даные!
+p_ij <- birds_2/Ft #вероятность встречи данного вида в данной пробе
+
+
+f_i <- apply(birds_2, MARGIN = 1, FUN = sum) #Общее количество особей в каждой пробе
+p_i <- f_i/Ft #Вектор вероятностей встретить какую-либо особь в данной пробе
+
+f_j <- apply(birds_2, MARGIN = 2, FUN = sum) #Общее количество особей в каждом виде
+p_j <- f_j/Ft #Вектор вероятностей встретить особь данного вида
+
+dim(birds_2)
 
 
 
+Q <- (p_ij - p_i %*% t(p_j))/sqrt(p_i %*% t(p_j))
 
+sum(Q^2)
+
+
+U <- svd(Q)$u
+D <- svd(Q)$d
+V <- svd(Q)$v
+
+# Q <- as.matrix(Q)
+# A <- t(Q) %*% Q #матрица ковариации
+#
+# eig_values <- eigen(A)$values #Собственные числа матрицы A
+# eig_vectors <- eigen(A)$vectors #Матрица собственных векторов для матрицы A
+
+
+CA_samples <- diag(p_i^(-1/2))%*% U[,1:2]
+
+CA_samples <- as.data.frame(CA_samples)
+
+ggplot(CA_samples, aes(V1, V2)) +
+  geom_point()
+
+CA_species <- diag(p_j^(-1/2))%*% V[,1:2]
+
+CA_species <- as.data.frame(CA_species)
 
 
 

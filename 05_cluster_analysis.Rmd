@@ -107,10 +107,10 @@ table(Wolves$group)
 
 ## Задание
 
-- Постройте ординацию nMDS данных
-- Оцените качество ординации
-- Обоснуйте выбор коэффициента
-- Раскрасьте точки на ординации волков в зависимости от географического происхождения (`group`)
+1. Постройте ординацию nMDS данных.
+1. Оцените качество ординации.
+1. Обоснуйте выбор коэффициента.
+1. Раскрасьте точки на ординации волков в зависимости от географического происхождения (`group`).
 
 ---
 
@@ -156,7 +156,7 @@ gg_w
 .pull-right[
 ### Неиерархические методы
 
-- метод K-среднмх (K-means clustering) 
+- метод K-средних (K-means clustering) 
 - метод нечёткой кластеризации C-средних (C-means clustering, fuzzy clustering)
 - Основанная на плотности пространственная кластеризация для приложений с шумами (Density-based spatial clustering of applications with noise, DBSCAN)
 
@@ -168,7 +168,7 @@ gg_w
 
 ### Методы кластеризации на основании расстояний (о них сегодня)
   - Метод ближайшего соседа
-  - Метод отдаленного соседа
+  - Метод отдалённого соседа
   - Метод среднегруппового расстояния
   - Метод Варда
   - и т.д. и т.п.
@@ -221,7 +221,7 @@ DiagrammeR(
 
 ## Методы кластеризации
 
-```{r fig-cluster-methods, echo=FALSE, purl=FALSE}
+```{r fig-cluster-methods, echo=FALSE, purl=FALSE, fig.width=8, fig.height=6}
 library(gridExtra)
 library(ggtext)
 theme_set(theme_bw(base_size = 16))
@@ -382,7 +382,7 @@ gg_list_a <- lapply(8:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "a
 gg_list_w <- lapply(8:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "ward.D2", k = x))
 ```
 
-```{r fig-single-guess, opts.label='LxXXL', echo=FALSE, purl=FALSE}
+```{r fig-single-guess, , fig.height=7, fig.width=7, echo=FALSE, purl=FALSE}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
       geom_point(size = 2) +
       geom_text(hjust = 1.2, vjust = 1.2) +
@@ -429,7 +429,7 @@ gg_complete
 
 ## Как работает метод отдаленного соседа
 
-```{r fig-complete-guess, opts.label='LxXXL', echo=FALSE, purl=FALSE}
+```{r fig-complete-guess, echo=FALSE, purl=FALSE, fig.height=7, fig.width=7}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
       geom_point(size = 2) +
       geom_text(hjust = 1.1, vjust = 1.1) +
@@ -453,7 +453,7 @@ sapply(gg_list_c, plot)
 
 __= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
 
-- кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.
+кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.
 ]]
 .pull-right-33[
 
@@ -465,7 +465,8 @@ gg_average
 
 ### Особенности
 
-- UPGMA и WUPGMС иногда могут приводить к инверсиям на дендрограммах
+UPGMA и WUPGMС иногда могут приводить к инверсиям на дендрограммах
+
 .pull-left-66[
 ![Инверсии на дендрограммах](images/clust-revert.png)
 ]
@@ -473,6 +474,17 @@ gg_average
 .pull-down[
 из Borcard et al., 2011
 ]]
+
+---
+
+## Как работает метод среднегруппового расстояния
+
+```{r average-guess, echo=FALSE, purl=FALSE, fig.width=7, fig.height=7}
+ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
+      geom_point(size = 2) +
+      geom_text(hjust = 1.2, vjust = 1.2) +
+      scale_y_continuous(expand=c(0.1,0.1))
+```
 
 ---
 
@@ -491,7 +503,7 @@ sapply(gg_list_a, plot)
 
 __= Ward's Minimum Variance Clustering__
 
-- объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной.
+объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной.
 ]
 
 
@@ -502,7 +514,18 @@ gg_ward
 .pull-left-33[
 ### Особенности
 
-- метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния.]
+метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния.]
+
+---
+
+## Как работает метод Варда
+
+```{r ward-guess, echo=FALSE, purl=FALSE, fig.width=7, fig.height=7}
+ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
+      geom_point(size = 2) +
+      geom_text(hjust = 1.2, vjust = 1.2) +
+      scale_y_continuous(expand=c(0.1,0.1))
+```
 
 ---
 
@@ -1100,7 +1123,7 @@ gg_k_final
 
 Если в данных много нулей, их обязательно нужно стандартизовать (что мы уже делали).
 
-K-means кластеризацию в R делает функция `kmeans` (пакет `stats`), ей нужно передать аргументы `centers` (количество кластеров) и `nstart`(количество случайных итераций).
+K-means кластеризацию в R делает функция `kmeans` (пакет `stats`), ей нужно передать аргументы `centers` (количество кластеров) и `nstart` (количество случайных итераций).
 
 
 ```{r}
@@ -1119,9 +1142,9 @@ table(avg3, w_kmeans$cluster)
 
 Два популярных критерия: 
 
-- Индекс Калински-Харабаза (Calinski–Harabasz index): F-статистика, сравнивающая меж- и внутригрупповую сумму квадратов. Если группы одинаковой величины 
+- Индекс Калински-Харабаза (Calinski–Harabasz index): F-статистика, сравнивающая меж- и внутригрупповую сумму квадратов. Если группы одинаковой величины.
 
-- Индекс простой структуры (Simple Structure Index): оценивает влияние на интепретабельность полученной кластеризации. Если группы разной величины
+- Индекс простой структуры (Simple Structure Index): оценивает влияние на интепретабельность полученной кластеризации. Если группы разной величины.
 
 ---
 
@@ -1435,18 +1458,18 @@ ggplot() + geom_scatterpie(data = w_clust, aes(x = MDS1, y = MDS2),
 
 ### Фораминиферы маршей Белого моря (Golikova et al. 2020)
 
-![map](images/Golikova_etal_2020_Fig1.png)
+![:scale 80%](images/Golikova_etal_2020_Fig1.png)
 ---
 
 ## Фораминиферы маршей Белого моря
 
-![transect](images/Golikova_etal_2020_fig2.png)
+![:scale 80%](images/Golikova_etal_2020_fig2.png)
 ---
 
 ## Фораминиферы маршей Белого моря
 
 .pull-left[
-![forams](images/Golikova_etal_2020_plate1.png)
+![:scale 80%](images/Golikova_etal_2020_plate1.png)
 ]
 
 .pull-right[
