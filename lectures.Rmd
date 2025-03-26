@@ -248,7 +248,7 @@ install.packages("DAAG")
 + possum{DAAG}
 + possumsites{DAAG}
 
-<!-- ## 10. Канонический корреспондентный анализ и анализ избыточности, основанный на расстоянии -->
+## 10. Канонический корреспондентный анализ и анализ избыточности, основанный на расстоянии
 
 ### 10.1 Канонический корреспондентный анализ (Canonical Correspondence Analysis, CCA)
 
@@ -310,19 +310,19 @@ BiocManager::install(c("treeio", "ggtree"))
 ```
 
 <!-- - Презентация [html](13_Phylogeny.html) -->
-<!-- - Код [13_Phylogeny_code.R](13_Phylogeny_code.R) -->
-<!-- - Данные: -->
-<!--     + Файл с GeneID из GenBank [genbank_ids.txt](data/genbank_ids.txt) -->
-<!--     + Выравнивание [alignment.fasta](data/18S_alignment.fasta) -->
-<!--     + Дерево GTR + I + G [gtr_tree.nex.con.tre](data/18S_ver2.nex.con.tre) -->
-<!--     + Дерево JC69 [jc69.treefile](data/18S_JC69_sac_parasac.treefile) -->
+- Код [13_Phylogeny_code.R](13_Phylogeny_code.R)
+- Данные:
+    + Файл с GeneID из GenBank [genbank_ids.txt](data/genbank_ids.txt)
+    + Выравнивание [alignment.fasta](data/18S_alignment.fasta)
+    + Дерево GTR + I + G [gtr_tree.nex.con.tre](data/18S_ver2.nex.con.tre)
+    + Дерево JC69 [jc69.treefile](data/18S_JC69_sac_parasac.treefile)
 
-<!-- **Данные для самостоятельной работы** -->
+**Данные для самостоятельной работы**
 
-<!-- - Филогения Digenea с акцентом на семейство Zoogonidae (из статьи *Kremnev, G., Gonchar, A., Uryadova, A., Krapivin, V., Skobkina, O., Gubler, A., & Krupenko, D. (2023). No Tail No Fail: Life Cycles of the Zoogonidae (Digenea). Diversity, 15(1), 121. https://www.mdpi.com/1424-2818/15/1/121*) -->
-<!--     + Выравнивание [zoo_alignment.fasta](data/aligned-manual-Zoogonidae-28S.fasta) -->
-<!--     + Дерево, построеное ML [ml_tree.nex](data/28S_ML.result.nex) -->
-<!--     + Дерево, построенное байесовским методом [bayes_tree.nex](data/28S-Bayes.nex) -->
+- Филогения Digenea с акцентом на семейство Zoogonidae (из статьи *Kremnev, G., Gonchar, A., Uryadova, A., Krapivin, V., Skobkina, O., Gubler, A., & Krupenko, D. (2023). No Tail No Fail: Life Cycles of the Zoogonidae (Digenea). Diversity, 15(1), 121. https://www.mdpi.com/1424-2818/15/1/121*)
+    + Выравнивание [zoo_alignment.fasta](data/aligned-manual-Zoogonidae-28S.fasta)
+    + Дерево, построеное ML [ml_tree.nex](data/28S_ML.result.nex)
+    + Дерево, построенное байесовским методом [bayes_tree.nex](data/28S-Bayes.nex)
 
 
 
