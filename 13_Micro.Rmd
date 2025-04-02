@@ -42,16 +42,16 @@ library(metagMisc)
 ```{r read-data}
 #Осноновной пакет для предобработки - phyloseq, 
 
-################################setwd("C:/Users/Пользователь/Desktop/Курсы обработка данных"))
-###не забывать менять рабочую директорию
-#я в итоге стала писать полные пути до файлов
+######setwd("C:/data/")
+###не забывать менять рабочую директорию между проектами
+#я в итоге стала писать полные пути до файлов потому что у меня на винде не работает ничего
 
 # читать таблицы можно и другими функциями, в зависимости от формата, с которым вы столкнулись, это может быть .tsv .xlsx и что угодно
 #stringsAsFactors = FALSE as character vectors should not be converted to factors (so far)
 
-feature_mat <- read.delim("/data/master_feature.txt", stringsAsFactors = FALSE)
-tax_mat <- read.delim("/data/master_tax.txt", stringsAsFactors = FALSE)
-samples_df <- read.delim("/data/master_meta.txt", stringsAsFactors = FALSE)
+feature_mat <- read.delim("data/master_feature_new.txt", stringsAsFactors = FALSE)
+tax_mat <- read.delim("data/master_taxonomy_new.txt", stringsAsFactors = FALSE)
+samples_df <- read.delim("data/master_meta_new.txt", stringsAsFactors = FALSE)
 
 # обозначаем имена строк
 
@@ -98,9 +98,15 @@ sample_variables(snails)
 snails_filtred <- phyloseq_filter_prevalence(snails, prev.trh = 0.05, abund.trh = 1, threshold_condition = "AND", abund.type = "total")
 # надо вспомнить зависимость library(metagMisc) если он вдруг не найдет эту функцию :/
 
+#посмотрим на самые низкие глубины прочтения
 head(sort(sample_sums(snails_filtred), decreasing = FALSE, na.last = TRUE), 15)
 
-head(sort(sample_sums(snails_filtred), decreasing = TRUE, na.last = TRUE), 15)
+# А как посмотреть на 10 образцов с самым большим числом ридов?
+
+
+
+#варьирование на порядок можно пережить, на 2 - нет
+
 ```
   
 
@@ -135,9 +141,7 @@ head(sort(sample_sums(snails_subsampled_2), decreasing = FALSE, na.last = TRUE),
 
 
 ```{r}
-
-tail(sort(sample_sums(snails_subsampled_2), decreasing = FALSE, na.last = TRUE), 15) #варьирование на порядок можно пережить, на 2 - нет
-
+tail(sort(sample_sums(snails_subsampled_2), decreasing = FALSE, na.last = TRUE), 15) 
 ```
 
 
@@ -149,7 +153,7 @@ tail(sort(sample_sums(snails_subsampled_2), decreasing = FALSE, na.last = TRUE),
 ```{r norm-data}
 
 total <- median(sample_sums(snails_subsampled_2))
-#[1] 12498.5
+#[1] 11539
 snails_norm <- transform_sample_counts(snails_subsampled_2, function(x, t = total) round(t * (x / sum(x))))
 
 
@@ -158,9 +162,8 @@ snails_norm <- transform_sample_counts(snails_subsampled_2, function(x, t = tota
 sum_seq_norm <- sample_sums(snails_norm)
 plot(sum_seq_norm, ylim=c(0,25000), main=c("Number of counts per sample, norm"), xlab=c("Samples"))
 
-sum_seq <- sample_sums(snails_subsampled_2)
 
-plot(sum_seq, ylim=c(0,25000), main=c("Number of counts per sample, raw"), xlab=c("Samples"))
+#А как визуализировать глубину прочтений до нормализации?
 
 ```
 
@@ -185,7 +188,7 @@ alpha_diversity
 
 ```
 
-## Выровненность и Шеннон общие
+## Выровненность и Шеннон общие руками
 
 ```{r}
 # сделала общую таблицу по разнообразию со всеми 
@@ -209,7 +212,7 @@ ylab("Alpha Diversity Measure")
 
 ```
 
-## Ранее построенный Шеннон
+## Автоматом построенный Шеннон
 
 ```{r}
 # рисовать можно встроенной функцией
@@ -250,7 +253,6 @@ theme_dark() +
 theme(axis.text.x = element_text(angle = 90, size = 7)) +
 ylab("Evenness")
 ```
-
 
 
 # Ординации и PERMANOVA
@@ -340,6 +342,8 @@ obt_guts_plot<- ggplot(guts_obt, aes(x = MDS1, y = MDS2)) +
 
 obt_guts_plot
 
+#попробуйте повторить ординацию для этого вида, но на другой матрице расстояний или другим методом ординации
+
 ```
 
 
@@ -359,24 +363,24 @@ guts_matrix <- t(data.frame(otu_table(guts_ps)))
 guts_bray_snails <- vegdist(guts_matrix, method = "bray")
 
 ####условия применимости
-anyNA(otu_table(guts_ps))
+
 
 # [1] FALSE
 
-table(sample_data(guts_ps)$season)
+
 
 # May-June_2022 November_2021 
 #            17            17 
 
-table(sample_data(guts_ps)$species)
+
 
  # L_fabalis L_obtusata 
  #        13         21 
 
-anova(betadisper(guts_bray_snails, guts_df$season))
+# guts_df$season
 #неравномерно
 
-anova(betadisper(guts_bray_snails, guts_df$species))
+# guts_df$species
 #равномерно
 
 

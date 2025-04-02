@@ -329,15 +329,18 @@ BiocManager::install(c("treeio", "ggtree"))
 ### 11.2 Анализ микробиомных данных
 
 ```{r eval = FALSE}
-install.packages(c("tidyr", "devtools", "RRPP", "remotes"))
+install.packages(c("tidyr", "devtools", "remotes"))
+BiocManager::install("phyloseq")
+# или
+devtools::install_github("phyloseq/joey711")
+BiocManager::install('RRPP')
 devtools::install_github("gmteunisse/fantaxtic")
 remotes::install_github("vmikk/metagMisc")
-BiocManager::install("phyloseq") # или
-devtools::install_github("phyloseq/joey711")
+
 ```
 
-<!-- - Код [13_Micro.Rmd](13_Micro.Rmd), html-версия [13_Micro.html](13_Micro.html)  -->
-<!-- - Данные: -->
-<!--     + [features.txt](data/master_tax.txt) -->
-<!--     + [meta.txt](data/master_meta.txt) -->
-<!--     + [taxa.txt](data/master_tax.txt) -->
+- Код [13_Micro.Rmd](13_Micro.Rmd), html-версия [13_Micro.html](13_Micro.html)
+- Данные:
+    + [features.txt](data/master_feature_new.txt)
+    + [meta.txt](data/master_meta_new.txt)
+    + [taxa.txt](data/master_taxonomy_new.txt)
