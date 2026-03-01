@@ -141,9 +141,24 @@ dat2 <- data.frame(object = c("Object 1", "Object 2", "Object 3", "Object 4" ), 
 
 library(ggrepel)
 
-pl4 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 5, color = "red") + xlim(0,5) + ylim(0, 11) + annotate(geom = "segment", x = 0, y = 0, xend = 2, yend = 5, arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + annotate(geom = "segment", x = 0, y = 0, xend = 2, yend = 10, arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + geom_text_repel(aes(label = object)) + annotate(geom = "text", x = 1, y = 2, label = "LV 1", angle = 0) + annotate(geom = "text", x = 1, y = 6, label = "LV 2", angle = 0) + annotate(geom = "text", x = 1, y = 3.3, parse = TRUE, label = "alpha", size = 10, angle = 0)
+pl4 <- 
+  ggplot(dat2, aes(x = x, y = y)) + 
+  geom_point(size = 5, color = "red") + xlim(0,5) + 
+  ylim(0, 11) + 
+  annotate(geom = "segment", x = 0, y = 0, xend = 2, yend = 5, arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + 
+  annotate(geom = "segment", x = 0, y = 0, xend = 2, yend = 10, arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + 
+  geom_text_repel(aes(label = object)) + 
+  annotate(geom = "text", x = 1, y = 2, label = "LV 1", angle = 0) + 
+  annotate(geom = "text", x = 1, y = 6, label = "LV 2", angle = 0) + 
+  annotate(geom = "text", x = 1, y = 3.3, parse = TRUE, label = "alpha", size = 10, angle = 0)
 
-pl5 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 5, color = "red") + xlim(0,5) + ylim(0, 11) + geom_segment(aes(x = 0, y = 0, xend = x, yend = y), arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + geom_segment(aes(x = 0, y = 0, xend = 2, yend = 10), arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object)
+pl5 <- 
+  ggplot(dat2, aes(x = x, y = y)) + 
+  geom_point(size = 5, color = "red") + xlim(0,5) + 
+  ylim(0, 11) + 
+  geom_segment(aes(x = 0, y = 0, xend = x, yend = y), arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + 
+  geom_segment(aes(x = 0, y = 0, xend = 2, yend = 10), arrow = arrow(type = "closed", angle = 20, ends = "last"), size = 1) + 
+  geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object)
 
 grid.arrange(pl4, pl5, nrow = 2)
 ```
@@ -170,17 +185,81 @@ $$\begin{vmatrix} LV1 \\ LV2 \\ ... \\ LVn \end{vmatrix}$$
 
 ```{r echo = FALSE, fig.width = 5}
 
-pl6 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 5, color = "red") + theme_bw() + xlim(0, 5) + ylim(0, 11) 
+pl6 <- 
+  ggplot(dat2, aes(x = x, y = y)) + 
+  geom_point(size = 5, color = "red") + 
+  theme_bw() + xlim(0, 5) + ylim(0, 11) 
 
 for ( i in 1:nrow(dat2)) for (j in i:nrow(dat2)) pl6 <- pl6 + geom_segment(x = dat2$x[i], y = dat2$y[i], xend = dat2$x[j], yend = dat2$y[j], arrow = NULL, size = 1) 
 
-pl6 + geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object,  box.padding = 0.6, min.segment.length = 0.5) 
+pl6 + 
+  geom_text_repel(aes(x = x, y = y+0.5), label = dat2$object,  box.padding = 0.6, min.segment.length = 0.5) 
 
 ```
 
 В анализ вовлекается матрица попарных расстояний (сходств) между объектами. Эта матрица однозначно описывает взаиморасположение между объектами.  
 
 Этот способ представления взаиморасположения лежит в основе _Иерархического кластерного анализа, MDS, теста Мантела, ANOSIM, PERMANOVA, процедуры BIOENV_
+
+## Облако точек в n-мерном пространстве
+
+```{r  echo = FALSE, fig.width = 5}
+library(ggplot2)
+library(dplyr)
+
+# Создание иерархических данных
+set.seed(123)
+n_groups <- 4  # количество групп верхнего уровня
+n_subgroups <- 3  # количество подгрупп в каждой группе
+n_points <- 130  # точек в каждой подгруппе
+
+# Генерация данных
+data <- expand.grid(
+  group = LETTERS[1:n_groups],
+  subgroup = 1:n_subgroups,
+  point = 1:n_points
+) %>%
+  mutate(
+    # Центры для групп
+    group_x = case_when(
+      group == "A" ~ 0,
+      group == "B" ~ 10,
+      group == "C" ~ 5,
+      group == "D" ~ 15
+    ),
+    group_y = case_when(
+      group == "A" ~ 0,
+      group == "B" ~ 5,
+      group == "C" ~ 10,
+      group == "D" ~ 15
+    ),
+    # Смещения для подгрупп
+    subgroup_x = case_when(
+      subgroup == 1 ~ -2,
+      subgroup == 2 ~ 0,
+      subgroup == 3 ~ 2
+    ),
+    subgroup_y = case_when(
+      subgroup == 1 ~ 1,
+      subgroup == 2 ~ -1,
+      subgroup == 3 ~ 0
+    ),
+    # Финальные координаты с случайным разбросом
+    x = group_x + subgroup_x + rnorm(n(), 0, 0.5),
+    y = group_y + subgroup_y + rnorm(n(), 0, 0.5),
+    group_subgroup = paste(group, subgroup, sep = "-")
+  )
+
+# Визуализация
+ggplot(data, aes(x = x, y = y)) +
+  # Точки с цветом по группам и формой по подгруппам
+  geom_point(size = 2, alpha = 0.7) +
+  labs(x = "Признак 1", y = "Признак 2") +
+  theme_minimal()
+
+```
+
+Что может лежать в основе такого паттерна расположения точек?
 
 
 # Простейший многомерный анализ
@@ -201,7 +280,14 @@ kable(points, col.names = c("Признак А", "Признак B"), row.names 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 
-Pl_point <- ggplot(points, aes(X, Y))  + geom_segment(aes(x = X, y = Y, xend = c(0, 2), yend = c(1, 0)), linetype = 2) + geom_segment(aes(x = X, y = Y, xend = c(1, 0), yend = c(0, 2)), linetype = 2) + xlim(0, 3) + ylim(0,3) + geom_point(size = 4, color = "red") +  geom_text_repel(aes(label = aes("Object 1", "Object 2"))) + labs(x = "Признак A", y = "Признак В")
+Pl_point <- 
+  ggplot(points, aes(X, Y))  + 
+  geom_segment(aes(x = X, y = Y, xend = c(0, 2), yend = c(1, 0)), linetype = 2) + geom_segment(aes(x = X, y = Y, xend = c(1, 0), yend = c(0, 2)), linetype = 2) + 
+  xlim(0, 3) + 
+  ylim(0,3) + 
+  geom_point(size = 4, color = "red") +  
+  geom_text_repel(aes(label = c("Object 1", "Object 2"))) + 
+  labs(x = "Признак A", y = "Признак В")
 
 Pl_point
 ```
@@ -238,11 +324,18 @@ kable(dat2, col.names = c("Объект", "Признак А", "Признак B
 
 
 ```{r echo=FALSE}
-pl7 <- ggplot(dat2, aes(x = x, y = y)) + geom_point(size = 4, color = "red") + theme_bw() + xlim(0, 5) + ylim(0, 11)
+pl7 <- 
+  ggplot(dat2, aes(x = x, y = y)) + 
+  geom_point(size = 4, color = "red") + 
+  theme_bw() + 
+  xlim(0, 5) + 
+  ylim(0, 11)
 
 # for ( i in 1:nrow(dat2)) for (j in i:nrow(dat2)) pl7 <- pl7 + geom_segment(x = dat2$x[i], y = dat2$y[i], xend = dat2$x[j], yend = dat2$y[j], arrow = NULL, size = 1)
 
-pl7 + geom_text_repel(data = dat2, aes(x = x, y = y, label = dat2$object)) + labs(x = "Признак A", y = "Признак В")
+pl7 + 
+  geom_text_repel(data = dat2, aes(x = x, y = y, label = object)) + 
+  labs(x = "Признак A", y = "Признак В")
 
 ```
 
@@ -528,7 +621,10 @@ grid.arrange(Pl_init, Pl_stand, Pl_log, Pl_rel, ncol = 2 )
 Если в n-мерном облаке точек присутствуют несколько "сгущений", то расстояния между объектами делятся на внутригрупповые (пик в области малых значений расстояний) и межгрупповые (пик в области высоких значений)
 
 ```{r}
-Pl_rel + annotate(geom = "text", x = 0.55, y = 220, label = "Внутригрупповые") + annotate(geom = "text", x = 0.9, y = 120, label = "Межгрупповые") + labs(x = "Мера расстояния", y = "Частота", title = "")
+Pl_rel + 
+  annotate(geom = "text", x = 0.55, y = 220, label = "Внутригрупповые") + 
+  annotate(geom = "text", x = 0.9, y = 120, label = "Межгрупповые") + 
+  labs(x = "Мера расстояния", y = "Частота", title = "")
 ```
 
 
@@ -771,7 +867,9 @@ $W_i=1$ Если присутствует информация как о $x_{i,j
 ## Многие показатели взаимосвязаны и, часто, взаимозаменяемы
 
 ```{r}
-ggplot(dists, aes(x = Euclidean, y = Bray)) + geom_point() + theme_bw()
+ggplot(dists, aes(x = Euclidean, y = Bray)) + 
+  geom_point() + 
+  theme_bw()
 ```
 
 
@@ -803,7 +901,9 @@ __Ординация__ (лат. _ordinatio_ --- расположение в по
 Если у объектов всего два свойства, то ординация имеет вид облака точек в двух осях.
 
 ```{r}
-ggplot(abund_log, aes(x = Scoloplos_armiger, y = Terebellides_stroemi)) + geom_point(color = "red", size = 4) + labs(x = "Вид 1", y = "Вид 2")
+ggplot(abund_log, aes(x = Scoloplos_armiger, y = Terebellides_stroemi)) + 
+  geom_point(color = "red", size = 4) + 
+  labs(x = "Вид 1", y = "Вид 2")
 ```
 
 Аналогия ординации с одномерными методами -- просто числовой ряд. 
@@ -962,7 +1062,10 @@ New_coord <- polarord(abund_log)
 # 
 
 
-ggplot(New_coord, aes(x=Coord, y =0)) + geom_segment(x = 0, xend = d, y = 0, yend=0, size = 2, color = "red") + geom_point(fill = "yellow", position = position_jitter(width = 0, height=0), size = 4, shape = 21) + ylim(-1, 1) 
+ggplot(New_coord, aes(x=Coord, y =0)) + 
+  geom_segment(x = 0, xend = d, y = 0, yend=0, size = 2, color = "red") + 
+  geom_point(fill = "yellow", position = position_jitter(width = 0, height=0), size = 4, shape = 21) + 
+  ylim(-1, 1) 
 ```
 
 
@@ -987,7 +1090,14 @@ _At!_ Одновременное изображение информации о�
 Этот градиент связан с внешним фактором - температурой.
 
 ```{r}
-ggplot(New_coord, aes(x=Coord, y =0)) + geom_segment(x = 0, xend = d, y = 0, yend=0, size = 1, color = "black") + geom_point(aes(fill = hydrol$Temp), position = position_jitter(width = 0, height=0.1), size = 4, shape = 21) + ylim(-1, 1) + scale_fill_gradient(low = "yellow", high = "red") + xlab("Координаты на полярной оси №1") + ylab("")  + labs(fill = "Температура придонной воды") + theme(legend.position = "bottom") 
+ggplot(New_coord, aes(x=Coord, y =0)) + 
+  geom_segment(x = 0, xend = d, y = 0, yend=0, size = 1, color = "black") +
+  geom_point(aes(fill = hydrol$Temp), position = position_jitter(width = 0, height=0.1), size = 4, shape = 21) + 
+  ylim(-1, 1) + 
+  scale_fill_gradient(low = "yellow", high = "red") + 
+  xlab("Координаты на полярной оси №1") + ylab("")  + 
+  labs(fill = "Температура придонной воды") + 
+  theme(legend.position = "bottom") 
  
 ```
 
