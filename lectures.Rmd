@@ -19,7 +19,7 @@ output:
 install.packages("vegan")
 ```
 
-<!-- - Презентация [html](01_multivariate_data_and_dissimilarities.html) -->
+- Презентация [html](01_multivariate_data_and_dissimilarities.html)
 
 - [код R](01_multivariate_data_and_dissimilarities_code.R)
 
