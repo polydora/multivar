@@ -176,21 +176,12 @@ X <-data.frame(x1 = x1, x2 = x2, x3 = x3, x4 = x4, x5 = x5)
 # Проведите ее спектральное разложение (вычислите ее собственные числа и собственные векторы).
 # Оцените информативность главных осей.
 # Изобразите точки в пространстве первой и второй главной оси
-X_cent <- scale(X, center = T, scale = F)
 
-Cov_X <- (t(X_cent) %*% X_cent)/(nrow(X_cent) - 1)
 
-eig <- eigen(Cov_X)
 
-Lambda <- eig$values
 
-U <- eig$vectors
 
-sum(as.vector(Lambda/(sum(Lambda)))[1:2])
 
-X_projected <- as.matrix(X) %*% U[,1:2]
-
-qplot(X_projected[,1], X_projected[,2] )
 
 
 #########################################################################
@@ -334,11 +325,9 @@ gg_face(reduction(20, U_face, D_face, V_face))
 
 library(jpeg)
 
-ander1 <- readJPEG("images/Anderson.jpg")[,,1]
+ander <- readJPEG("images/Anderson.jpg")[,,1]
 
 str(ander)
-
-gg_face(ander[, , 3])
 
 
 ### Самостоятельная работа ############################
