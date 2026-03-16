@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="matrix_algebra_Part1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="matrix_algebra_Part1_files/libs/quarto-html/tabby.min.js"></script>
+<script src="matrix_algebra_Part1_files/libs/quarto-html/popper.min.js"></script>
+<script src="matrix_algebra_Part1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="matrix_algebra_Part1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="matrix_algebra_Part1_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="matrix_algebra_Part1_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
+
+  <meta name="author" content="Вадим Хайтов, Марина Варфоломеева, Анастасия Лянгузова, Валентина Домашкина">
+  <title>Краткое введение в мир линейной алгебры (Часть 2)</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="matrix_algebra_Part1_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="matrix_algebra_Part1_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="matrix_algebra_Part1_files/libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link href="matrix_algebra_Part1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="matrix_algebra_Part1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="matrix_algebra_Part1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="matrix_algebra_Part1_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Краткое введение в мир линейной алгебры (Часть 2)</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Вадим Хайтов, Марина Варфоломеева, Анастасия Лянгузова, Валентина Домашкина 
+</div>
+</div>
+</div>
+
+</section>
+<section id="вы-сможете" class="slide level2 center">
+<h2>Вы сможете</h2>
+<ul>
+<li>Объяснить что такое матрицы и какие бывают их основные разновидности</li>
+<li>Выполнить базовые операции с матрицами с использованием функций R</li>
+<li>Применить в среде R методы линейной алгебры для решения простейших задач</li>
+</ul>
+</section>
+<section>
+<section id="level-1-немного-повторения-зоопарк-матричных-объектов" class="title-slide slide level1 center">
+<h1>Level 1: Немного повторения: <em>Зоопарк матричных объектов</em></h1>
+
+</section>
+<section id="матричные-объекты" class="slide level2 center">
+<h2>Матричные объекты</h2>
+<ul>
+<li>Есть много типов объектов, для которых такое выражение оказывается наиболее естественным (изображения, описания многомерных объектов и т.д.)</li>
+<li>В матрицах, как и в обычных числах, скрыта информация, которую можно извлекать и преобразовывать по определенным правилам</li>
+</ul>
+</section>
+<section id="структура-матриц" class="slide level2 center">
+<h2>Структура матриц</h2>
+<p><span class="math display">\[\begin{pmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1c} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2c} \\    
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+a_{r1} &amp; a_{r2} &amp; \cdots &amp; a_{rc}
+\end{pmatrix}
+    \]</span></p>
+<p>Размер (порядок) матрицы <span class="math inline">\(r \times c\)</span></p>
+</section>
+<section id="разновидности-матриц" class="slide level2 center">
+<h2>Разновидности матриц</h2>
+<p><span class="math display">\[
+\textbf {a} =
+\begin{pmatrix}
+1 &amp; 2 &amp; 3
+\end{pmatrix}
+\]</span> Вектор-строка (Row matrix)</p>
+<p><span class="math display">\[
+\textbf {b} =
+\begin{pmatrix}
+1 \\
+4 \\    
+7 \\
+10
+\end{pmatrix}
+\]</span> Вектор-столбец (column matrix)</p>
+</section>
+<section id="разновидности-матриц-1" class="slide level2 center">
+<h2>Разновидности матриц</h2>
+<p><span class="math display">\[
+\textbf {C} =
+\begin{pmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\    
+7 &amp; 8 &amp; 9 \\
+10 &amp; 11 &amp; 12
+\end{pmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\textbf {D} =
+\begin{pmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6     
+\end{pmatrix}
+\]</span></p>
+<blockquote>
+<p>Прямоугольные матрицы (rectangular matrices)</p>
+</blockquote>
+<blockquote>
+<p>В таком виде обычно представляются исходные данные при многомерном анализе.</p>
+</blockquote>
+<p>В такой матрице столбцы - признаки (p), а строки - объекты (n).</p>
+<p>Лучше, когда n &gt; p, то есть когда объектов больше, чем признаков.</p>
+</section>
+<section id="квадратные-матрицы-square-matrices" class="slide level2 smaller center">
+<h2>Квадратные матрицы (square matrices)</h2>
+<p>Это наиболее “операбельные” матрицы</p>
+<p><span class="math display">\[
+\textbf {E} =
+\begin{pmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\    
+7 &amp; 8 &amp; 9
+\end{pmatrix}
+\]</span></p>
+<p>Диагональные матрицы (diagonal matrix)</p>
+<p><span class="math display">\[
+\textbf {F} =
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 5 &amp; 0 &amp; 0 \\    
+0 &amp; 0 &amp; 9 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\]</span></p>
+</section>
+<section id="квадратные-матрицы-square-matrices-1" class="slide level2 smaller center">
+<h2>Квадратные матрицы (square matrices)</h2>
+<p>Треугольные матрицы (triangular matrices)</p>
+<p><span class="math display">\[
+\textbf {H} =
+\begin{pmatrix}
+1 &amp; 2 &amp; 3 &amp; 4 \\
+0 &amp; 5 &amp; 6 &amp; 7 \\    
+0 &amp; 0 &amp; 9 &amp; 10 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p>или</p>
+<p><span class="math display">\[
+\textbf {H} =
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+3 &amp; 5 &amp; 0 &amp; 0 \\    
+4 &amp; 7 &amp; 9 &amp; 0 \\
+5 &amp; 8 &amp; 10 &amp; 11
+\end{pmatrix}
+\]</span></p>
+</section>
+<section id="квадратные-матрицы-square-matrices-2" class="slide level2 smaller center">
+<h2>Квадратные матрицы (square matrices)</h2>
+<p>Единичная матрица (identity matrix)</p>
+<p><span class="math display">\[
+\textbf {I} =
+\begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\    
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\]</span></p>
+<p>Единичная матрица (обозначение <span class="math inline">\(\textbf{I}\)</span>) занимают особое место в матричной алгебре.<br>
+Она выполняет ту же роль, которую выполняет единица в обычной алгебре.</p>
+</section>
+<section id="матрицы-ассоциации" class="slide level2 center">
+<h2>Матрицы ассоциации</h2>
+<p>Изначально результаты исследования имеют вид исходной матрицы (обычно прямоугольной)</p>
+<p><span class="math display">\[
+\textbf{Y} = [n_{objects} \times p_{descriptors}]
+\]</span></p>
+<p>Информация из этой матрицы конденсируется в двух других матрицах</p>
+<p>Q анализ</p>
+<p><span class="math display">\[
+\textbf{A}_{nn} = [n_{objects} \times n_{objects}]
+\]</span></p>
+<p>R анализ</p>
+<p><span class="math display">\[
+\textbf{A}_{pp} = [p_{descriptors} \times p_{descriptors}]
+\]</span></p>
+</section>
+<section id="матрицы-ассоциации-1" class="slide level2 center">
+<h2>Матрицы ассоциации</h2>
+<p>Это симметричные квадратные матрицы</p>
+<p><span class="math display">\[
+\textbf{A}_{pp} =  
+\begin{pmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1p} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2p} \\    
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+a_{p1} &amp; a_{p2} &amp; \cdots &amp; a_{pp}
+\end{pmatrix}
+\]</span></p>
+<p>В этой матрице <span class="math inline">\(a_{ij} = a_{ji}\)</span></p>
+<p>Большинство многомерных методов имеет дело именно с такими матрицами</p>
+</section>
+<section id="особенность-квадратных-матриц" class="slide level2 center">
+<h2>Особенность квадратных матриц</h2>
+<p>Для квадратных матриц могут быть найдены (но не обязательно существуют) некоторые важные для линейной алгебры показатели: <em>определитель</em>, <em>инверсия</em>, <em>собственные значения</em> и <em>собственные векторы</em></p>
+</section>
+<section id="задание" class="slide level2 center">
+<h2>Задание</h2>
+<p>Создайте с помощью R следующие матрицы</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    5    9
+[2,]    2    6   10
+[3,]    3    7   11
+[4,]    4    8   12</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    0    0    0    0
+[2,]    0    2    0    0    0
+[3,]    0    0    3    0    0
+[4,]    0    0    0    4    0
+[5,]    0    0    0    0    5</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="level-2-еще-немного-повторения-простейшие-операции-с-матричными-объектами" class="title-slide slide level1 center">
+<h1>Level 2: Еще немного повторения: <em>Простейшие операции с матричными объектами</em></h1>
+
+</section>
+<section id="транспонирование-матриц" class="slide level2 center">
+<h2>Транспонирование матриц</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    5    9
+[2,]    2    6   10
+[3,]    3    7   11
+[4,]    4    8   12</code></pre>
+</div>
+</div>
+<p>Транспонированная матрица <span class="math inline">\(\textbf{B} = \textbf{A}'\)</span> синонимичная запись <span class="math inline">\(\textbf{B} = \textbf{A}^{T}\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    2    3    4
+[2,]    5    6    7    8
+[3,]    9   10   11   12</code></pre>
+</div>
+</div>
+</section>
+<section id="сложение-матриц" class="slide level2 center">
+<h2>Сложение матриц</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    5    9   13
+[2,]    6   10   14
+[3,]    7   11   15
+[4,]    8   12   16</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    2   10   18
+[2,]    4   12   20
+[3,]    6   14   22
+[4,]    8   16   24</code></pre>
+</div>
+</div>
+<p>Но! Нельзя складывать матрицы разных размеров</p>
+</section>
+<section id="простое-умножение" class="slide level2 center">
+<h2>Простое умножение</h2>
+<p>Умножение на число</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    4   20   36
+[2,]    8   24   40
+[3,]   12   28   44
+[4,]   16   32   48</code></pre>
+</div>
+</div>
+<p>Простое умножение матрицы на вектор возможно только если число элементов в векторе равно числу строк в матрице</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]   10   50   90
+[2,]   22   66  110
+[3,]   36   84  132
+[4,]   52  104  156</code></pre>
+</div>
+</div>
+<p>Все элементы первой строки матрицы умножаются на первый элемент вектора, все элементы второй строки на второй элемент вектора и т.д.</p>
+</section></section>
+<section>
+<section id="level-3-векторы-и-их-геометрическая-интерпретация" class="title-slide slide level1 center">
+<h1>Level 3: Векторы и их геометрическая интерпретация</h1>
+
+</section>
+<section id="вектор-в-языке-r" class="slide level2 center">
+<h2>Вектор в языке R</h2>
+<p>Мы уже привыкли, что в языке R все основано на векторных операциях.</p>
+<p>Вектор – это последовательность чисел: <span class="math inline">\((x_1, x_2, ..., x_n)\)</span>.</p>
+<p>Примеры векторов</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 3 5 7 9</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] -0.175  0.833 -0.526  1.630 -0.234  1.862 -0.607 -0.798  0.707
+[10]  0.327</code></pre>
+</div>
+</div>
+<p>НО! Почему одно число тоже вектор?</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">runif</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.973</code></pre>
+</div>
+</div>
+</section>
+<section id="почему-одно-число---это-тоже-вектор" class="slide level2 columns-2 smaller center">
+<h2>Почему одно число - это тоже вектор?</h2>
+<div style="display: flex; gap: 50px; align-items: flex-start;">
+<div class="column" style="width:40%;">
+<p>У матричных объектов есть геометрическая интерпретация.</p>
+<p>Пусть у нас есть одно единственное число, например, “10”.</p>
+<p>Его можно представить, как точку на числовой оси.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>Но! Это же самое число можно представить в виде вектора, направленного отрезка, идущего от точки “0” к точке “10”</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="интерпретация-вектора" class="slide level2 columns-2 smaller center">
+<h2>Интерпретация вектора</h2>
+<p>Геометрической интерпретацией вектора является направленный отрезок в n-мерном пространстве с началом в точке <span class="math inline">\((0, 0 .... 0)\)</span>.</p>
+<p>Если в векторе всего два числа, то это направленный отрезок на плоскости.</p>
+<p>Пример: <code>vec = (1, 5)</code></p>
+
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" width="192"></section>
+<section id="длина-вектора-геометрическая-итерпретаця" class="slide level2 center">
+<h2>Длина вектора, геометрическая итерпретаця</h2>
+
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center r-stretch" width="192"><p>По теореме Пифагора</p>
+<p><span class="math display">\[
+R = \sqrt{b_1^2 + b_2^2}
+\]</span></p>
+</section>
+<section id="длина-вектора-в-матричной-алгебре" class="slide level2 center">
+<h2>Длина вектора в матричной алгебре</h2>
+<p>Пусть есть вектор: <span class="math inline">\(\textbf{b} = b_1, b_2,  \dots,  b_n\)</span></p>
+<p>Длина вектора, или норма вектора</p>
+<p><span class="math display">\[
+||\textbf{b}|| = \sqrt{b_1^2 + b_2^2 + \dots + b_n^2}
+\]</span></p>
+<p>Длина вектора</p>
+<div class="cell" data-layout-align="center" data-echox="true">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.42</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.42</code></pre>
+</div>
+</div>
+</section>
+<section id="скалярное-произведение-векторов" class="slide level2 center">
+<h2>Скалярное произведение векторов</h2>
+<div style="font-size: 0.9em;">
+<p>Допустимо только для векторов одинаковой размерности</p>
+<p><span class="math display">\[
+\textbf{a} \cdot \textbf{b} =  
+\begin{pmatrix}
+a_1 \\
+a_3 \\    
+a_4 \\
+a_5 \\
+a_6 \\
+a_7
+\end{pmatrix}
+\times
+\begin{pmatrix}
+b_1 &amp;
+b_3 &amp;    
+b_4 &amp;
+b_5 &amp;
+b_6 &amp;
+b_7
+\end{pmatrix}
+= a_1b_1 + a_2b_2 + ... + a_7b_7 = x
+\]</span></p>
+<p>Это базовая операция для истинного матричного умножения.</p>
+<p>Результат этой операции - число (скаляр)</p>
+</div>
+</section>
+<section id="как-это-работает" class="slide level2 center">
+<h2>Как это работает?</h2>
+<h3 id="бытовой-пример">Бытовой пример</h3>
+<p>В доме есть следующие электроприборы.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Электроприбор</th>
+<th>Количество</th>
+<th>Мощность (Вт)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Чайник</td>
+<td>2 шт</td>
+<td>1200</td>
+</tr>
+<tr class="even">
+<td>Обогреватели</td>
+<td>3 шт.</td>
+<td>1300</td>
+</tr>
+<tr class="odd">
+<td>Осушитель</td>
+<td>1 шт.</td>
+<td>1100</td>
+</tr>
+<tr class="even">
+<td>Стиральная машина</td>
+<td>1 шт.</td>
+<td>1500</td>
+</tr>
+<tr class="odd">
+<td>Фен</td>
+<td>2 шт.</td>
+<td>800</td>
+</tr>
+</tbody>
+</table>
+<p>Вопрос: Какова будет суммарная мощность всех электроприборов, если их включить одновременно?</p>
+</section>
+<section id="решение" class="slide level2 center">
+<h2>Решение</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb17-2"><a href=""></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1200</span>, <span class="dv">1300</span>, <span class="dv">1100</span>, <span class="dv">1500</span>, <span class="dv">800</span>)</span>
+<span id="cb17-3"><a href=""></a></span>
+<span id="cb17-4"><a href=""></a>a <span class="sc">%*%</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]
+[1,] 10500</code></pre>
+</div>
+</div>
+</section>
+<section id="геометрическая-интерпретация-скалярного-произведения-векторов" class="slide level2 smaller center">
+<h2>Геометрическая интерпретация скалярного произведения векторов</h2>
+<p>Скалярное произведение равно произведению длин векторов на <span class="math inline">\(cos\)</span> угла между ними</p>
+<p><span class="math display">\[
+\textbf{a} \cdot \textbf{b} =  ||\textbf{a}|| \times ||\textbf{b}|| \times \cos(\alpha)
+\]</span></p>
+<p>Пусть у нас есть два вектора: <span class="math inline">\(\textbf{a} = 1, 5\)</span> и <span class="math inline">\(\textbf{b} = 0.25, 4\)</span></p>
+
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-20-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<section id="ортогониальные-векторы" class="slide level2 center">
+<h2>Ортогониальные векторы</h2>
+<p>Если угол между векторами равен 90 градусов, то такие векторы называются ортогональными.</p>
+<p>У таких векторов скалярное произведение <span class="math inline">\(\textbf{a} \cdot \textbf{b} = 0\)</span></p>
+</section>
+<section id="задание-1" class="slide level2 center">
+<h2>Задание</h2>
+<p>Выясните, являются ли ортогональными следующие векторы?</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb19-2"><a href=""></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb19-3"><a href=""></a>c <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb19-4"><a href=""></a>d <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="решение-1" class="slide level2 smaller columns-2 center">
+<h2>Решение</h2>
+<div style="display: flex; gap: 40px;">
+<div class="column" style="width:40%;">
+<p>Аналитическое решение</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>(a) <span class="sc">%*%</span> (b) <span class="co">#Ортогональны</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>(c) <span class="sc">%*%</span> (a) <span class="co">#Неортогональны</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>(c) <span class="sc">%*%</span> (b) <span class="co">#Неортогональны</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>(d) <span class="sc">%*%</span> (c) <span class="co">#Ортогональны</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>(c) <span class="sc">%*%</span> (a) <span class="co">#неортогональны</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>(b) <span class="sc">%*%</span> (d) <span class="co">#неортогональны</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    1</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>Геометрическое решение</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="угол-между-векторами" class="slide level2 center">
+<h2>Угол между векторами</h2>
+<p>Пусть, векторы отражают признаки объектов.<br>
+Что характеризует угол между векторами?</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Object1 Object2
+Tr1     0.5     0.5
+Tr2     0.0     3.0</code></pre>
+</div>
+
+</div>
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<section id="угол-между-векторами-1" class="slide level2 center">
+<h2>Угол между векторами</h2>
+<h3 id="длина-векторов">Длина векторов</h3>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">norm</span>(<span class="fu">t</span>(Dat[ ,<span class="dv">1</span> ]), <span class="at">type =</span> <span class="st">"F"</span>) <span class="co">#Длина вектора Tr1 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.707</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">norm</span>(<span class="fu">t</span>(Dat[ , <span class="dv">2</span>]), <span class="at">type =</span> <span class="st">"F"</span>) <span class="co">#Длина вектора Tr2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+</section>
+<section id="угол-между-векторами-2" class="slide level2 center">
+<h2>Угол между векторами</h2>
+<p>Если</p>
+<p><span class="math display">\[
+\textbf{a} \cdot \textbf{b} =  ||\textbf{a}|| \times ||\textbf{b}|| \times \cos(\alpha)
+\]</span></p>
+<p>то</p>
+<p><span class="math display">\[
+\cos(\alpha) = \frac{\textbf{a} \cdot \textbf{b}} {||\textbf{a}|| \times ||\textbf{b}||}
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>cos_a <span class="ot">&lt;-</span> (Dat[, <span class="dv">1</span>] <span class="sc">%*%</span> Dat[, <span class="dv">2</span>])<span class="sc">/</span>(<span class="fu">norm</span>(<span class="fu">t</span>(Dat[, <span class="dv">1</span>]), <span class="at">type =</span> <span class="st">"F"</span>) <span class="sc">*</span> </span>
+<span id="cb37-2"><a href=""></a>                                    <span class="fu">norm</span>(<span class="fu">t</span>(Dat[, <span class="dv">2</span>]), <span class="at">type =</span> <span class="st">"F"</span>))</span>
+<span id="cb37-3"><a href=""></a>cos_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]
+[1,] 0.707</code></pre>
+</div>
+</div>
+<p>Угол между векторами - мера сонаправленности векторов…</p>
+</section>
+<section id="интерпретация-угла-между-векторами" class="slide level2 smaller columns-2 center">
+<h2>Интерпретация угла между векторами</h2>
+<div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p><span class="math display">\[
+\cos(\alpha) = \frac{\textbf{a} \cdot \textbf{b}}{||\textbf{a}|| \times ||\textbf{b}||}  = ?     
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>vec_a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)</span>
+<span id="cb39-2"><a href=""></a>vec_b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="dv">4</span>)</span>
+<span id="cb39-3"><a href=""></a></span>
+<span id="cb39-4"><a href=""></a>cos_alpha <span class="ot">&lt;-</span> vec_a <span class="sc">%*%</span> vec_b <span class="sc">/</span> (<span class="fu">norm</span>(<span class="fu">t</span>(vec_a), <span class="at">type =</span> <span class="st">"F"</span>) <span class="sc">*</span> <span class="fu">norm</span>(<span class="fu">t</span>(vec_b), <span class="at">type =</span> <span class="st">"F"</span>)) </span>
+<span id="cb39-5"><a href=""></a></span>
+<span id="cb39-6"><a href=""></a>cos_alpha</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]
+[1,] 0.991</code></pre>
+</div>
+</div>
+</div></section>
+<section id="интерпретация-угла-между-векторами-1" class="slide level2 smaller columns-2 center">
+<h2>Интерпретация угла между векторами</h2>
+
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-29-1.png" class="quarto-figure quarto-figure-center r-stretch" width="384"><p><span class="math display">\[
+\cos(\alpha) = \frac{\textbf{a} \cdot \textbf{b}}{||\textbf{a}|| \times ||\textbf{b}||}  = \frac{a_x \cdot b_x+a_y \cdot b_y}{\sqrt {a_x^2 + a_y^2} \times \sqrt {b_x^2 + b_y^2}}     
+\]</span></p>
+</section>
+<section id="интерпретация-угла-между-векторами-2" class="slide level2 smaller columns-2 center">
+<h2>Интерпретация угла между векторами</h2>
+<p>Если вектор трехмерный</p>
+<p><span class="math display">\[
+\cos(\alpha) = \frac{\textbf{a} \cdot \textbf{b}}{||\textbf{a}|| \times ||\textbf{b}||}  = \frac{a_x \cdot b_x + a_y \cdot b_y + a_z \cdot b_z }  {\sqrt {a_x^2 + a_y^2 + a_z^2} \times \sqrt {b_x^2 + b_y^2 + b_z^2}}     
+\]</span></p>
+</section>
+<section id="интерпретация-угла-между-векторами-3" class="slide level2 center">
+<h2>Интерпретация угла между векторами</h2>
+<p>Если вектор n-мерный</p>
+<p><span class="math display">\[
+\cos(\alpha) = \frac{\textbf{a} \cdot \textbf{b}}{||\textbf{a}|| \times ||\textbf{b}||}  = \frac{\Sigma{(a_i\cdot b_i)}}  {\sqrt {\Sigma{a_i^2}} \times \sqrt {\Sigma{b_i^2}}}     
+\]</span> Ничего не напоминает?</p>
+</section>
+<section id="интерпретация-угла-между-векторами-4" class="slide level2 center">
+<h2>Интерпретация угла между векторами</h2>
+<p>За точку отсчета взято начало координат, т.е. точка с координатами <span class="math inline">\(0, 0, \dots, 0\)</span>, тогда</p>
+<p><span class="math display">\[
+\cos(\alpha) = \frac{\textbf{a} \cdot \textbf{b}}{||\textbf{a}|| \times ||\textbf{b}||}  = \frac{\Sigma{((a_i-0)\cdot (b_i - 0))}}  {\sqrt {\Sigma{(a_i-0)^2}} \times \sqrt {\Sigma{(b_i-0)^2}}}     
+\]</span> Ничего не напоминает?</p>
+</section>
+<section id="интерпретация-угла-между-векторами-5" class="slide level2 center">
+<h2>Интерпретация угла между векторами</h2>
+<p><span class="math display">\[
+r_{x,y} = \frac{\sum(x_i-\bar{x})(y_i-\bar{y})} {\sqrt{\sum(x_i-\bar{x})^2}\sqrt{\sum(y_i-\bar{y})^2}} = \frac{cov_{x,y}} {\sigma_x \sigma_y}
+\]</span></p>
+<p>Ключевая разница - это наличие вот этих элементов в формуле: <span class="math inline">\(x_i-\bar{x}\)</span> и <span class="math inline">\(y_i-\bar{y}\)</span></p>
+<p>Как называется действие, которое описывается такими формулами?</p>
+</section>
+<section id="интерпретация-угла-между-векторами-6" class="slide level2 center">
+<h2>Интерпретация угла между векторами</h2>
+<p><span class="math display">\[
+r_{x,y} = \frac{\sum(x_i-\bar{x})(y_i-\bar{y})} {\sqrt{\sum(x_i-\bar{x})^2}\sqrt{\sum(y_i-\bar{y})^2}} = \frac{cov_{x,y}} {\sigma_x \sigma_y}
+\]</span></p>
+<p>Ключевая разница - это наличие вот этих элементов в формуле: <span class="math inline">\(x_i-\bar{x}\)</span> и <span class="math inline">\(y_i-\bar{y}\)</span></p>
+<p>Как называется действие, которое описывается такими формулами?</p>
+<p>Это <strong>центрирование</strong>! Перевод начала координат в точку с координатами равными средним значениям векторов. Такая точка называется <strong>центроидом</strong>.</p>
+</section>
+<section id="вычисление-косинуса-угла-между-векторами" class="slide level2 center">
+<h2>Вычисление косинуса угла между векторами</h2>
+<div class="column" style="width:60%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>  a    b  c
+1 1 0.25 -3
+2 5 4.00  0</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-31-1.png" class="quarto-figure quarto-figure-center" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="fu">with</span>(vectors, a <span class="sc">%*%</span> b<span class="sc">/</span>(<span class="fu">norm</span>(<span class="fu">t</span>(a), <span class="at">type =</span> <span class="st">"F"</span>) <span class="sc">*</span> <span class="fu">norm</span>(<span class="fu">t</span>(b), <span class="at">type =</span> <span class="st">"F"</span>)) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]
+[1,] 0.991</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="fu">with</span>(vectors, a <span class="sc">%*%</span> c<span class="sc">/</span>(<span class="fu">norm</span>(<span class="fu">t</span>(a), <span class="at">type =</span> <span class="st">"F"</span>) <span class="sc">*</span> <span class="fu">norm</span>(<span class="fu">t</span>(c), <span class="at">type =</span> <span class="st">"F"</span>)) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       [,1]
+[1,] -0.196</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="fu">with</span>(vectors, b <span class="sc">%*%</span> c<span class="sc">/</span>(<span class="fu">norm</span>(<span class="fu">t</span>(b), <span class="at">type =</span> <span class="st">"F"</span>) <span class="sc">*</span> <span class="fu">norm</span>(<span class="fu">t</span>(c), <span class="at">type =</span> <span class="st">"F"</span>)) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        [,1]
+[1,] -0.0624</code></pre>
+</div>
+</div>
+</div></section>
+<section id="коэффициент-корреляции-и-косинус-угла-между-векторами" class="slide level2 smaller columns-2 center">
+<h2>Коэффициент корреляции и косинус угла между векторами</h2>
+<p>Пусть есть два вектора в 100-мерном пространстве</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb48-2"><a href=""></a>vec_1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">1</span>)</span>
+<span id="cb48-3"><a href=""></a>vec_2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">10</span><span class="sc">*</span>vec_1 <span class="sc">+</span> <span class="dv">10</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Коэффициент корреляции</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">cor</span>(vec_1, vec_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.708</code></pre>
+</div>
+</div>
+<p>Косинус угла в 100-мерном пространстве</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="co"># Центрированные векторы</span></span>
+<span id="cb51-2"><a href=""></a>vec_1_c <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(vec_1, </span>
+<span id="cb51-3"><a href=""></a>                           <span class="at">center =</span> T, <span class="at">scale =</span> F))</span>
+<span id="cb51-4"><a href=""></a>vec_2_c <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(vec_2, </span>
+<span id="cb51-5"><a href=""></a>                           <span class="at">center =</span> T, <span class="at">scale =</span> F))</span>
+<span id="cb51-6"><a href=""></a></span>
+<span id="cb51-7"><a href=""></a>cos_alpha <span class="ot">&lt;-</span> (vec_1_c <span class="sc">%*%</span> vec_2_c)<span class="sc">/</span></span>
+<span id="cb51-8"><a href=""></a>  (<span class="fu">norm</span>(<span class="fu">t</span>(vec_1_c), <span class="at">type =</span> <span class="st">"F"</span>)<span class="sc">*</span></span>
+<span id="cb51-9"><a href=""></a>     <span class="fu">norm</span>(<span class="fu">t</span>(vec_2_c), <span class="at">type =</span> <span class="st">"F"</span>))</span>
+<span id="cb51-10"><a href=""></a></span>
+<span id="cb51-11"><a href=""></a>cos_alpha</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       [,1]
+[1,] -0.708</code></pre>
+</div>
+</div>
+</section>
+<section id="нормализованные-векторы" class="slide level2 center">
+<h2>Нормализованные векторы</h2>
+<p>Для многомерных методов важны взаимоотношения векторов, а не их истинные длины.</p>
+<p>Для приведения векторов к соизмеримости проводят их <em>нормализацию</em>.</p>
+<p><span class="math display">\[
+\textbf{c} = \frac{\textbf{b}} {||\textbf{b}||}
+\]</span></p>
+</section>
+<section id="задание-2" class="slide level2 center">
+<h2>Задание</h2>
+<p>Найдите нормализованный вектор для следующего вектора и определите его длину</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5</code></pre>
+</div>
+</div>
+</section>
+<section id="решение-2" class="slide level2 center">
+<h2>Решение</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>normalized_Vec <span class="ot">&lt;-</span> Vec<span class="sc">/</span><span class="fu">norm</span>(<span class="fu">t</span>(Vec), <span class="at">type =</span> <span class="st">"F"</span>)</span>
+<span id="cb54-2"><a href=""></a>normalized_Vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.135 0.270 0.405 0.539 0.674</code></pre>
+</div>
+</div>
+<p>Длина нормализованного вектора</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">norm</span>(<span class="fu">t</span>(normalized_Vec), <span class="at">type =</span> <span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<blockquote>
+
+<ul>
+<li>Длина нормализованного вектора равна 1. Это важное свойство для многомерных методов.</li>
+</ul>
+
+</blockquote>
+</section>
+<section id="нормализованные-векторы-1" class="slide level2 smaller columns-2 center">
+<h2>Нормализованные векторы</h2>
+<div class="column" style="width:40%;">
+<p>Исходные данные</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Object1 Object2
+Tr1     0.5     0.5
+Tr2     0.0     3.0</code></pre>
+</div>
+</div>
+<p>Нормализованные данные</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Object1 Object2
+Tr1   0.707   0.707
+Tr2   0.000   1.000</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-41-1.png" class="quarto-figure quarto-figure-center" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Характер взаимосвязи между нормализованными векторами такой же, как и у исходных векторов.</p>
+<p>После нормализации, можно пренебречь разницами длин векторов.</p>
+</div></section></section>
+<section>
+<section id="level-4-еще-немного-повторения-операции-с-матрицами" class="title-slide slide level1 center">
+<h1>Level 4: Еще немного повторения: <em>Операции с матрицами</em></h1>
+
+</section>
+<section id="матричное-умножение-матрицы-на-вектор" class="slide level2 smaller columns-2 center">
+<h2>Матричное умножение матрицы на вектор</h2>
+<div class="column" style="width:40%;">
+<p><span class="math display">\[
+\mathbf{A} \times \mathbf{a}
+\]</span></p>
+<p>Умножать можно только в том случае, если число столбцов в матрице равно количеству чисел в векторе.</p>
+<p>Пусть, есть матрица <span class="math inline">\(\mathbf{A}\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    5    9
+[2,]    2    6   10
+[3,]    3    7   11
+[4,]    4    8   12</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a>A <span class="sc">%*%</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]  150
+[2,]  180
+[3,]  210
+[4,]  240</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>Первое число итогового вектора - скалярное произведение первой строки <span class="math inline">\(\mathbf{A}\)</span> на вектор <span class="math inline">\(\mathbf{a}\)</span><br>
+</li>
+<li>Второе число - скалярное произведение второй строки <span class="math inline">\(\mathbf{A}\)</span> на вектор <span class="math inline">\(\mathbf{a}\)</span><br>
+и т.д.</li>
+</ul>
+<p>Но! если поменять местами множители, то будет ошибка</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>) <span class="sc">%*%</span> A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in c(10, 10, 10) %*% A: неподобные аргументы</code></pre>
+</div>
+</div>
+</div></section>
+<section id="матричное-умножение-вектора-на-матрицу" class="slide level2 center">
+<h2>Матричное умножение вектора на матрицу</h2>
+<p><span class="math display">\[
+\mathbf{a} \times  \mathbf{A}
+\]</span></p>
+<p>Умножать можно только в том случае, если количество чисел в векторе равно количеству строк в матрице.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a><span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>) <span class="sc">%*%</span> A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]  100  260  420</code></pre>
+</div>
+</div>
+<p>Но! если поменять местами множители, то будет ошибка</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-error">
+<pre><code>Error in A %*% c(10, 10, 10, 10): неподобные аргументы</code></pre>
+</div>
+</div>
+</section>
+<section id="умножение-матриц" class="slide level2 smaller columns-2 center">
+<h2>Умножение матриц</h2>
+<div class="column" style="width:40%;">
+<p>Умножать можно только в том случае, если число колонок в первой матрице равно числу строк второй матрицы: <span class="math inline">\(\mathbf{A} \times \mathbf{B}\)</span></p>
+<p>Пусть, есть матрица <span class="math inline">\(\mathbf{A}\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    5    9
+[2,]    2    6   10
+[3,]    3    7   11
+[4,]    4    8   12</code></pre>
+</div>
+</div>
+<p>и матрица <span class="math inline">\(\mathbf{B}\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    2    3    4
+[2,]    5    6    7    8
+[3,]    9   10   11   12</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a>A <span class="sc">%*%</span> B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]  107  122  137  152
+[2,]  122  140  158  176
+[3,]  137  158  179  200
+[4,]  152  176  200  224</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>НО! Нельзя произвести такое умножение</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>A <span class="sc">%*%</span> A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in A %*% A: неподобные аргументы</code></pre>
+</div>
+</div>
+</div></section>
+<section id="схема-умножения-матриц" class="slide level2 center">
+<h2>Схема умножения матриц</h2>
+<p><span class="math display">\[
+\begin{pmatrix}
+A &amp; B  \\
+C &amp; D \\
+\end{pmatrix}
+\times
+\begin{pmatrix}
+E &amp; F \\ G &amp; H\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+(A \cdot E + B \cdot G)  &amp; (A \cdot F + B \cdot H ) \\ (C \cdot E + D \cdot G)  &amp; (C \cdot F + D \cdot H)  \\
+\end{pmatrix}
+\]</span></p>
+<!-- ## Некоторые свойства произведения матриц {.smaller .columns-2} -->
+<!-- Если существует произведение матриц $\textbf{BC}$, то не обязательно существует $\textbf{CB}$ -->
+<!-- ```{r, purl=TRUE} -->
+<!-- B <- matrix(1:24, ncol = 4) -->
+<!-- B -->
+<!-- C <- matrix(1:12, ncol = 3) -->
+<!-- C -->
+<!-- B %*% C -->
+<!-- ``` -->
+<!-- HO!  -->
+<!-- ```{r, error=TRUE, purl=TRUE} -->
+<!-- C %*% B -->
+<!-- ``` -->
+<!-- ## Некоторые свойства произведения матриц -->
+<!-- Всегда существует такое произведение матриц $\textbf{C}\textbf{C}'$ и $\textbf{C}'\textbf{C}$ -->
+<!-- ```{r, purl=TRUE} -->
+<!-- C %*% t(C) -->
+<!-- ``` -->
+<!-- ```{r, purl=TRUE} -->
+<!-- t(C) %*% C -->
+<!-- ``` -->
+<!-- ## Некоторые свойства произведения матриц -->
+<!-- Произведение матриц $\textbf{BC}$ как правило не равно $\textbf{CB}$ -->
+<!-- ```{r, purl=TRUE} -->
+<!-- B <- matrix(1:9, ncol = 3) -->
+<!-- C <- matrix(11:19, ncol = 3) -->
+<!-- B %*%  C -->
+<!-- C %*% B -->
+<!-- ``` -->
+<!-- ## Некоторые свойства произведения матриц -->
+<!-- $[\textbf{BC}]' = \textbf{C}'\textbf{B}'$ -->
+<!-- ```{r, purl=TRUE} -->
+<!-- t(B %*% C) -->
+<!-- ``` -->
+<!-- ```{r, purl=TRUE} -->
+<!-- t(C) %*% t(B) -->
+<!-- ``` -->
+<!-- ## Некоторые свойства произведения матриц -->
+<!-- Произведение $\textbf{B}\textbf{B}'$ и $\textbf{B}'\textbf{B}$ всегда дает симметричную матрицу  -->
+<!-- ```{r, purl=TRUE} -->
+<!-- B %*% t(B) -->
+<!-- ``` -->
+<!-- ```{r, purl=TRUE} -->
+<!-- t(B) %*% B -->
+<!-- ``` -->
+<!-- ## Как это работает?  {.smaller .columns-2} -->
+<!-- ### Бытовой пример -->
+<!-- Представим себе, что вы решили купить четыре товара, по следующим ценам  -->
+<!-- Товар | Цена     -->
+<!-- ------|-----     -->
+<!-- Товар 1 | 10     -->
+<!-- Товар 2 | 20     -->
+<!-- Товар 3 | 30    -->
+<!-- Товар 4 | 40     -->
+<!-- Прямых выходов на продавца у вас нет, но есть три посредника, которые выставляют следующие "накрутки" цен.  -->
+<!-- Посредники  | Товар 1 | Товар 2 | Товар 3 | Товар 4  -->
+<!-- ------------|---------|---------|---------|-------- -->
+<!-- Посредник 1 | 0.1 | 0.15 | 0.05 | 0.05  -->
+<!-- Посредник 2 | 0.15 | 0.15 | 0.09 | 0.01  -->
+<!-- Посредник 3 | 0.2 | 0.05 | 0.1 | 0.1   -->
+<!-- <br> -->
+<!-- Какой из посредников выгоднее? -->
+<!-- ## Решение -->
+<!-- ```{r, purl=TRUE} -->
+<!-- cost <- c(10, 20, 30, 40) -->
+<!-- retailer <- matrix(c(0.1, 0.15, 0.05, 0.05,   -->
+<!--                      0.15, 0.15, 0.09, 0.01,  -->
+<!--                      0.2, 0.05, 0.1, 0.1 ), byrow = TRUE, ncol = 4) -->
+<!-- retailer %*% cost   -->
+<!-- ``` -->
+</section></section>
+<section>
+<section id="level-5.матрицы-как-инструмент-преобразования" class="title-slide slide level1 center">
+<h1>Level 5.Матрицы, как инструмент преобразования</h1>
+
+</section>
+<section id="геометрическая-интерпретация-матрицы" class="slide level2 smaller columns-2 center">
+<h2>Геометрическая интерпретация матрицы</h2>
+<p>Вектор это направленный n-мерный отрезок.</p>
+<p>Матрица - это система векторов</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1] [,2]
+ [1,]    2    2
+ [2,]    3    2
+ [3,]    4    3
+ [4,]    5    3
+ [5,]    6    2
+ [6,]    7    2
+ [7,]    7    3
+ [8,]    7    4
+ [9,]    6    5
+[10,]    5    6
+[11,]    4    6
+[12,]    3    5
+[13,]    2    4
+[14,]    2    3
+[15,]    2    2</code></pre>
+</div>
+</div>
+<p>Два сцепленных 15-мерных вектора</p>
+<p>и/или</p>
+<p>15 сцепленных двумерных векторов.</p>
+</section>
+<section id="геометрическая-интерпретация-матрицы-1" class="slide level2 center">
+<h2>Геометрическая интерпретация матрицы</h2>
+<p><strong>Интерпретация матрицы, вариант 1</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>  V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 V13 V14 V15
+1  2  3  4  5  6  7  7  7  6   5   4   3   2   2   2
+2  2  2  3  3  2  2  3  4  5   6   6   5   4   3   2</code></pre>
+</div>
+</div>
+<p>Два вектора в 15-ти мерном пространстве</p>
+<p>Изобразить на плоскости невозможно!</p>
+</section>
+<section id="геометрическая-интерпретация-матрицы-2" class="slide level2 smaller columns-2 center">
+<h2>Геометрическая интерпретация матрицы</h2>
+<div class="column" style="width:40%;">
+<p><strong>Интерпретация матрицы, вариант 2</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1] [,2]
+ [1,]    2    2
+ [2,]    3    2
+ [3,]    4    3
+ [4,]    5    3
+ [5,]    6    2
+ [6,]    7    2
+ [7,]    7    3
+ [8,]    7    4
+ [9,]    6    5
+[10,]    5    6
+[11,]    4    6
+[12,]    3    5
+[13,]    2    4
+[14,]    2    3
+[15,]    2    2</code></pre>
+</div>
+</div>
+<p>15 векторов в двумерном пространстве</p>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-55-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="геометрическая-интерпретация-матрицы-3" class="slide level2 center">
+<h2>Геометрическая интерпретация матрицы</h2>
+<p><strong>Интерпретация матрицы, вариант 2</strong></p>
+<p>Аналогичное изображение</p>
+
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-56-1.png" class="quarto-figure quarto-figure-center r-stretch" width="384"></section>
+<section id="матрицы-позволяют-преобразовывать-системы-векторов" class="slide level2 smaller columns-2 center">
+<h2>Матрицы позволяют преобразовывать системы векторов</h2>
+<div class="column" style="width:40%;">
+<p>Вращающая матрица <span class="math display">\[
+\textbf{Rot} =
+\begin{pmatrix}
+\cos\phi &amp; -\sin \phi \\
+\sin\phi &amp; \cos\phi
+\end{pmatrix}
+\]</span></p>
+<p>Поворот изображения на заданный угол</p>
+<p><span class="math display">\[
+\textbf{Y}_{rot} = \textbf{Rot} \times \textbf{Y}
+\]</span></p>
+</div><div class="column" style="width:60%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-57-1.png" class="quarto-figure quarto-figure-center" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="матрицы-позволяют-преобразовывать-системы-векторов-1" class="slide level2 smaller columns-2 center">
+<h2>Матрицы позволяют преобразовывать системы векторов</h2>
+<div class="column" style="width:40%;">
+<p>Масштабирующая матрица <span class="math display">\[
+\textbf{Scale} =
+\begin{pmatrix}
+a &amp; 0 \\
+0 &amp; b
+\end{pmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\textbf{Y}_{scaled} = \textbf{Scale} \times \textbf{Y}
+\]</span></p>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-58-1.png" class="quarto-figure quarto-figure-center" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></section>
+<section id="применение-вращения-и-масштабирования-матричных-обектов" class="slide level2 center">
+<h2>Применение вращения и масштабирования матричных обектов</h2>
+<ul>
+<li>Многомерные анализы (о некоторых приемах речь впереди)</li>
+<li>Работа с изображениями</li>
+</ul>
+</section></section>
+<section>
+<section id="level-6-корреляционные-и-ковариационные-матрицы" class="title-slide slide level1 center">
+<h1>Level 6: Корреляционные и ковариационные матрицы</h1>
+
+</section>
+<section id="ковариационная-матрица" class="slide level2 center">
+<h2>Ковариационная матрица</h2>
+<p>Во многих методах многомерной статистики применяется матрица ковариации.</p>
+<p>Ковариация (согласованное отклонение от среднего):</p>
+<p><span class="math display">\[
+cov(X, Y) = \frac{1}{n - 1}\sum{(x_i - \bar{x})(y_i - \bar{y})}
+\]</span></p>
+
+<img data-src="matrix_algebra_Part1_files/figure-revealjs/unnamed-chunk-59-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<section id="ковариационная-матрица-1" class="slide level2 center">
+<h2>Ковариационная матрица</h2>
+<p><span class="math display">\[
+\textbf{S} = \frac{1}{n - 1} \textbf{Y}_{centered}'\textbf{Y}_{centered}
+\]</span></p>
+<p>где <span class="math inline">\(\textbf{Y}_{centered}\)</span> - центрированная матрица исходных значений</p>
+<p><strong>Центрирование</strong> - перемещение начала координат в точку с координатами, равными средним значениям (центроид)</p>
+</section>
+<section id="корреляционая-матрица" class="slide level2 center">
+<h2>Корреляционая матрица</h2>
+<p>То же самое, что ковариационная матрица, но только на основе стандартизованных исходных значений</p>
+<p><span class="math display">\[
+\textbf{R} = \frac{1}{n - 1} \textbf{Y}_{stand}'\textbf{Y}_{stand}
+\]</span></p>
+</section>
+<section id="вычисление-матрицы-ковариации-с-помощью-линейной-алгебры" class="slide level2 smaller columns-2 center">
+<h2>Вычисление матрицы ковариации с помощью линейной алгебры</h2>
+<p>Исходная матрица</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href=""></a>M <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">2</span>), <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb77-2"><a href=""></a>M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    5    2    6
+[2,]    2    2    1    8
+[3,]    3    1    3    4
+[4,]    4    2    5    0
+[5,]    5    5    4    2</code></pre>
+</div>
+</div>
+<p>Матрица центрированных значений</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href=""></a>Cent_M <span class="ot">&lt;-</span> <span class="fu">scale</span>(M, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb79-2"><a href=""></a>Cent_M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]   -2    2   -1    2
+[2,]   -1   -1   -2    4
+[3,]    0   -2    0    0
+[4,]    1   -1    2   -4
+[5,]    2    2    1   -2
+attr(,"scaled:center")
+[1] 3 3 3 4</code></pre>
+</div>
+</div>
+</section>
+<section id="вычисление-матрицы-ковариации-с-помощью-линейной-алгебры-1" class="slide level2 center">
+<h2>Вычисление матрицы ковариации с помощью линейной алгебры</h2>
+<h3 id="задание-3">Задание:</h3>
+<p>Вычислите ковариационную матрицу с помощью методов линейной алгебры и сравните ее с матрицей, полученной с помощью функции <code>cov()</code></p>
+</section>
+<section id="вычисление-матрицы-ковариации-с-помощью-линейной-алгебры-2" class="slide level2 center">
+<h2>Вычисление матрицы ковариации с помощью линейной алгебры</h2>
+<h3 id="решение-3">Решение:</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]  2.5  0.0  2.0   -4
+[2,]  0.0  3.5  0.0    0
+[3,]  2.0  0.0  2.5   -5
+[4,] -4.0  0.0 -5.0   10</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]  2.5  0.0  2.0   -4
+[2,]  0.0  3.5  0.0    0
+[3,]  2.0  0.0  2.5   -5
+[4,] -4.0  0.0 -5.0   10</code></pre>
+</div>
+</div>
+</section>
+<section id="вычисление-матрицы-ковариации-с-помощью-линейной-алгебры-3" class="slide level2 center">
+<h2>Вычисление матрицы ковариации с помощью линейной алгебры</h2>
+<p>По главной диагонали ковариационной матрицы лежат квадраты стандартных отклонений каждого из векторов (колонок, признаков) исходной матрицы</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href=""></a><span class="fu">diag</span>(Cov_M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  2.5  3.5  2.5 10.0</code></pre>
+</div>
+</div>
+<p>Сравним</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href=""></a><span class="fu">apply</span>(M, <span class="dv">2</span>, <span class="at">FUN =</span> <span class="cf">function</span>(x)<span class="fu">sd</span>(x)<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  2.5  3.5  2.5 10.0</code></pre>
+</div>
+</div>
+</section>
+<section id="вычисление-матрицы-корреляций-с-помощью-линейной-алгебры" class="slide level2 smaller columns-2 center">
+<h2>Вычисление матрицы корреляций с помощью линейной алгебры</h2>
+<div class="column" style="width:60%;">
+<p>Для вычисления матрицы корреляций необходимо стандартизировать значения в исходной матрице</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href=""></a>Stand_M <span class="ot">&lt;-</span> <span class="fu">scale</span>(M, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb87-2"><a href=""></a>Stand_M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       [,1]   [,2]   [,3]   [,4]
+[1,] -1.265  1.069 -0.632  0.632
+[2,] -0.632 -0.535 -1.265  1.265
+[3,]  0.000 -1.069  0.000  0.000
+[4,]  0.632 -0.535  1.265 -1.265
+[5,]  1.265  1.069  0.632 -0.632
+attr(,"scaled:center")
+[1] 3 3 3 4
+attr(,"scaled:scale")
+[1] 1.58 1.87 1.58 3.16</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href=""></a><span class="co"># Вычисление вручную</span></span>
+<span id="cb89-2"><a href=""></a>Cor_M <span class="ot">&lt;-</span> (<span class="fu">t</span>(Stand_M) <span class="sc">%*%</span> Stand_M)<span class="sc">/</span>(<span class="fu">nrow</span>(M) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb89-3"><a href=""></a>Cor_M</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]  1.0    0  0.8 -0.8
+[2,]  0.0    1  0.0  0.0
+[3,]  0.8    0  1.0 -1.0
+[4,] -0.8    0 -1.0  1.0</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href=""></a><span class="fu">cor</span>(M) <span class="co"># Стандартная функция R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]  1.0    0  0.8 -0.8
+[2,]  0.0    1  0.0  0.0
+[3,]  0.8    0  1.0 -1.0
+[4,] -0.8    0 -1.0  1.0</code></pre>
+</div>
+</div>
+</div></section>
+<section id="зачем-нужна-ковариационная-матрица" class="slide level2 center">
+<h2>Зачем нужна ковариационная матрица?</h2>
+<p>В ковариационной матрице содержится вся информация о варьировании признаков и о их взаимосвязи</p>
+<p>Свойства этой матрицы позволяют раскладывать изменчивость на отдельные составляющие (про это у нас будет специальная лекция).</p>
+</section></section>
+<section>
+<section id="level-7-еще-немного-повторения-обращение-инверсия-матриц" class="title-slide slide level1 center">
+<h1>Level 7: Еще немного повторения: <em>Обращение (инверсия) матриц</em></h1>
+
+</section>
+<section id="обращение-инверсия-матриц" class="slide level2 smaller columns-2 center">
+<h2>Обращение (инверсия) матриц</h2>
+<p>В линейной алгебре нет процедуры деления. Вместо нее используют обращение матриц.</p>
+<p><span class="math display">\[
+\textbf{X}^{-1}\textbf{X} = \textbf{I}
+\]</span></p>
+<p>Обратить можно только такую матрицу, у которой определитель не равен нулю <span class="math display">\[|\textbf{X}| \ne 0\]</span></p>
+<p>Матрицы, у которых определитель <span class="math inline">\(|\textbf{X}| = 0\)</span> называются <em>сингулярными</em> матрицами они не могут быть инвертированы.</p>
+<p><strong>Важно!</strong>: Только квадратные матрицы имеют обратную матрицу.</p>
+<p>Для квадратных матриц справедливо <span class="math inline">\(\textbf{X} \textbf{X}^{-1} = \textbf{X}^{-1} \textbf{X}\)</span></p>
+<p><strong>Важное свойство</strong>: Если квадратная матрица состоит из ортогональных векторов (ортогональная матрица), то <span class="math inline">\(\textbf{X}'  = \textbf{X}^{-1}\)</span></p>
+</section>
+<section id="вычисление-обратной-матрицы-в-среде-r" class="slide level2 center">
+<h2>Вычисление обратной матрицы в среде R</h2>
+<p>Создадим матрицу</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href=""></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">8</span>),<span class="dv">10</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> T)</span>
+<span id="cb93-2"><a href=""></a>X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6
+[3,]    7    8   10</code></pre>
+</div>
+</div>
+<p>Ее определитель</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href=""></a><span class="fu">det</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3</code></pre>
+</div>
+</div>
+</section>
+<section id="вычисление-обратной-матрицы-в-среде-r-1" class="slide level2 center">
+<h2>Вычисление обратной матрицы в среде R</h2>
+<p>Обратная матрица</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href=""></a><span class="fu">solve</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       [,1]  [,2] [,3]
+[1,] -0.667 -1.33    1
+[2,] -0.667  3.67   -2
+[3,]  1.000 -2.00    1</code></pre>
+</div>
+</div>
+<p>По определению <span class="math inline">\(\textbf{X}^{-1}\textbf{X} = \textbf{I}\)</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href=""></a><span class="fu">round</span>(<span class="fu">solve</span>(X) <span class="sc">%*%</span> X )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    0    0
+[2,]    0    1    0
+[3,]    0    0    1</code></pre>
+</div>
+</div>
+</section>
+<section id="summary" class="slide level2 center">
+<h2>Summary</h2>
+<ul>
+<li>Линейная алгебра позволяет решать самые разные типы задач.</li>
+<li>Матричные методы лежат в основе очень многих типов анализа и служат для решения прикладных задач.</li>
+</ul>
+</section>
+<section id="что-почитать" class="slide level2 center">
+<h2>Что почитать</h2>
+<ul>
+<li>Legendre P., Legendre L. (2012) Numerical ecology. Second english edition. Elsevier, Amsterdam. Глава 2. Matrix algebra: a summary.</li>
+</ul>
+</section></section>
+<section id="not-the-end" class="title-slide slide level1 center">
+<h1>Not The End</h1>
+
+
+<img data-src="images/matrix_2.jpg" class="r-stretch"></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="matrix_algebra_Part1_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 5.0e-2,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
