@@ -117,7 +117,7 @@ p_load <- ggplot(df_load) +
 
 # Все вместе
 library(cowplot)
-plot_grid(p_load, p_scores, align = "hv", rel_widths = c(0.4, 0.64))
+plot_grid(p_load, p_scores, align = "hv", rel_widths = c(0.5, 0.5))
 
 
 # # 3. Интерпретация компонент -----
