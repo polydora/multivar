@@ -172,7 +172,7 @@ install.packages("jpeg")
 install.packages(c("cowplot", "geomorph", "gridGraphics"))
 ```
 
-<!-- - Презентация [html](08_PCA_geom_morph.html) -->
+<!-- - Презентация [pdf](08_PCA_geom_morph.pdf) -->
 
 <!-- - Код: [08_PCA_geom_morph.R](08_PCA_geom_morph.R) -->
 <!-- - Данные: -->
