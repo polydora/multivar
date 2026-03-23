@@ -19,8 +19,7 @@ theme_set(theme_bw(base_size = 12))
 # install.packages("devtools")
 # devtools::install_github("gavinsimpson/ggvegan")
 library(ggvegan)
-install.packages("ggrepel")
-install.packages("ggrepel", repos = "http://cran.rstudio.com/")
+
 # Многомерная статистика
 library(vegan)
 

@@ -172,7 +172,7 @@ install.packages("jpeg")
 install.packages(c("cowplot", "geomorph", "gridGraphics"))
 ```
 
-<!-- - Презентация [pdf](08_PCA_geom_morph.pdf) -->
+- Презентация [pdf](08_PCA_geom_morph.pdf)
 
 - Код: [08_PCA_geom_morph.R](08_PCA_geom_morph.R)
 - Данные:
@@ -181,7 +181,7 @@ install.packages(c("cowplot", "geomorph", "gridGraphics"))
     + [turtles.txt](data/turtles.txt)
 - Задание: [08_PCA_tasks.R](08_PCA_tasks.R)
 
-
+[ссылка на яндекс-телемост](https://telemost.yandex.ru/j/38406314560530)
 
 ## 6. Корреспондентный анализ (Corespondence Analysis, CA)
 
