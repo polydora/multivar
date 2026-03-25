@@ -262,9 +262,8 @@ D <- diag(D)
 
 dim(D)
 
-round(t(Q) %*% Q -   V %*% t(D) %*% D %*% t(V))
-
 Q <- as.matrix(Q)
+
 
 A <- t(Q) %*% Q
 
