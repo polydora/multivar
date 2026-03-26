@@ -206,6 +206,8 @@ install.packages("ade4")
 
 - __Бабочки.__
     + butterfly{ade4}
+    
+[**Ссылка на Яндекс-телемост**](https://telemost.yandex.ru/j/95727607758726)
 
 
 ## 7. Анализ избыточности (Redundancy analysis, RDA)
