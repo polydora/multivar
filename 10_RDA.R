@@ -36,8 +36,14 @@ vif(lm(gen$`0.4` ~ . -Temp_Min, data = env_geo))
 # ## RDA в vegan ####
 
 library(vegan)
+bf_rda <- rda(gen ~ Altitude + Precipitation + Temp_Max + Temp_Min, data = env_geo)
+# Еще один способ проверки на коллинеарность
+vif.cca(bf_rda)
+
 bf_rda <- rda(gen ~ Altitude + Precipitation + Temp_Max, data = env_geo)
 summary(bf_rda)
+
+vif.cca(bf_rda)
 
 # Обратите внимание на
 # Структуру общей изменчивости
@@ -47,7 +53,7 @@ summary(bf_rda)
 
 # ## Корреляции между откликами и предикторами ####
 spenvcor(bf_rda)
-
+goodness(bf_rda)
 # # Визуализация ординации #######################
 
 # ## Триплот корреляций (scaling = 2): Какие переменные среды сильнее всего определяют сходство объектов? {.columns-2}
