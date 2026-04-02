@@ -87,9 +87,9 @@ library(gridExtra)
 grid.arrange(arrangeGrob(p1, p2, p3, p4, nrow = 1), mylegend, nrow = 2, heights = c(10, 1))
 
 # Здесь будет ваш код для RDA
+mite_rda <- rda(mite ~ SubsDens + WatrCont + Substrate + Topo, data = mite.env)
 
-
-
+vif.cca(mite_rda)
 
 
 # Здесь будет Ваш код для решения Задания по построению ограниченной ординации CCA
@@ -99,14 +99,23 @@ grid.arrange(arrangeGrob(p1, p2, p3, p4, nrow = 1), mylegend, nrow = 2, heights 
 
 # SubsDens, WatrCont, Substrate, Topo
 
-mite_cca <- cca()
+mite_cca <- cca(mite ~ SubsDens + WatrCont + Substrate + Topo, data = mite.env)
 
-vif.cca()
+vif.cca(mite_cca)
 
 mite_cca
 
 summary(mite_cca)
 
+
+
+X <- model.matrix(~SubsDens + WatrCont + Substrate + Topo, data = mite.env)
+
+factor(mite.env$Substrate)
+
+factor(mite.env$Topo)
+
+ncol(X)
 ################################
 #Вычисление CA вручную
 
@@ -143,6 +152,7 @@ Q1 <- U %*% D %*% t(V)
 round(sum(Q1 - Q))
 
 Inertia_total <- sum(D^2) #Общая инерция в системе
+
 CA_number <- sum(round(D, 2) !=0) #Количество главныю осей в CA
 
 X <- model.matrix( ~ SubsDens + WatrCont + Substrate + Topo, data =  mite.env)
@@ -171,6 +181,8 @@ V_pred <- svd(Q_pred)$v
 
 #Инерция в пространстве канонических осей
 Inertia_constrained <- sum(D_pred^2) #Инерция в ограниченной ординации
+
+summary(mite_cca)
 
 CCA_number <- sum(round(D_pred, 2) !=0) #Количество Канонических осей в СCA
 
