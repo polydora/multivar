@@ -1,27 +1,75 @@
 ---
 title: "Кластерный анализ"
 subtitle: "Анализ и визуализация многомерных данных с использованием R"
-author: 
-  - Марина Варфоломеева
-  - Вадим Хайтов
-  - Анастасия Лянгузова
+authors: 
+  - "М. Варфоломеева"
+  - "В. Xайтов"
+  - "А. Лянгузова"
 company: 'Каф. Зоологии беспозвоночных, СПбГУ'
-output:
-  xaringan::moon_reader:
-    self-contained: true
-    lib_dir: libs
-    css: [default, tamu-fonts, ninjutsu, "assets/xaringan-themer.css", "assets/xaringan.css", "assets/scrollable.css"]
-    df_print: default
-    nature:
-      highlightStyle: vs
-      highlightLines: true
-      countIncrementalSlides: false
-      titleSlideClass: [middle, left, inverse]
-      beforeInit: "assets/macros.js"
-    includes:
-      in_header: "assets/xaringan_in_header.html"
-      after_body: "assets/xaringan_after_body.html"
+prefer-html: true
+format:
+  beamer:
+    slide-level: 2
+    slide-number: true
+    lang: ru
+    latex-engine: xelatex
+    keep-tex: true
+    themeoptions: 
+      - "compress"
+mainfont: "Corbel"
+monofont: "DejaVu Sans Mono"  # for code blocks
+execute:
+  echo: true
+  error: true
+  warning: false
+crossref:
+  fig-title: ""
+include-in-header:
+  text: |
+    \usepackage{xcolor}
+    \usepackage{luacolor}
+    \definecolor{mygreen}{RGB}{0, 153, 76}
+    \setbeamercolor{frametitle}{fg=mygreen}
+    \setbeamercolor{title}{fg=mygreen}
+    \setbeamercolor{section title}{fg=mygreen}
+    \setbeamerfont{normal text}{size=\small}
+    \usepackage{adjustbox}
+    \AtBeginDocument{
+    \small
+    \setlength{\textfloatsep}{2pt}
+    \setlength{\intextsep}{2pt}}
+    \AtBeginEnvironment{itemize}{\footnotesize}
+    \setbeamerfont{itemize/enumerate body}{size=\footnotesize}
+    \setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+    \setbeamerfont{itemize/enumerate subsubbody}{size=\footnotesize}
+    \usepackage{fvextra}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\},fontsize=\scriptsize}
+    \setbeamertemplate{itemize item}[circle]
+    \setbeamertemplate{itemize subitem}[circle]
+    \setbeamertemplate{caption}{\raggedright\insertcaption\par}
+    \setbeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber\hspace{1em}\vspace{0.5em}}
+    \setbeamercolor{block body}{bg=green!20}
+    \setbeamercolor{block title}{bg=green!40}
+editor: visual
 ---
+
+```{r setup}
+#| echo: true
+#| include: false
+#| cache: false
+#| purl: false
+#| fig.showtext: true
+knitr::opts_chunk$set(dev = "cairo_pdf")
+library(ggplot2)
+library(grid)
+theme_set(theme_bw(base_size = 14) + theme(legend.key = element_blank()))
+update_geom_defaults("point", list(shape = 19, size = 5))
+library(gridExtra)
+library(dplyr)
+knitr::opts_chunk$set(dev = "ragg_png", echo = TRUE)
+options(rgl.useNULL = TRUE)
+```
+
 
 ## Кластерный анализ
 
@@ -39,9 +87,7 @@ output:
     - C-means
     - DBSCAN
 
----
-
-### Вы сможете
+**Вы сможете**
 
 - Выбирать подходящий метод агрегации (алгоритм кластеризации)
 - Строить дендрограммы
@@ -49,52 +95,28 @@ output:
 - Сопоставлять дендрограммы, полученные разными способами, при помощи танглграмм
 
 
-```{r setup, include = FALSE, cache = FALSE, purl = FALSE, fig.showtext = TRUE}
-source("assets/xaringan_setup.R")
-library(xaringanExtra)
-use_tile_view()
-use_scribble()
-use_search(show_icon = FALSE)
-use_progress_bar(color = "#C6FFE7", location = "bottom", height = "10px")
-use_freezeframe()
-# use_webcam()
-# use_panelset()
-# use_extra_styles(hover_code_line = TRUE)
-
-# http://tachyons.io/docs/
-# https://roperzh.github.io/tachyons-cheatsheet/
-use_tachyons()
-```
-
-
----
-
-class: middle, center, inverse
-
 # Пример: Волки
-
----
 
 ## Пример: Волки
 
 Морфометрия черепов у волков в Скалистых горах и в Арктике (Jolicoeur, 1959)
 
-![Map from Jolicoeur 1959](images/Wolves_map_Jolicoeur_1959.png)
+![Map from Jolicoeur 1959](images/Wolves_map_Jolicoeur_1959.png){width="60%"}
 
 Данные взяты из работы Morrison (1990):
 
 - A --- волки из Арктики (10 самцов, 6 самок)
 - L --- волки из Скалистых гор (6 самцов, 3 самки)
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 library(candisc)
 data("Wolves")
 ```
 
----
-
 ## Знакомимся с данными
 
+\scriptsize
 ```{r}
 dim(Wolves)
 colnames(Wolves)
@@ -103,7 +125,6 @@ any(is.na(Wolves))
 table(Wolves$group)
 ```
 
----
 
 ## Задание
 
@@ -112,11 +133,10 @@ table(Wolves$group)
 1. Обоснуйте выбор коэффициента.
 1. Раскрасьте точки на ординации волков в зависимости от географического происхождения (`group`).
 
----
 
 ## Решение
 
-.scroll-box-20[
+\tiny
 ```{r results='hold', echo=-c(3, 4)}
 library(vegan)
 library(ggplot2); theme_set(theme_bw(base_size = 16))
@@ -133,9 +153,8 @@ gg_w <- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) +
                       values = c("red", "green", "blue", "purple")) +
   labs(colour = "Группы")
 ```
-]
 
----
+
 
 ## Решение
 
@@ -143,81 +162,64 @@ gg_w <- ggplot(dfr_w, aes(x = MDS1, y = MDS2)) +
 gg_w
 ```
 
----
+
 
 ## Методы кластеризации
 
-.pull-left[
-### Иерархические методы
+:::: {.columns}
+::: {.column .t width="50%"}
+**Иерархические методы**
 
 - методы построения деревьев (о них следующие слайды)
-]
-
-.pull-right[
-### Неиерархические методы
+:::
+::: {.column .t width="50%"}
+**Неиерархические методы**
 
 - метод K-средних (K-means clustering) 
 - метод нечёткой кластеризации C-средних (C-means clustering, fuzzy clustering)
 - Основанная на плотности пространственная кластеризация для приложений с шумами (Density-based spatial clustering of applications with noise, DBSCAN)
+:::
+::::
 
-]
-
----
 
 ## Какие бывают методы построения деревьев?
 
-### Методы кластеризации на основании расстояний (о них сегодня)
+**Методы кластеризации на основании расстояний (о них сегодня)**
+
   - Метод ближайшего соседа
   - Метод отдалённого соседа
   - Метод среднегруппового расстояния
   - Метод Варда
   - и т.д. и т.п.
 
-### Методы кластеризации на основании признаков
+**Методы кластеризации на основании признаков**
+
   - Метод максимальной бережливости
   - Метод максимального правдоподобия
 
-### И это еще далеко не всё!
+**И это еще далеко не всё!**
 
----
-
-class: middle, center, inverse
 
 # Методы кластеризации на основании расстояний
 
----
 
 ## Этапы кластеризации 
 
-.pull-left[
-```{r fig-cluster-steps, echo=FALSE, cache=FALSE, opts.label='MxXL', purl=FALSE}
-library(DiagrammeR)
-DiagrammeR(
-  "graph TD; 
-           A(Набор признаков)-->B(Матрица расстояний или сходств); 
-           B-->C(Группировка объектов);
-           C-->D(Отношения между кластерами); D-->E(Поправки); E-->A;
-           style A fill:#C6FFE7,stroke:#C6FFE7;
-           style B fill:#C6FFE7,stroke:#C6FFE7;
-           style C fill:#C6FFE7,stroke:#C6FFE7;
-           style D fill:#C6FFE7,stroke:#C6FFE7;
-           style E fill:#C6FFE7,stroke:#C6FFE7;
-           style A color:#C6FFE7,stroke:#C6FFE7;
-  ")
-```
-]
-
-.pull-right[
+:::: {.columns}
+::: {.column .t width="50%"}
+![](images/diagrammer_cluster.png){width="250%"}
+:::
+::: {.column .t width="50%"}
 
 Результат кластеризации зависит от
 
 - выбора признаков
 - коэффициента сходства-различия
 - от алгоритма кластеризации
+:::
+::::
 
-]
 
----
 
 ## Методы кластеризации
 
@@ -289,36 +291,37 @@ grid.arrange(gg_single + ggtitle("Метод ближайшего соседа")
                ggtitle("Метод Варда"), ncol = 2)
 ```
 
----
+
 
 ## Метод ближайшего соседа
 
 
-.pull-left-66[
-.content-box-green[
+:::: {.columns}
+::: {.column width="66%"}
+\begin{block}{}
 
-__= nearest neighbour = single linkage__
+\textbf{= nearest neighbour = single linkage}
 
 - к кластеру присоединяется ближайший к нему кластер/объект
 - кластеры объединяются в один на расстоянии, которое равно расстоянию между ближайшими объектами этих кластеров
-]
-]
-
-.pull-right-33[
+\end{block}
+:::
+::: {.column width="33%"}
 
 ```{r fig-single, echo=FALSE, opts.label='SxS', purl=FALSE}
 gg_single
 ```
-]
+:::
+::::
 
-### Особенности
+**Особенности**
 
 - Может быть сложно интерпретировать, если нужны группы
   - объекты на дендрограмме часто не образуют четко разделенных групп
   - часто получаются цепочки кластеров (объекты присоединяются как бы по одному)
 - Хорош для выявления градиентов
 
----
+
 
 ## Как работает метод ближайшего соседа
 
@@ -382,166 +385,144 @@ gg_list_a <- lapply(8:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "a
 gg_list_w <- lapply(8:1, function(x) cluster_ani(dat, gg_dat, hclust_method = "ward.D2", k = x))
 ```
 
-```{r fig-single-guess, , fig.height=7, fig.width=7, echo=FALSE, purl=FALSE}
+:::: {.columns}
+::: {.column .t width="70%"}
+```{r fig-single-guess, fig.height=3.5, fig.width=4, echo=FALSE, purl=FALSE}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
-      geom_point(size = 2) +
+      geom_point(size = 1) +
       geom_text(hjust = 1.2, vjust = 1.2) +
       scale_y_continuous(expand=c(0.1,0.1))
 ```
+:::
+::: {.column .t width="30%"}
 
----
 
-## Как работает метод ближайшего соседа
+Анимация --- в короткой .pptx презентации.
+:::
+::::
 
-```{r single-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide', purl=FALSE}
-sapply(gg_list_s, plot)
-```
 
----
 
 ## Метод отдаленного соседа
 
+:::: {.columns}
+::: {.column width="60%"}
 
-
-.pull-left-60[
-.content-box-green[
+:::{.block}
 
 __= furthest neighbour = complete linkage__
 
 - к кластеру присоединяется отдаленный кластер/объект
-- кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие — чем более крупная группа, тем сложнее к ней присоединиться)
-]]
-
-.pull-right-25[
+- кластеры объединяются в один на расстоянии, которое равно расстоянию между самыми отдаленными объектами этих кластеров (следствие --- чем более крупная группа, тем сложнее к ней присоединиться)
+:::
+:::
+::: {.column width="40%"}
 
 ```{r fig-complete, echo=FALSE, opts.label='SxM', purl=FALSE}
 gg_complete
 ```
+:::
+::::
 
-]
-
-### Особенности
+**Особенности**
 
 - На дендрограмме образуется много отдельных некрупных групп
 - Хорош для поиска дискретных групп в данных
 
----
+
 
 ## Как работает метод отдаленного соседа
 
-```{r fig-complete-guess, echo=FALSE, purl=FALSE, fig.height=7, fig.width=7}
+```{r fig-complete-guess, echo=FALSE, purl=FALSE, fig.height=3.5, fig.width=4}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
-      geom_point(size = 2) +
+      geom_point(size = 1) +
       geom_text(hjust = 1.1, vjust = 1.1) +
       scale_y_continuous(expand=c(0.1,0.1))
 ```
 
----
 
-## Как работает метод отдаленного соседа
-
-```{r complete-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide', purl=FALSE}
-sapply(gg_list_c, plot)
-```
-
----
 
 ## Метод невзвешенного попарного среднего
 
-.pull-left-66[
-.content-box-green[
+:::: {.columns}
+::: {.column width="66%"}
+\begin{block}{}
 
-__= UPGMA = Unweighted Pair Group Method with Arithmetic mean__
+\textbf{= UPGMA = Unweighted Pair Group Method with Arithmetic mean}
 
 кластеры объединяются в один на расстоянии, которое равно среднему значению всех возможных расстояний между объектами из разных кластеров.
-]]
-.pull-right-33[
+\end{block}
+:::
+::: {.column width="33%"}
 
 ```{r fig-average, echo=FALSE, opts.label='SxM', purl=FALSE}
 gg_average
 ```
+:::
+::::
 
-]
-
-### Особенности
+**Особенности**
 
 UPGMA и WUPGMС иногда могут приводить к инверсиям на дендрограммах
 
-.pull-left-66[
-![Инверсии на дендрограммах](images/clust-revert.png)
-]
-.pull-right-33[
-.pull-down[
+:::: {.columns}
+::: {.column width="66%"}
+![Инверсии на дендрограммах](images/clust-revert.png){width="60%"}
+:::
+::: {.column width="33%"}
 из Borcard et al., 2011
-]]
+:::
+::::
 
----
+
 
 ## Как работает метод среднегруппового расстояния
 
-```{r average-guess, echo=FALSE, purl=FALSE, fig.width=7, fig.height=7}
+```{r average-guess, echo=FALSE, purl=FALSE, fig.width=7, fig.height=5}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
       geom_point(size = 2) +
       geom_text(hjust = 1.2, vjust = 1.2) +
       scale_y_continuous(expand=c(0.1,0.1))
 ```
 
----
 
-## Как работает метод среднегруппового расстояния
 
-```{r average-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
-sapply(gg_list_a, plot)
-```
-
----
 
 ## Метод Варда
 
+:::: {.columns}
+::: {.column width="60%"}
+\begin{block}{}
 
-.pull-left-66[.content-box-green[
-
-__= Ward's Minimum Variance Clustering__
+\textbf{= Ward's Minimum Variance Clustering}
 
 объекты объединяются в кластеры так, чтобы внутригрупповая дисперсия расстояний была минимальной.
-]
-
+\end{block}
 
 ```{r fig-ward, echo=FALSE, opts.label='SxM', purl=FALSE}
 gg_ward
 ```
-]
-.pull-left-33[
-### Особенности
+:::
+::: {.column width="33%"}
+**Особенности**
 
 метод годится и для неевклидовых расстояний несмотря на то, что внутригрупповая дисперсия расстояний рассчитывается так, как будто это евклидовы расстояния.]
-
----
+:::
+::::
 
 ## Как работает метод Варда
 
-```{r ward-guess, echo=FALSE, purl=FALSE, fig.width=7, fig.height=7}
+```{r ward-guess, echo=FALSE, purl=FALSE, fig.width=7, fig.height=5}
 ggplot(data = gg_dat, aes(x = MDS1, y = MDS2, label = rownames(gg_dat))) +
       geom_point(size = 2) +
       geom_text(hjust = 1.2, vjust = 1.2) +
       scale_y_continuous(expand=c(0.1,0.1))
 ```
 
----
 
-## Как работает метод Варда
-
-```{r ward-ani, echo=FALSE, purl=FALSE, opts.label='XLxXXL', fig.show='animate', interval=2, animation.hook='gifski', aniopts='control,loop', results='hide'}
-sapply(gg_list_w, plot)
-```
-
----
-
-class: middle, center, inverse
 
 # Кластерный анализ в R
 
----
 
 ## Кластеризация
 
@@ -559,7 +540,7 @@ d <- dist(x = st_w, method = "euclidean")
 ```
 
 
----
+
 
 ## (1.0) Метод ближайшего соседа + `base`
 
@@ -568,100 +549,105 @@ hc_single <- hclust(d, method = "single")
 plot(hc_single)
 ```
 
----
+
 
 ## (1.1) Метод ближайшего соседа + `ape`
 
-```{r fig-single-ape, opts.label='XLxL'}
+```{r fig-single-ape}
+#| fig.height: 5
+#| fig.width: 8
 ph_single <- as.phylo(hc_single)
 plot(ph_single, type = "phylogram")
 axisPhylo()
 ```
 
----
+
 
 ## (1.2) Метод ближайшего соседа + `dendextend`
 
-```{r fig-single-dend, opts.label='XLxL'}
+```{r fig-single-dend}
+#| fig.height: 5
+#| fig.width: 8
 den_single <- as.dendrogram(hc_single)
 plot(den_single, horiz = TRUE)
 ```
 
----
+
 
 ## (2.1) Метод отдаленного соседа + `ape`
 
-```{r fig-complete-ape, opts.label='XLxL'}
+```{r fig-complete-ape}
+#| fig.height: 5
+#| fig.width: 8
 hc_compl <- hclust(d, method = "complete")
 ph_compl <- as.phylo(hc_compl)
 plot(ph_compl, type = "phylogram")
 axisPhylo()
 ```
 
----
 
 ## (2.2)Метод отдаленного соседа + `dendextend`
 
-```{r fig-complete-dend, opts.label='XLxL'}
+```{r fig-complete-dend}
+#| fig.height: 5
+#| fig.width: 8
 den_compl <- as.dendrogram(hc_compl)
 plot(den_compl, horiz = TRUE)
 ```
 
----
 
 ## (3.1) Метод невзвешенного попарного среднего (UPGMA) + `ape`
 
-```{r fig-average-ape, opts.label='XLxL'}
+```{r fig-average-ape}
+#| fig.height: 5
+#| fig.width: 8
 hc_avg <- hclust(d, method = "average")
 ph_avg <- as.phylo(hc_avg)
 plot(ph_avg, type = "phylogram")
 axisPhylo()
 ```
 
----
 
 ## (3.2) Метод невзвешенного попарного среднего (UPGMA) + `dendextend`
 
-```{r fig-average-dend, opts.label='XLxL'}
+```{r fig-average-dend}
+#| fig.height: 5
+#| fig.width: 8
 den_avg <- as.dendrogram(hc_avg)
 plot(den_avg, horiz = TRUE)
 ```
 
----
 
 ## (4.1) Метод Варда + `ape`
 
-```{r fig-ward-ape, opts.label='XLxL'}
+```{r fig-ward-ape}
+#| fig.height: 5
+#| fig.width: 8
 hc_w2 <-hclust(d, method = "ward.D2")
 ph_w2 <- as.phylo(hc_w2)
 plot(ph_w2, type = "phylogram")
 axisPhylo()
 ```
 
----
-
 ## (4.2) Метод Варда + `dendextend`
 
-```{r fig-ward-dend, opts.label='XLxL'}
+```{r fig-ward-dend}
+#| fig.height: 5
+#| fig.width: 8
 den_w2 <- as.dendrogram(hc_w2)
 plot(den_w2, horiz = TRUE)
 ```
 
----
-
-class: middle, center, inverse
 
 # Качество кластеризации
 
----
-
 ## Кофенетическая корреляция
 
-__Кофенетическое расстояние__  — расстояние между объектами на дендрограмме, т.е. то расстояние, на котором объекты становятся частью одной группы в ходе процесса кластеризации.
+__Кофенетическое расстояние__  —-- расстояние между объектами на дендрограмме, т.е. то расстояние, на котором объекты становятся частью одной группы в ходе процесса кластеризации.
 
-.content-box-green[
-__Кофенетическая корреляция__  — мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов. В идеальном случае равна 1. 
-]
+\begin{block}{}
+\textbf{Кофенетическая корреляция}  —-- мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов. В идеальном случае равна 1. 
+\end{block}
 
 
 <br/>
@@ -670,10 +656,11 @@ __Кофенетическая корреляция__  — мера качест
 
 Матрицу кофенетических расстояний и кофенетическую корреляцию можно рассчитать при помощи функций из пакета `stats` (`dendextend`) и `ape`, соответственно.
 
----
+
 
 ## Кофенетическая корреляция в R
 
+\scriptsize
 ```{r}
 # Матрица кофенетических расстояний 
 c_single <- cophenetic(ph_single)
@@ -683,7 +670,7 @@ c_single <- cophenetic(ph_single)
 cor(d, as.dist(c_single))
 ```
 
----
+
 
 ## Задание:
 
@@ -691,10 +678,11 @@ cor(d, as.dist(c_single))
 
 Какой метод дает лучший результат?
 
----
 
-## Решение:
 
+## Решение
+
+\scriptsize
 ```{r}
 c_single <- cophenetic(ph_single)
 cor(d, as.dist(c_single))
@@ -711,7 +699,7 @@ cor(d, as.dist(c_w2))
 
 
 
----
+
 
 ## Что можно делать дальше с дендрограммой
 
@@ -720,17 +708,18 @@ cor(d, as.dist(c_w2))
     + либо исходя из распределения расстояний ветвления.
 - Можно оценить стабильность кластеризации при помощи бутстрепа.
 
----
+
 
 ## Ширина силуэта
 
-.content-box-green[
+\begin{block}{}
 Ширина силуэта $s_i$ --- мера степени принадлежности объекта $i$ к кластеру 
-]
+\end{block}
 
 $$s_i = \frac {\color{purple}{\bar{d}_{i~to~nearest~cluster}} - \color{green}{\bar{d}_{i~within}}} {max\{\color{purple}{\bar{d}_{i~to~nearest~cluster}}, \color{green}{\bar{d}_{i~within}}\}}$$
 
 $s_i$ --- сравнивает между собой средние расстояния от данного объекта:
+
 - $\color{green} {\bar{d}_{i~within}}$ --- до других объектов из того же кластера
 - $\color{purple} {\bar{d}_{i~to~nearest~cluster}}$ --- до ближайшего кластера
 
@@ -741,31 +730,34 @@ $-1 \le s_i \le 1$ --- чем больше $s_i$, тем "лучше" объек
 - Средняя ширина силуэта по всем данным --- оценивает общее качество классификации.
 - Чем больше к 1, тем лучше. Если меньше 0.25, то можно сказать, что нет структуры.
 
----
 
 ## Как рассчитывается ширина силуэта
 
 Оценим ширину силуэта для 3 кластеров
 
 ```{r fig-silhouette}
+#| fig.height: 5
+#| fig.width: 8
 library(cluster)
 avg3 <- cutree(tree = hc_avg, k = 3) # делим дерево на нужное количество кластеров
 plot(silhouette(x = avg3, dist = d), cex.names = 0.6)
 ```
 
----
+
 
 ## Бутстреп
 
-.content-box-green[
-__Бутстреп__ --- один из методов оценки значимости полученных результатов; повторная выборка из имеющихся данных. В такой выборке элементы могут повторяться.]
+\begin{block}{}
+\textbf{Бутстреп} --- один из методов оценки значимости полученных результатов; повторная выборка из имеющихся данных. В такой выборке элементы могут повторяться.
+\end{block}
 
-### Алгоритм
+**Алгоритм**
+
 - Имеющиеся данные делим на группы одинакового размера: какие-то элементы могут отсутствовать, а какие-то --- повторяться несколько раз. 
 - На основе полученных данных строим дендрограмму. 
 - Повторяем всё много раз.   
 
----
+
 
 ## Бутстреп поддержка ветвей
 
@@ -776,6 +768,7 @@ __Бутстреп__ --- один из методов оценки значим�
 
 Этот тест использует специальный вариант бутстрепа --- multiscale bootstrap. Мы не просто многократно берем бутстреп-выборки и оцениваем для них вероятность получения топологий (BP p-value), эти выборки еще и будут с разным числом объектов. По изменению BP при разных объемах выборки можно вычислить AU (approximately unbiased p-value). 
 
+\scriptsize
 ```{r}
 library(pvclust)
 set.seed(389)
@@ -784,38 +777,41 @@ cl_boot <- pvclust(t(st_w), method.hclust = "average", nboot = 100,
                    method.dist = "euclidean", parallel = TRUE, iseed = 42)
 ```
 
+\footnotesize
+
 Обратите внимание на число итераций: `nboot = 100` --- это очень мало. На самом деле нужно 10000 или больше.
 
----
+
 
 ## Дерево с величинами поддержки
 
 AU --- approximately unbiased p-values (красный),
-BP --- bootstrap p-values (зеленый)
+BP --- bootstrap p-values (зеленый).
 
-```{r fig-cl-boot, fig.show='hold', opts.label='XLxL'}
+```{r fig-cl-boot, fig.show='hold'}
+#| fig.height: 5
+#| fig.width: 8
 plot(cl_boot)
 pvrect(cl_boot) # достоверные ветвления
 ```
 
----
+
 
 ## Для диагностики качества оценок AU
 
 График стандартных ошибок для AU p-value нужен, чтобы оценить точность оценки самих AU. Чем больше было бутстреп-итераций, тем точнее будет оценка AU.
 
-```{r fig-seplot, fig.show='hold', opts.label='XLxL'}
+```{r fig-seplot, fig.show='hold'}
+#| fig.height: 4.5
+#| fig.width: 8
 seplot(cl_boot)
 # print(cl_boot) # все значения
 ```
 
----
 
-class: middle, center, inverse
 
 # Сопоставление деревьев: Танглграммы
 
----
 
 ## Танглграмма
 
@@ -839,39 +835,42 @@ tanglegram(untang_w[[1]], untang_w[[2]],
            lab.cex = 1.5, cex_main = 2)
 ```
 
----
+
 
 ## Танглграмма
 
 ```{r fig-tang, eval=TRUE, echo=FALSE, opts.label='XLxL'}
 ```
 
----
+
 
 ## Задание
 
 Постройте танглграмму из дендрограмм, полученных методом ближайшего соседа и методом Варда.
 
----
+
 
 ## Раскраска дендрограмм
 
-### Вручную
+**Вручную**
 
 ```{r}
+#| fig.height: 5
+#| fig.width: 8
 # Произвольные цвета радуги
 cols <- rainbow(30) 
 den_avg_manual <- color_labels(dend = den_avg, col = cols)
 plot(den_avg_manual, horiz = TRUE)
 ```
 
----
+
 
 ## Раскраска дендрограмм
 
-### С помощью функции
+**С помощью функции**
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 # Функция для превращения лейблов в цвета
 # (группы определяются по `n_chars` первых букв в лейбле)
@@ -883,9 +882,8 @@ get_colours <- function(dend, n_chars, palette = "Dark2"){
   return(cols)
 }
 ```
-]
-
-.pull-right[
+:::
+::: {.column width="50%"}
 ```{r}
 library(RColorBrewer)
 cols <- get_colours(dend = den_avg, n_chars = 3)
@@ -893,18 +891,19 @@ den_avg_c <- color_labels(dend = den_avg, col = cols)
 plot(den_avg_c, horiz = TRUE)
 
 ```
-]
----
+:::
+::::
 
-class: middle, center, inverse
 
-## Неиерархические методы кластеризации
 
----
+# Неиерархические методы кластеризации
+
+
 
 ## Метод K-средних (K-means)
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 ```{r purl=FALSE, echo=FALSE}
 data_k_final <- data.frame(X = c(1.4, 1.8, 2.5, 3, 2.3, 1.8,
                            3, 2.8, 3.5, 4, 4.2,
@@ -934,20 +933,22 @@ gg_k_final <-  ggplot(data_k_final, aes(X, Y, col = factor(Col))) +
 
 gg_k_final
 ```
-]
-
-.pull-right[
+:::
+::: {.column width="50%"}
 В отличие от иерархических методов кластеризации K-means будет искать то количество кластеров (k), которое вы ему зададите. Каждое наблюдение принадлежит кластеру с ближайшим значением среднего числа (центроида); помимо этого K-means кластеризация минимизирует разброс значений внутри каждого из кластера.
 
 Используется в машинном обучении, в том числе, например, для цветовой редуцкии изображений. 
-]
+:::
+::::
 
----
+
 
 ## Алгоритм K-means
 
-.pull-left[
-### График наблюдений 
+:::: {.columns}
+::: {.column width="50%"}
+**График наблюдений**
+
 ```{r purl = FALSE, echo=FALSE}
 data_k <- data.frame(X = c(1.4, 1.8, 2.5, 3, 2.3, 1.8,
                            3, 2.8, 3.5, 4, 4.2,
@@ -968,12 +969,38 @@ gg_kmeans
 ```
 
 Здесь как будто бы выделяются 3 кластера, поэтому возьмём k = 3. Что же будет делать алгоритм?
-]
+:::
+::::
 
---
 
-.pull-right[
-### 1. Выбираются случайным образом 3 точки на графике --- кластерные центроиды
+## Алгоритм K-means
+
+:::: {.columns}
+::: {.column width="50%"}
+**График наблюдений**
+```{r purl = FALSE, echo=FALSE}
+data_k <- data.frame(X = c(1.4, 1.8, 2.5, 3, 2.3, 1.8,
+                           3, 2.8, 3.5, 4, 4.2,
+                           7, 8.2, 7.5, 8.4, 8, 7.7, 9),
+                     Y = c(1, 1.5, 3.7, 2.8, 2.5, 3,
+                           4.8, 5.2, 7, 6.3, 5.9,
+                           5, 5.2, 5.8, 6.7, 6.3, 7, 6.9),
+                     Col = c(1, 0, 0, 0, 2, 0,
+                             0, 0, 0, 0, 0,
+                             0, 0, 0, 0, 3, 0, 0),
+                     Size = c(1, 0, 0, 0, 1, 0,
+                              0, 0, 0, 0, 0,
+                              0, 0, 0, 0, 1, 0, 0))
+
+gg_kmeans <- ggplot(data_k, aes(X, Y)) +
+  geom_point(size = 3) + theme_bw()
+gg_kmeans
+```
+
+Здесь как будто бы выделяются 3 кластера, поэтому возьмём k = 3. Что же будет делать алгоритм?
+:::
+::: {.column width="50%"}
+**1. Выбираются случайным образом 3 точки на графике --- кластерные центроиды**
 
 Например, так:
 
@@ -991,14 +1018,16 @@ gg_centr <- gg_kmeans +
 
 gg_centr
 ```
-]
+:::
+::::
 
----
+
 
 ## Алгоритм K-means 
 
-.pull-left[
-### 2. Измеряется Евклидово расстояние между каждой точкой и центроидом 
+:::: {.columns}
+::: {.column width="50%"}
+**2. Измеряется Евклидово расстояние между каждой точкой и центроидом**
 
 При этом каждая точка приписывается к ближайшему кластеру. 
 
@@ -1031,10 +1060,9 @@ gg_nearest <- ggplot(data_k2, aes(X, Y, col = factor(Col), size = Size)) +
 
 gg_nearest
 ```
-]
-
-.pull-right[
-### 3. Расситываются центроиды для каждого кластера
+:::
+::: {.column width="50%"}
+**3. Расситываются центроиды для каждого кластера**
 
 ```{r purl=FALSE, echo=FALSE}
 data_k3 <- data.frame(X = c(1.4, 1.8, 2.5, 3, 2.3, 1.8,
@@ -1068,13 +1096,15 @@ gg_new_centr <- ggplot(data_k3, aes(X, Y, col = factor(Col), size = Size)) +
 
 gg_new_centr
 ```
-]
+:::
+::::
 
----
+
 
 ## 4. Расчёт расстояний от каждой точки до нового центроида 
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 Также оценивается разброс внутри каждого кластера.
 
 ```{r purl=FALSE, echo=FALSE}
@@ -1088,15 +1118,15 @@ gg_dist_new <-  gg_new_centr +
 
 gg_dist_new
 ```
-]
-
-.pull-right[
+:::
+::: {.column width="50%"}
 Разброс считается как сумма квадратов расстояний между отдельными наблюдениями и центроидом.
 
 $$ \sum_{i=1}^{n}(x_i - \overline{x})$$
-]
+:::
+::::
 
----
+
 
 ## 5. Повторяем всё многократно до тех пор, пока разброс не станет минимальным
 
@@ -1106,18 +1136,18 @@ $$ \sum_{i=1}^{n}(x_i - \overline{x})$$
 gg_k_final
 ```
 
----
+
 
 ## Поиск локального минимума
 
-![:scale 50%](images/kmeans_algorithm_local.png)
-.tiny[
+\centering
+![](images/kmeans_algorithm_local.png){width="55%"}
+\raggedright
 Из Legendre, Legendre, 2012
-]
 
 Кратко алгоритм можно свести к поиску общего минимума среди локальных (вне зависимости от начальной конфигурации). 
 
----
+
 
 ## K-means в R
 
@@ -1136,7 +1166,7 @@ w_kmeans <- kmeans(st_w, centers = 3, nstart = 100)
 table(avg3, w_kmeans$cluster)
 ```
 
----
+
 
 ## Как выбрать нужное количество кластеров?
 
@@ -1146,7 +1176,7 @@ table(avg3, w_kmeans$cluster)
 
 - Индекс простой структуры (Simple Structure Index): оценивает влияние на интепретабельность полученной кластеризации. Если группы разной величины.
 
----
+
 
 ## Как выбрать нужное количество кластеров? 
 
@@ -1162,32 +1192,33 @@ w_cascade <- cascadeKM(st_w, inf.gr = 2, sup.gr = 10,
 - `iter` --- количество итераций для каждой кластеризации,
 - `criterion` --- индекс: `calinski` или `ssi`. 
 
----
+
 
 ## Визуализация результатов множественной кластеризации
 
+Рисуем так, чтобы объекты, относящиеся к одному кластеру, рисовались вместе.
 
 ```{r}
-plot(w_cascade, sortg = TRUE) # чтобы объекты, относящиеся к одному кластеру, рисовались вместе
+#| fig.height: 4
+#| fig.width: 7
+plot(w_cascade, sortg = TRUE) 
 ```
 
-Советует 2 кластера! 
 
----
 
 ## Визуализация k-means
 
 Делается с помощью функции `fviz_cluster` из пакета `factoextra`.
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 library(factoextra)
 fviz_cluster(w_kmeans, data = st_w,
              ggtheme = theme_bw())
 ```
-]
-
-.pull-right[
+:::
+::: {.column width="50%"}
 ```{r}
 w_2k <- kmeans(st_w, centers = 2, 
                nstart = 100)
@@ -1196,29 +1227,32 @@ fviz_cluster(w_2k, data = st_w,
              ggtheme = theme_bw())
 
 ```
-]
+:::
+::::
 
----
 
 ## Оценка качества кластеризации: ширина силуэта
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 plot(silhouette(w_kmeans$cluster, d))
 ```
-]
+:::
+::: {.column width="50%"}
 
-.pull-right[
 ```{r}
 plot(silhouette(w_2k$cluster, d))
 ```
-]
+:::
+::::
 
----
+
 
 ## Density-based spatial clustering of applications with noise (DBSCAN)
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 Основанная на плотности пространственная кластеризация для приложений с шумами --- метод, более подходящий для "вложенных" кластеров. Основан на распределении плотности точек. 
 
 ```{r purl=FALSE, echo=FALSE}
@@ -1233,26 +1267,28 @@ multi <- multi_circle[, 1:2]
 
 ggplot(multi, aes(x, y)) + geom_point()
 ```
-]
-
-.pull-right[
+:::
+::: {.column width="50%"}
 Работает с данными, с которыми другие методы кластеризации не могут справиться (K-means в примере).
 ```{r}
+#| fig.height: 5
 set.seed(123)
 circle_kmeans <- kmeans(multi, centers = 2, nstart = 20)
 my_col_circle <- c("#2E9FDF", "#E7B800")
-fviz_cluster(circle_kmeans, data = multi,
-             palette = my_col_circle)
+fviz_cluster(circle_kmeans, 
+             data = multi, palette = my_col_circle)
 ```
-]
+:::
+::::
 
----
+
 
 ## Принцип работы DBSCAN 
 
 Кластеры выбираются на основе плотности расположения точек. В результате в единый кластер объединяются близко расположенные друг к другу точки. 
 
 Задаваемые параметры:
+
 - радиус расстояния, на котором должны рассматриваться близлежащие точки (`eps`)
 - минимальное количество точек, которые расположены в круге этого радиуса (`minPts`)
 
@@ -1262,7 +1298,7 @@ fviz_cluster(circle_kmeans, data = multi,
 
 Остальные точки считаются шумом и выбросами.  
 
----
+
 
 ## DBSCAN в R
 
@@ -1275,7 +1311,7 @@ fviz_cluster(circle_dbscan, data = multi,
              palette = my_col_circle)
 ```
 
----
+
 
 ## Epsilon --- выбираем расстояние для радиуса
 
@@ -1286,51 +1322,54 @@ fviz_cluster(circle_dbscan, data = multi,
 2. k-расстояния отображаются в порядке возрастания. 
 
 Если на графике есть "колено" --- значительный перегиб, будет легко найти нужное значение радиуса. 
-.pull-left[
+
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
 kNNdistplot(multi, k = 5)
 abline(h = 0.23, lty = 2)
 ```
-]
-.pull-right[
+:::
+::: {.column width="50%"}
 ```{r}
+#| fig.height: 5
 circle_dbscan <- dbscan(multi, 0.23, 5)
 fviz_cluster(circle_dbscan, data = multi,
              palette = my_col_circle)
 ```
-]
+:::
+::::
 
----
 
 ## Задание 4
 
 Кластеризуйте данные по волкам, используя DBSCAN-алгоритм.
 
----
 
 ## Примерное решение
 
-.pull-left[
+:::: {.columns}
+::: {.column width="50%"}
 ```{r purl=FALSE}
 kNNdistplot(st_w, k = 4)
 abline(h = 2.4, lty = 2) 
 ```
-]
-
-.pull-right[
+:::
+::: {.column width="50%"}
 ```{r purl=FALSE}
 w_dbscan <- dbscan(st_w, 2.4, 4)
 fviz_cluster(w_dbscan, data = st_w)
 ```
-]
+:::
+::::
 
----
+
 
 ## Метод нечёткой кластеризации C-средних (C-means, fuzzy clustering)
 
 При данном подходе объект необязательно принадлежит одному кластеру. Каждому объекту присваивается вероятность принадлежности к кластеру (membership value). В сумме все значения принадлежности к кластеру дают 1 для каждого из объектов. 
 
----
+
 
 ## Алгоритм C-means
 
@@ -1342,28 +1381,23 @@ $$\hat{v}_{i} = \frac{\sum^{N}_{k=1}(\hat{u}_{ik})^{m}y_k}{\sum^{N}_{k=1}(\hat{u
 
 где $\hat{u}$ --- значение принадлежности к кластеру, $m$ --- параметр размытости (fuzziness), равный обычно 2, $y_k$ --- конкретный объект, N --- количество объектов. 
 
----
+
 
 ## Алгоритм C-means
 
-<ol start="3">
 
-<li> Расчёт расстояния от каждой точки до центроида. 
+3. Расчёт расстояния от каждой точки до центроида. 
 
-<li> Обновление значений принадлежности к кластерам. 
+4. Обновление значений принадлежности к кластерам. 
 
-</ol>
 
 $$\hat{u}_{ik} = (\sum^{c}_{j=1}(\frac{\hat{d}_{ik}}{\hat{d}_{jk}})^{\frac{2}{m-1}})^{-1}$$
 где $d_{ki}$ --- расстояние от точки до центроида. 
 
-<ol start="5">
 
-<li> Повторить шаги с 2 по 4, пока не будут получены постоянные значения принадлежности к кластеру. 
+5. Повторить шаги с 2 по 4, пока не будут получены постоянные значения принадлежности к кластеру. 
 
-</ol>
 
----
 
 ## Кластеризация C-means в R
 
@@ -1371,12 +1405,13 @@ $$\hat{u}_{ik} = (\sum^{c}_{j=1}(\frac{\hat{d}_{ik}}{\hat{d}_{jk}})^{\frac{2}{m-
 
 Функция funny принимает как исходные данные, так и матрицу расстояний.
 
+\tiny
 ```{r}
 w_cmeans <- fanny(d, k = 4, memb.exp = 2)
 summary(w_cmeans)
 ```
 
----
+
 
 ## Оценка качества кластеризации: ширина силуэта
 
@@ -1384,17 +1419,21 @@ summary(w_cmeans)
 plot(silhouette(w_cmeans), cex.names = 0.6)
 ```
 
---
+
+## Оценка качества кластеризации: ширина силуэта
+
+```{r}
+plot(silhouette(w_cmeans), cex.names = 0.6)
+```
+
 
 Получилась не очень качественная кластеризация. 
-
----
 
 ## Задание 5
 
 Попробуйте оценить ширину силуэта для C-means кластеризации с более подходящим числом кластеров. 
 
----
+
 
 ## Решение
 
@@ -1403,20 +1442,22 @@ w_2means <- fanny(d, k = 2, memb.exp = 2)
 plot(silhouette(w_2means), cex.names = 0.6)
 ```
 
----
+
 
 ## Визуализация кластеризации
 
 Для визуализации возьмём нашу исходную ординацию nMDS.
 
 ```{r}
+#| fig.height: 3
+#| fig.width: 6
 library(scatterpie)
 w_clust <- cbind(dfr_w, w_2means$membership)
 ggplot() + geom_scatterpie(data = w_clust, aes(x = MDS1, y = MDS2),
                            cols = c("1", "2"))
 ```
 
----
+
 
 ## Take-home messages
 
@@ -1424,7 +1465,7 @@ ggplot() + geom_scatterpie(data = w_clust, aes(x = MDS1, y = MDS2),
 - Качество кластеризации можно оценить разными способами.
 - Кластеризации, полученные разными методами, можно сравнить на танглграммах.
 
----
+
 
 ## Дополнительные ресурсы
 
@@ -1432,7 +1473,7 @@ ggplot() + geom_scatterpie(data = w_clust, aes(x = MDS1, y = MDS2),
 - Legendre, P., Legendre, L., 2012. Numerical ecology. Elsevier.
 - Quinn, G.G.P., Keough, M.J., 2002. Experimental design and data analysis for biologists. Cambridge University Press.
 
----
+
 
 ## И еще ресурсы
 
@@ -1452,28 +1493,27 @@ ggplot() + geom_scatterpie(data = w_clust, aes(x = MDS1, y = MDS2),
 
 - Bezdek et al., 1984. FCM: The Fuzzy c-Means Clustering Algorithm. *Computer & Geosciences, 10: 2-3*, 191-203.
 
----
+
 
 ## Данные для самостоятельной работы
 
-### Фораминиферы маршей Белого моря (Golikova et al. 2020)
+**Фораминиферы маршей Белого моря (Golikova et al. 2020)**
 
-![:scale 80%](images/Golikova_etal_2020_Fig1.png)
----
+![](images/Golikova_etal_2020_Fig1.png)
 
-## Фораминиферы маршей Белого моря
-
-![:scale 80%](images/Golikova_etal_2020_fig2.png)
----
 
 ## Фораминиферы маршей Белого моря
 
-.pull-left[
-![:scale 80%](images/Golikova_etal_2020_plate1.png)
-]
+![](images/Golikova_etal_2020_fig2.png)
 
-.pull-right[
 
+## Фораминиферы маршей Белого моря
+
+:::: {.columns}
+::: {.column width="50%"}
+![](images/Golikova_etal_2020_plate1.png)
+:::
+::: {.column width="55%"}
 Plate 1.
 
 1. _Balticammina pseudomacrescens_. 
@@ -1487,10 +1527,10 @@ Plate 1.
 9. _Elphidium williamsoni_. 
 
 Scale bar 500 μm. 
+:::
+::::
 
-]
 
----
 
 ## Задание
 
@@ -1511,14 +1551,15 @@ Scale bar 500 μm.
   - ширина силуэта
   - бутстреп-поддержка ветвлений
 
----
+
 
 ## Фораминиферы маршей Белого моря
 
-![nMDS](images/Golikova_etal_2020_fig5.png)
+\centering
+![](images/Golikova_etal_2020_fig5.png){width="80%"}
 
----
+
 
 ## Фораминиферы маршей Белого моря
 
-![dendrogram](images/Golikova_etal_2020_fig6.png)
+![](images/Golikova_etal_2020_fig6.png)

@@ -291,14 +291,15 @@ install.packages("reshape2")
 install.packages(c("candisc", "ape", "dendextend", "cluster", "pvclust", "factoextra", "dbscan", "scatterpie"))
 ```
 
-<!-- - Презентация [html](05_cluster_analysis.html) -->
+<!-- - Презентация [pdf](05_cluster_analysis.pdf) -->
+<!-- - Иерархическая кластеризация [pptx](05_cluster_analysis_animation.pptx) -->
 
-<!-- - [код R](05_cluster_analysis.R) -->
+- [код R](05_cluster_analysis.R)
 
-<!-- **Данные для самостоятельной работы** -->
+**Данные для самостоятельной работы**
 
-<!-- - __Сообщества фораминифер_.__ Данные из работы *Golikova, E., Varfolomeeva, M., Yakovis, E., & Korsun, S. (2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in summer, endure in winter. Estuarine, Coastal and Shelf Science, 238, 106685.* -->
-<!--     + [Golikova_etal_2020_cluster_data.csv](data/Golikova_etal_2020_cluster_data.csv) -->
+- __Сообщества фораминифер_.__ Данные из работы *Golikova, E., Varfolomeeva, M., Yakovis, E., & Korsun, S. (2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in summer, endure in winter. Estuarine, Coastal and Shelf Science, 238, 106685.*
+    + [Golikova_etal_2020_cluster_data.csv](data/Golikova_etal_2020_cluster_data.csv)
 
 ## 10. Современные методы анализа многомерных данных 
 
@@ -326,18 +327,18 @@ BiocManager::install(c("treeio", "ggtree"))
 
 
 
-### 10.2 Анализ микробиомных данных
+<!-- ### 10.2 Анализ микробиомных данных -->
 
-```{r eval = FALSE}
-install.packages(c("tidyr", "devtools", "remotes"))
-BiocManager::install("phyloseq")
-# или
-devtools::install_github("phyloseq/joey711")
-BiocManager::install('RRPP')
-devtools::install_github("gmteunisse/fantaxtic")
-remotes::install_github("vmikk/metagMisc")
+<!-- ```{r eval = FALSE} -->
+<!-- install.packages(c("tidyr", "devtools", "remotes")) -->
+<!-- BiocManager::install("phyloseq") -->
+<!-- # или -->
+<!-- devtools::install_github("phyloseq/joey711") -->
+<!-- BiocManager::install('RRPP') -->
+<!-- devtools::install_github("gmteunisse/fantaxtic") -->
+<!-- remotes::install_github("vmikk/metagMisc") -->
 
-```
+<!-- ``` -->
 
 <!-- - Код [13_Micro.Rmd](13_Micro.Rmd), html-версия [13_Micro.html](13_Micro.html) -->
 <!-- - Данные: -->

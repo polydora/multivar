@@ -13,7 +13,7 @@
 
 <title>Презентации и данные</title>
 
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -850,11 +850,23 @@ hydrographique du Doubs. Essai de biotypologie. Thèse d’état, Besançon.
 <div id="кластерный-анализ" class="section level2">
 <h2>9. Кластерный анализ</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;candisc&quot;</span>, <span class="st">&quot;ape&quot;</span>, <span class="st">&quot;dendextend&quot;</span>, <span class="st">&quot;cluster&quot;</span>, <span class="st">&quot;pvclust&quot;</span>, <span class="st">&quot;factoextra&quot;</span>, <span class="st">&quot;dbscan&quot;</span>, <span class="st">&quot;scatterpie&quot;</span>))</span></code></pre></div>
-<!-- - Презентация [html](05_cluster_analysis.html) -->
-<!-- - [код R](05_cluster_analysis.R) -->
-<!-- **Данные для самостоятельной работы** -->
-<!-- - __Сообщества фораминифер_.__ Данные из работы *Golikova, E., Varfolomeeva, M., Yakovis, E., & Korsun, S. (2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in summer, endure in winter. Estuarine, Coastal and Shelf Science, 238, 106685.* -->
-<!--     + [Golikova_etal_2020_cluster_data.csv](data/Golikova_etal_2020_cluster_data.csv) -->
+<!-- - Презентация [pdf](05_cluster_analysis.pdf) -->
+<!-- - Иерархическая кластеризация [pptx](05_cluster_analysis_animation.pptx) -->
+<ul>
+<li><a href="05_cluster_analysis.R">код R</a></li>
+</ul>
+<p><strong>Данные для самостоятельной работы</strong></p>
+<ul>
+<li><strong>Сообщества фораминифер_.</strong> Данные из работы
+<em>Golikova, E., Varfolomeeva, M., Yakovis, E., &amp; Korsun, S.
+(2020). Saltmarsh foraminifera in the subarctic White Sea: Thrive in
+summer, endure in winter. Estuarine, Coastal and Shelf Science, 238,
+106685.</em>
+<ul>
+<li><a
+href="data/Golikova_etal_2020_cluster_data.csv">Golikova_etal_2020_cluster_data.csv</a></li>
+</ul></li>
+</ul>
 </div>
 <div id="современные-методы-анализа-многомерных-данных"
 class="section level2">
@@ -876,16 +888,16 @@ class="section level3">
 <!--     + Выравнивание [zoo_alignment.fasta](data/aligned-manual-Zoogonidae-28S.fasta) -->
 <!--     + Дерево, построеное ML [ml_tree.nex](data/28S_ML.result.nex) -->
 <!--     + Дерево, построенное байесовским методом [bayes_tree.nex](data/28S-Bayes.nex) -->
-</div>
-<div id="анализ-микробиомных-данных" class="section level3">
-<h3>10.2 Анализ микробиомных данных</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;remotes&quot;</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;phyloseq&quot;</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># или</span></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;phyloseq/joey711&quot;</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&#39;RRPP&#39;</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;gmteunisse/fantaxtic&quot;</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;vmikk/metagMisc&quot;</span>)</span></code></pre></div>
+<!-- ### 10.2 Анализ микробиомных данных -->
+<!-- ```{r eval = FALSE} -->
+<!-- install.packages(c("tidyr", "devtools", "remotes")) -->
+<!-- BiocManager::install("phyloseq") -->
+<!-- # или -->
+<!-- devtools::install_github("phyloseq/joey711") -->
+<!-- BiocManager::install('RRPP') -->
+<!-- devtools::install_github("gmteunisse/fantaxtic") -->
+<!-- remotes::install_github("vmikk/metagMisc") -->
+<!-- ``` -->
 <!-- - Код [13_Micro.Rmd](13_Micro.Rmd), html-версия [13_Micro.html](13_Micro.html) -->
 <!-- - Данные: -->
 <!--     + [features.txt](data/master_feature_new.txt) -->

@@ -55,6 +55,7 @@ theme_set(theme_bw(base_size = 14) + theme(legend.key = element_blank()))
 update_geom_defaults("point", list(shape = 19, size = 5))
 library(gridExtra)
 library(dplyr)
+knitr::opts_chunk$set(dev = "ragg_png")
 ```
 
 ## Вы сможете
