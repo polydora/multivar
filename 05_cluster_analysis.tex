@@ -427,8 +427,13 @@ ar:f ar:m rm:f rm:m
 \end{enumerate}
 \end{frame}
 
-\begin{frame}[fragile]{Решение}
+\begin{frame}{Решение}
 \protect\phantomsection\label{ux440ux435ux448ux435ux43dux438ux435}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-3-1.png}}
+\end{frame}
+
+\begin{frame}[fragile]{Решение}
+\protect\phantomsection\label{ux440ux435ux448ux435ux43dux438ux435-1}
 \tiny
 
 \begin{Shaded}
@@ -450,60 +455,37 @@ ar:f ar:m rm:f rm:m
 
 \begin{verbatim}
 Run 0 stress 0.100972 
-Run 1 stress 0.1422396 
-Run 2 stress 0.1473662 
-Run 3 stress 0.1434066 
+Run 1 stress 0.1433766 
+Run 2 stress 0.100972 
+... Procrustes: rmse 1.463843e-06  max resid 4.480716e-06 
+... Similar to previous best
+Run 3 stress 0.1267966 
 Run 4 stress 0.100972 
+... Procrustes: rmse 9.176626e-06  max resid 2.906529e-05 
+... Similar to previous best
+Run 5 stress 0.100972 
 ... New best solution
-... Procrustes: rmse 3.187797e-06  max resid 8.387479e-06 
+... Procrustes: rmse 5.45332e-06  max resid 1.826026e-05 
 ... Similar to previous best
-Run 5 stress 0.1388742 
-Run 6 stress 0.100972 
-... Procrustes: rmse 1.19294e-05  max resid 4.346226e-05 
-... Similar to previous best
-Run 7 stress 0.100972 
-... Procrustes: rmse 2.182808e-06  max resid 6.224961e-06 
-... Similar to previous best
-Run 8 stress 0.1430228 
-Run 9 stress 0.100972 
-... Procrustes: rmse 4.376895e-06  max resid 1.112526e-05 
-... Similar to previous best
-Run 10 stress 0.3855712 
-Run 11 stress 0.1280803 
-Run 12 stress 0.100972 
-... Procrustes: rmse 4.395726e-06  max resid 1.765235e-05 
-... Similar to previous best
-Run 13 stress 0.1244479 
-Run 14 stress 0.1437662 
-Run 15 stress 0.100972 
-... Procrustes: rmse 5.630915e-06  max resid 2.168968e-05 
-... Similar to previous best
-Run 16 stress 0.1267966 
-Run 17 stress 0.1280803 
-Run 18 stress 0.1539767 
+Run 6 stress 0.1406304 
+Run 7 stress 0.1380797 
+Run 8 stress 0.1354586 
+Run 9 stress 0.1345468 
+Run 10 stress 0.1267966 
+Run 11 stress 0.1406304 
+Run 12 stress 0.1367748 
+Run 13 stress 0.1274815 
+Run 14 stress 0.1244479 
+Run 15 stress 0.1367748 
+Run 16 stress 0.1367748 
+Run 17 stress 0.1244479 
+Run 18 stress 0.1367494 
 Run 19 stress 0.100972 
-... Procrustes: rmse 5.321106e-06  max resid 2.087823e-05 
+... Procrustes: rmse 8.753637e-06  max resid 2.974542e-05 
 ... Similar to previous best
-Run 20 stress 0.100972 
-... Procrustes: rmse 5.475012e-06  max resid 1.441801e-05 
-... Similar to previous best
-*** Best solution repeated 8 times
+Run 20 stress 0.1267966 
+*** Best solution repeated 2 times
 \end{verbatim}
-\end{frame}
-
-\begin{frame}{Решение}
-\protect\phantomsection\label{ux440ux435ux448ux435ux43dux438ux435-1}
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/fig-wolves-1.png}}
-
-}
-
-\caption{\label{fig-wolves}}
-
-\end{figure}%
 \end{frame}
 
 \begin{frame}{Методы кластеризации}
@@ -614,13 +596,16 @@ Run 20 stress 0.100972
 \protect\phantomsection\label{ux43cux435ux442ux43eux434-ux431ux43bux438ux436ux430ux439ux448ux435ux433ux43e-ux441ux43eux441ux435ux434ux430}
 \begin{columns}[T]
 \begin{column}{0.66\linewidth}
-\begin{block}{}
-
 \textbf{= nearest neighbour = single linkage}
 
-- к кластеру присоединяется ближайший к нему кластер/объект
-- кластеры объединяются в один на расстоянии, которое равно расстоянию между ближайшими объектами этих кластеров
-\end{block}
+\begin{itemize}
+\tightlist
+\item
+  к кластеру присоединяется ближайший к нему кластер/объект
+\item
+  кластеры объединяются в один на расстоянии, которое равно расстоянию
+  между ближайшими объектами этих кластеров
+\end{itemize}
 \end{column}
 
 \begin{column}{0.33\linewidth}
@@ -768,7 +753,7 @@ Run 20 stress 0.100972
 
 \textbf{Особенности}
 
-UPGMA и WUPGMС иногда могут приводить к инверсиям на дендрограммах
+UPGMA и WPGMA иногда могут приводить к инверсиям на дендрограммах.
 
 \begin{columns}[T]
 \begin{column}{0.66\linewidth}
@@ -785,6 +770,32 @@ UPGMA и WUPGMС иногда могут приводить к инверсия�
 
 \begin{column}{0.33\linewidth}
 из Borcard et al., 2011
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{UPGMA и WPGMA}
+\protect\phantomsection\label{upgma-ux438-wpgma}
+\begin{columns}[T]
+\begin{column}{0.5\linewidth}
+UPGMA --- \textbf{Unweighted} Pair Group Method with Arithmetic mean
+
+Дистанция между кластерами рассчитывается:
+
+\[d_{(AB),C} = \frac{n_A \cdot d_{A,C} + n_B \cdot d_{B,C}}{n_A + n_B}\]
+\end{column}
+
+\begin{column}{0.5\linewidth}
+WPGMA --- \textbf{Weighted} Pair Group Method with Arithmetic mean
+
+Дистанция между кластерами рассчитывается:
+
+\[d_{(AB),C} = \frac{d_{A,C} + d_{B,C}}{2}\]
+
+Взвешенный не потому, что задаются разные веса при кластеризации, а
+поскольку исходные расстояния оказывают неравное влияние на результат
+--- побочный эффект игнорирования размера кластеров при расчете
+расстояния.
 \end{column}
 \end{columns}
 \end{frame}
@@ -823,7 +834,7 @@ UPGMA и WUPGMС иногда могут приводить к инверсия�
 
 метод годится и для неевклидовых расстояний несмотря на то, что
 внутригрупповая дисперсия расстояний рассчитывается так, как будто это
-евклидовы расстояния.{]}
+евклидовы расстояния.
 \end{column}
 \end{columns}
 \end{frame}
@@ -1070,8 +1081,8 @@ R}\label{ux43aux43bux430ux441ux442ux435ux440ux43dux44bux439-ux430ux43dux430ux43b
 \section{Качество
 кластеризации}\label{ux43aux430ux447ux435ux441ux442ux432ux43e-ux43aux43bux430ux441ux442ux435ux440ux438ux437ux430ux446ux438ux438}
 
-\begin{frame}[fragile]{Кофенетическая корреляция}
-\protect\phantomsection\label{ux43aux43eux444ux435ux43dux435ux442ux438ux447ux435ux441ux43aux430ux44f-ux43aux43eux440ux440ux435ux43bux44fux446ux438ux44f}
+\begin{frame}{Кофенетическая корреляция: расчёт}
+\protect\phantomsection\label{ux43aux43eux444ux435ux43dux435ux442ux438ux447ux435ux441ux43aux430ux44f-ux43aux43eux440ux440ux435ux43bux44fux446ux438ux44f-ux440ux430ux441ux447ux451ux442}
 \textbf{Кофенетическое расстояние} ----- расстояние между объектами на
 дендрограмме, т.е. то расстояние, на котором объекты становятся частью
 одной группы в ходе процесса кластеризации.
@@ -1080,6 +1091,27 @@ R}\label{ux43aux43bux430ux441ux442ux435ux440ux43dux44bux439-ux430ux43dux430ux43b
 \textbf{Кофенетическая корреляция}  —-- мера качества отображения многомерных данных на дендрограмме. Кофенетическую корреляцию можно рассчитать как Пирсоновскую корреляцию (обычную) между матрицами исходных и кофенетических расстояний между всеми парами объектов. В идеальном случае равна 1. 
 \end{block}
 
+\[r = \frac{\sum_{i<j}(d_{ij} - \bar{d})(c_{ij} - \bar{c})}
+{\sqrt{\sum_{i<j}(d_{ij}-\bar{d})^2 \cdot \sum_{i<j}(c_{ij}-\bar{c})^2}}\]
+
+где:
+
+\begin{itemize}
+\tightlist
+\item
+  \(d_{ij}\) --- исходное расстояние между объектами \(i\) и \(j\),
+\item
+  \(c_{ij}\) --- кофенетическое расстояние между объектами \(i\) и
+  \(j\),
+\item
+  \(\bar{d}\) --- среднее исходных расстояний,
+\item
+  \(\bar{c}\) --- среднее кофенетических расстояний.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Кофенетическая корреляция: смысл}
+\protect\phantomsection\label{ux43aux43eux444ux435ux43dux435ux442ux438ux447ux435ux441ux43aux430ux44f-ux43aux43eux440ux440ux435ux43bux44fux446ux438ux44f-ux441ux43cux44bux441ux43b}
 Метод агрегации, который дает наибольшую кофенетическую корреляцию, дает
 кластеры, лучше всего отражающие исходные данные.
 
@@ -1281,7 +1313,9 @@ R}\label{ux43aux43bux430ux441ux442ux435ux440ux43dux44bux439-ux430ux43dux430ux43b
 bootstrap. Мы не просто многократно берем бутстреп-выборки и оцениваем
 для них вероятность получения топологий (BP p-value), эти выборки еще и
 будут с разным числом объектов. По изменению BP при разных объемах
-выборки можно вычислить AU (approximately unbiased p-value).
+выборки можно вычислить AU (approximately unbiased p-value). BP
+недооценивает поддержку истинной топологии из-за дискретности повторных
+выборок.
 
 \scriptsize
 
@@ -1294,12 +1328,6 @@ bootstrap. Мы не просто многократно берем бутстр
                    \AttributeTok{method.dist =} \StringTok{"euclidean"}\NormalTok{, }\AttributeTok{parallel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{iseed =} \DecValTok{42}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-Creating a temporary cluster...done:
-socket cluster with 9 nodes on host 'localhost'
-Multiscale bootstrap... Done.
-\end{verbatim}
 
 \footnotesize
 
@@ -1422,7 +1450,7 @@ p-values (зеленый).
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-9-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-10-1.png}}
 \end{frame}
 
 \begin{frame}[fragile]{Раскраска дендрограмм}
@@ -1456,7 +1484,7 @@ p-values (зеленый).
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-11-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-12-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1468,7 +1496,7 @@ p-values (зеленый).
 \protect\phantomsection\label{ux43cux435ux442ux43eux434-k-ux441ux440ux435ux434ux43dux438ux445-k-means}
 \begin{columns}[T]
 \begin{column}{0.5\linewidth}
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-12-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-13-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1490,7 +1518,7 @@ p-values (зеленый).
 \begin{column}{0.5\linewidth}
 \textbf{График наблюдений}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-13-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-14-1.png}}
 
 Здесь как будто бы выделяются 3 кластера, поэтому возьмём k = 3. Что же
 будет делать алгоритм?
@@ -1504,7 +1532,7 @@ p-values (зеленый).
 \begin{column}{0.5\linewidth}
 \textbf{График наблюдений}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-14-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-15-1.png}}
 
 Здесь как будто бы выделяются 3 кластера, поэтому возьмём k = 3. Что же
 будет делать алгоритм?
@@ -1516,7 +1544,7 @@ p-values (зеленый).
 
 Например, так:
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-15-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-16-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1530,13 +1558,13 @@ p-values (зеленый).
 
 При этом каждая точка приписывается к ближайшему кластеру.
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-16-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-17-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
 \textbf{3. Расситываются центроиды для каждого кластера}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-17-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-18-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1547,7 +1575,7 @@ p-values (зеленый).
 \begin{column}{0.5\linewidth}
 Также оценивается разброс внутри каждого кластера.
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-18-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-19-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1564,7 +1592,7 @@ p-values (зеленый).
 \protect\phantomsection\label{ux43fux43eux432ux442ux43eux440ux44fux435ux43c-ux432ux441ux451-ux43cux43dux43eux433ux43eux43aux440ux430ux442ux43dux43e-ux434ux43e-ux442ux435ux445-ux43fux43eux440-ux43fux43eux43aux430-ux440ux430ux437ux431ux440ux43eux441-ux43dux435-ux441ux442ux430ux43dux435ux442-ux43cux438ux43dux438ux43cux430ux43bux44cux43dux44bux43c}
 Кластеры с минимальным разбросом --- финальные.
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-19-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-20-1.png}}
 \end{frame}
 
 \begin{frame}{Поиск локального минимума}
@@ -1632,8 +1660,58 @@ avg3 1 2 3
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Как выбрать нужное количество кластеров?}
-\protect\phantomsection\label{ux43aux430ux43a-ux432ux44bux431ux440ux430ux442ux44c-ux43dux443ux436ux43dux43eux435-ux43aux43eux43bux438ux447ux435ux441ux442ux432ux43e-ux43aux43bux430ux441ux442ux435ux440ux43eux432-1}
+\begin{frame}{Критерии выбора количества кластеров}
+\protect\phantomsection\label{ux43aux440ux438ux442ux435ux440ux438ux438-ux432ux44bux431ux43eux440ux430-ux43aux43eux43bux438ux447ux435ux441ux442ux432ux430-ux43aux43bux430ux441ux442ux435ux440ux43eux432}
+\begin{columns}[T]
+\begin{column}{0.5\linewidth}
+\textbf{Индекс Калински-Харабаза}
+
+\[CH(k) = \frac{SS_B / (k-1)}{SS_W / (n-k)}\]
+
+где:
+
+\begin{itemize}
+\tightlist
+\item
+  \(SS_B\) --- сумма квадратов расстояний от центроида кластера до
+  общего центроида, умноженное на количество объектов в кластере,
+\item
+  \(SS_W\) --- сумма квадратов расстояний до центроида собственного
+  кластера,
+\item
+  \(k\) --- число кластеров,
+\item
+  \(n\) --- количество исходных наблюдений.
+\end{itemize}
+
+Выбирается число кластеров с \textbf{наибольшим} значением CH.
+\end{column}
+
+\begin{column}{0.5\linewidth}
+\textbf{Индекс простой структуры}
+
+\[SSI = \frac{1}{n}\sum_{i=1}^{n} \frac{b_i - a_i}{\max(a_i, b_i)}\]
+
+где:
+
+\begin{itemize}
+\tightlist
+\item
+  \(a_i\) --- расстояние от объекта \(i\) до центроида своего кластера,
+\item
+  \(b_i\) --- расстояние от объекта \(i\) до ближайшего центроида
+  другого кластера,
+\item
+  \(n\) --- количество исходных наблюдений по всем кластерам.
+\end{itemize}
+
+Выбирается число кластеров с \textbf{наибольшим} значением SSI.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Как выбрать нужное количество кластеров в R}
+\protect\phantomsection\label{ux43aux430ux43a-ux432ux44bux431ux440ux430ux442ux44c-ux43dux443ux436ux43dux43eux435-ux43aux43eux43bux438ux447ux435ux441ux442ux432ux43e-ux43aux43bux430ux441ux442ux435ux440ux43eux432-ux432-r}
 Функция \texttt{cascadeKM} из пакета \texttt{vegan}. По сути
 функция-обёртка, которая проводит кластеризацию с разным заданным
 количеством кластеров.
@@ -1670,7 +1748,7 @@ avg3 1 2 3
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-23-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-24-1.png}}
 \end{frame}
 
 \begin{frame}[fragile]{Визуализация k-means}
@@ -1688,7 +1766,7 @@ avg3 1 2 3
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-24-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-25-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1702,7 +1780,7 @@ avg3 1 2 3
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-25-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-26-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1717,7 +1795,7 @@ avg3 1 2 3
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-26-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-27-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1727,7 +1805,7 @@ avg3 1 2 3
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-27-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-28-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1741,7 +1819,7 @@ with noise (DBSCAN)}
 шумами --- метод, более подходящий для ``вложенных'' кластеров. Основан
 на распределении плотности точек.
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-28-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-29-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1758,7 +1836,7 @@ with noise (DBSCAN)}
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-29-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-30-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1793,7 +1871,7 @@ with noise (DBSCAN)}
 Провести такую кластеризацию можно с помощью функции \texttt{dbscan} из
 пакета \texttt{dbscan}.
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-30-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-31-1.png}}
 \end{frame}
 
 \begin{frame}[fragile]{Epsilon --- выбираем расстояние для радиуса}
@@ -1820,7 +1898,7 @@ with noise (DBSCAN)}
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-31-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-32-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1832,7 +1910,7 @@ with noise (DBSCAN)}
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-32-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-33-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1853,7 +1931,7 @@ with noise (DBSCAN)}
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-33-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-34-1.png}}
 \end{column}
 
 \begin{column}{0.5\linewidth}
@@ -1864,7 +1942,7 @@ with noise (DBSCAN)}
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-34-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-35-1.png}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -1890,6 +1968,8 @@ clustering)}
 
 \[\hat{v}_{i} = \frac{\sum^{N}_{k=1}(\hat{u}_{ik})^{m}y_k}{\sum^{N}_{k=1}(\hat{u}_{ik})^m}\]
 
+\scriptsize
+
 где \(\hat{u}\) --- значение принадлежности к кластеру, \(m\) ---
 параметр размытости (fuzziness), равный обычно 2, \(y_k\) --- конкретный
 объект, N --- количество объектов.
@@ -1904,6 +1984,8 @@ clustering)}
 \item
   Обновление значений принадлежности к кластерам.
 \end{enumerate}
+
+\scriptsize
 
 \[\hat{u}_{ik} = (\sum^{c}_{j=1}(\frac{\hat{d}_{ik}}{\hat{d}_{jk}})^{\frac{2}{m-1}})^{-1}\]
 где \(d_{ki}\) --- расстояние от точки до центроида.
@@ -2027,7 +2109,7 @@ Available components:
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-36-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-37-1.png}}
 \end{frame}
 
 \begin{frame}[fragile]{Оценка качества кластеризации: ширина силуэта}
@@ -2038,7 +2120,7 @@ Available components:
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-37-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-38-1.png}}
 
 Получилась не очень качественная кластеризация.
 \end{frame}
@@ -2058,7 +2140,7 @@ Available components:
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-38-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-39-1.png}}
 \end{frame}
 
 \begin{frame}[fragile]{Визуализация кластеризации}
@@ -2074,7 +2156,7 @@ Available components:
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-39-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{05_cluster_analysis_files/figure-beamer/unnamed-chunk-40-1.png}}
 \end{frame}
 
 \begin{frame}{Take-home messages}
