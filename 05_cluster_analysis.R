@@ -133,7 +133,7 @@ cor(d, as.dist(c_single))
 # Оценка ширины силуэта для 3 кластеров
 library(cluster)
 avg3 <- cutree(tree = hc_avg, k = 3) # делим дерево на нужное количество кластеров
-plot(silhouette(x = avg3, dist = d), cex.names = x.names = 0.6)
+plot(silhouette(x = avg3, dist = d), cex.names = 0.6)
 
 
 ## Бутстреп поддержка ветвей ===============================

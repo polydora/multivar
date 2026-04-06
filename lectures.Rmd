@@ -291,8 +291,8 @@ install.packages("reshape2")
 install.packages(c("candisc", "ape", "dendextend", "cluster", "pvclust", "factoextra", "dbscan", "scatterpie"))
 ```
 
-<!-- - Презентация [pdf](05_cluster_analysis.pdf) -->
-<!-- - Иерархическая кластеризация [pptx](05_cluster_analysis_animation.pptx) -->
+- Презентация [pdf](05_cluster_analysis.pdf)
+- Иерархическая кластеризация [pptx](05_cluster_analysis_animation.pptx)
 
 - [код R](05_cluster_analysis.R)
 
