@@ -325,7 +325,7 @@
 \begin{frame}{Выравнивание}
 \protect\phantomsection\label{ux432ux44bux440ux430ux432ux43dux438ux432ux430ux43dux438ux435}
 Основная идея --- поиск общиx участков в последовательностяx, несмотря
-наличие в последовательностяx инсерций и делеций. Большинство
+на наличие в последовательностяx инсерций и делеций. Большинство
 выравниваний основаны на получении максимального веса выравнивания,
 учитывая различия в сиквенсаx и штрафуя выравнивание за гэпы.
 
@@ -632,7 +632,7 @@ c \mu \pi_{A} & e \mu \pi_{C} & f \mu \pi_{G} & - \mu(c\pi_{A} + e\pi_{C} + f\pi
 
 \begin{frame}{Метод максимального правдоподобия (ML)}
 \protect\phantomsection\label{ux43cux435ux442ux43eux434-ux43cux430ux43aux441ux438ux43cux430ux43bux44cux43dux43eux433ux43e-ux43fux440ux430ux432ux434ux43eux43fux43eux434ux43eux431ux438ux44f-ml}
-Функция максимпального правдоподобия:
+Функция максимального правдоподобия:
 
 \[L(\theta) = Pr(Data | \tau, \theta) = Pr(alignment| tree, model)\]
 
@@ -670,6 +670,8 @@ c \mu \pi_{A} & e \mu \pi_{C} & f \mu \pi_{G} & - \mu(c\pi_{A} + e\pi_{C} + f\pi
   ``Branch-swapping'' методы (методы замены ветвей):
 \end{enumerate}
 
+\footnotesize
+
 а. ``nearest-neighbor interchange'' (обмен ближайшими соседями): меняем
 местами узлы, если дерево стало лучше --- начинаем искать варианты
 вокруг этого дерева;
@@ -677,15 +679,9 @@ c \mu \pi_{A} & e \mu \pi_{C} & f \mu \pi_{G} & - \mu(c\pi_{A} + e\pi_{C} + f\pi
 б. ``subtree pruning and regrafting (SPR, обрезка и прививка дерева)'':
 берём ветку дерева и вставляем её в любое другое место дерева
 
-\begin{enumerate}
-[a.]
-\setcounter{enumi}{3}
-\tightlist
-\item
-  ``tree bisection and reconnection (TBR, делим дерево пополам и
-  обратное присоединение)'': делим дерево на 2 самостоятельных поддерева
-  и снова их соединяем.
-\end{enumerate}
+в. ``tree bisection and reconnection (TBR, делим дерево пополам и
+обратное присоединение)'': делим дерево на 2 самостоятельных поддерева и
+снова их соединяем.
 \end{frame}
 
 \begin{frame}{Способы оценки полученного дерева}
@@ -740,7 +736,7 @@ c \mu \pi_{A} & e \mu \pi_{C} & f \mu \pi_{G} & - \mu(c\pi_{A} + e\pi_{C} + f\pi
 
 \(P(X|T, \beta, k)\) --- правдоподобие данных;
 
-\(P(X)\) --- нормалищующая константа.
+\(P(X)\) --- нормализующая константа.
 \end{column}
 \end{columns}
 \end{frame}
@@ -879,7 +875,7 @@ List of 4
 
 \begin{columns}[T]
 \begin{column}{0.5\linewidth}
-Дерево, в котором отмечены номера узлов
+Дерево, в котором отмечены номера узлов:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -893,6 +889,8 @@ List of 4
 \end{column}
 
 \begin{column}{0.5\linewidth}
+Укоренение дерева по внешней группе
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(ape)}
@@ -1131,7 +1129,7 @@ pdf
 \item
   Курс ``Молекулярная филогенетика'' на Stepik от
   \href{https://stepik.org/course/2054/syllabus}{Института
-  Биоинформатики в лице Полины Дроздовой}
+  Биоинформатики и Полины Дроздовой}
 \end{itemize}
 \end{frame}
 
